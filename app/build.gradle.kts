@@ -59,6 +59,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     // Kotlin serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
@@ -68,4 +69,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
 }

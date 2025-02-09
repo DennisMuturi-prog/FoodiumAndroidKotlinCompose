@@ -22,6 +22,8 @@ interface BackendApiService {
     suspend fun registerUser(@Body userData:RegisterData): RegisterResponse
     @POST("login")
     suspend fun loginUser(@Body userData:LoginData): RegisterResponse
+    @POST("addUsername")
+    suspend fun addUsername(@Body username:UsernameData):UsernameAddResponse
 }
 
 object BackendApi {

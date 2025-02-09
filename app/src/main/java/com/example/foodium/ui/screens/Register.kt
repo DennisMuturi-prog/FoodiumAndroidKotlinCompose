@@ -29,7 +29,7 @@ fun Register(modifier:Modifier,authViewModel: AuthViewModel,navController:NavCon
     var password by remember {
         mutableStateOf("")
     }
-    val authResult=authViewModel.authResult.observeAsState()
+    val authResult=authViewModel.authState.observeAsState()
     Column(modifier=modifier) {
         OutlinedTextField(
             value=username,

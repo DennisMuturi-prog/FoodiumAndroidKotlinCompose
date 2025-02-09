@@ -37,20 +37,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-//    override fun onResume() {
-//        super.onResume()
-//        val uri:Uri? = intent.data
-//        if(uri != null){
-//            val oauthAccessToken = uri.getQueryParameter("accessToken")  // Extracts 'code' parameter
-//            val oauthRefreshToken = uri.getQueryParameter("refreshToken")
-//            Log.d("Token1","accessToken:$oauthAccessToken")
-//            Log.d("Token2","refreshToken:$oauthRefreshToken")
-//        }
-//        else{
-//            Log.d("Oauth","message failure")
-//
-//        }
-//    }
+
 }
 
 

@@ -26,7 +26,7 @@ fun Login(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navControll
     var password by remember {
         mutableStateOf("")
     }
-    val authResult=authViewModel.authResult.observeAsState()
+    val authResult=authViewModel.authState.observeAsState()
     Column {
         OutlinedTextField(
             value=username,
