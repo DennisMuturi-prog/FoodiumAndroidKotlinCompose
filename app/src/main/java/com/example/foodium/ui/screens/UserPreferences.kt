@@ -18,5 +18,6 @@ import com.example.foodium.network.UsernameData
 
 @Composable
 fun UserPreferences(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navController: NavController) {
+    Text("user preferences")
 
 }

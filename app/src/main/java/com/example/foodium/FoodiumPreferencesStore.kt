@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.first
 
 class FoodiumPreferencesStore (private val context:Context){
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
     suspend fun saveString(key: String, value: String) {
         context.dataStore.edit {
             it[stringPreferencesKey(key)] = value

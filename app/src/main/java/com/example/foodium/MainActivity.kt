@@ -24,6 +24,7 @@ import com.example.foodium.ui.screens.Register
 import com.example.foodium.ui.theme.FoodiumTheme
 
 class MainActivity : ComponentActivity() {
+    private val preferencesDataStore by lazy { FoodiumPreferencesStore(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,7 +33,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FoodiumTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   FoodiumNavigation(modifier=Modifier.padding(innerPadding),authViewModel=authViewModel)
+                   FoodiumNavigation(modifier=Modifier.padding(innerPadding),authViewModel=authViewModel,preferencesDataStore=preferencesDataStore)
                 }
             }
         }

@@ -1,8 +1,9 @@
 package com.example.foodium
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,6 +17,9 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.example.foodium.network.RegisterResponse
 import com.example.foodium.ui.screens.Login
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 enum class FoodiumAppScreen() {
     Signup,
@@ -25,8 +29,9 @@ enum class FoodiumAppScreen() {
 
 }
 @Composable
-fun FoodiumNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel) {
+fun FoodiumNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel,preferencesDataStore: FoodiumPreferencesStore) {
     val navController = rememberNavController()
+    val scope = rememberCoroutineScope()
     NavHost(navController, startDestination = FoodiumAppScreen.Signup.name){
         composable(route=FoodiumAppScreen.Signup.name){
             Register(modifier=modifier,authViewModel=authViewModel,navController=navController)
@@ -52,6 +57,12 @@ fun FoodiumNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel
         ) { backStackEntry ->
             val accessToken = backStackEntry.arguments?.getString("accessToken") ?: ""
             val refreshToken = backStackEntry.arguments?.getString("refreshToken") ?: ""
+            LaunchedEffect(Unit) {
+                withContext(Dispatchers.IO) {
+                    preferencesDataStore.saveString("accessToken", accessToken)
+                    preferencesDataStore.saveString("refreshToken", refreshToken)
+                }
+            }
             authViewModel.addTokensToStore(RegisterResponse(accessToken,refreshToken))
             AddOauthUsername(authViewModel=authViewModel, navController = navController)
         }

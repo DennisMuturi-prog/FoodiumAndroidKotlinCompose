@@ -33,6 +33,7 @@ fun AddOauthUsername(modifier: Modifier = Modifier,authViewModel: AuthViewModel,
         }
         Button(onClick = {
             when(val result=authState.value){
+                is RegisterUiState.InitialAuth->{}
                 is RegisterUiState.Error-> {}
                 is RegisterUiState.Loading->{}
                 is RegisterUiState.Success->authViewModel.addUsername(UsernameData(username,result.auth.accessToken,result  .auth.refreshToken))

@@ -23,6 +23,7 @@ sealed interface RegisterUiState {
     data class Success(val auth: RegisterResponse) : RegisterUiState
     data class Error(val message:String) : RegisterUiState
     object Loading : RegisterUiState
+    object InitialAuth :RegisterUiState
 }
 sealed interface UpdateUsernameUiState {
     data class Success(val usernameUpdate: UsernameAddResponse) : UpdateUsernameUiState
@@ -30,29 +31,31 @@ sealed interface UpdateUsernameUiState {
     object Loading : UpdateUsernameUiState
 }
 
-class AuthViewModel(application:Application):AndroidViewModel(application){
-    private val preferencesDataStore by lazy { FoodiumPreferencesStore(application) }
+class AuthViewModel:ViewModel(){
     private val _authState = MutableLiveData<RegisterUiState>()
     val authState : LiveData<RegisterUiState> = _authState
     private val  _updateUsernameState =MutableLiveData<UpdateUsernameUiState>()
     val updateUsernameState:LiveData<UpdateUsernameUiState> = _updateUsernameState
-    init {
-        viewModelScope.launch {
-            _authState.value=try {
-                val accessToken=preferencesDataStore.getString("accessToken").toString()
-                val refreshToken=preferencesDataStore.getString("refreshToken").toString()
-                RegisterUiState.Success(RegisterResponse(accessToken,refreshToken))
-            }catch(e:Exception){
-                RegisterUiState.Error(e.toString())
-            }
-        }
-    }
+//    init {
+//        viewModelScope.launch {
+//            _authState.value=try {
+//                val accessToken=preferencesDataStore.getString("accessToken")
+//                val refreshToken=preferencesDataStore.getString("refreshToken")
+//                if(accessToken==null || refreshToken==null){
+//                    RegisterUiState.InitialAuth
+//                }else{
+//                    RegisterUiState.Success(RegisterResponse(accessToken,refreshToken))
+//                }
+//
+//            }catch(e:Exception){
+//                RegisterUiState.Error(e.toString())
+//            }
+//        }
+//    }
     fun registerUser(userData:RegisterData){
         viewModelScope.launch {
             _authState.value = try {
                 val result = BackendApi.retrofitService.registerUser(userData)
-                preferencesDataStore.saveString("accessToken",result.accessToken)
-                preferencesDataStore.saveString("refreshToken",result.refreshToken)
                 Log.d("register1 response",result.toString())
                 RegisterUiState.Success(result)
             } catch (e: IOException) {
@@ -69,8 +72,6 @@ class AuthViewModel(application:Application):AndroidViewModel(application){
         viewModelScope.launch {
             _authState.value = try {
                 val result = BackendApi.retrofitService.loginUser(userData)
-                preferencesDataStore.saveString("accessToken",result.accessToken)
-                preferencesDataStore.saveString("refreshToken",result.refreshToken)
                 Log.d("register1 response",result.toString())
                 RegisterUiState.Success(result)
             } catch (e: IOException) {
@@ -88,8 +89,6 @@ class AuthViewModel(application:Application):AndroidViewModel(application){
             _updateUsernameState.value=try {
                 val result= BackendApi.retrofitService.addUsername(usernameData)
                 if(result.newTokens!=null){
-                    preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
-                    preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
                     updateTokens(result.newTokens)
                 }
                 UpdateUsernameUiState.Success(result)
@@ -107,8 +106,6 @@ class AuthViewModel(application:Application):AndroidViewModel(application){
     }
     fun addTokensToStore(newTokens: RegisterResponse){
         viewModelScope.launch {
-            preferencesDataStore.saveString("accessToken",newTokens.accessToken)
-            preferencesDataStore.saveString("refreshToken",newTokens.refreshToken)
             updateTokens(newTokens)
         }
     }
