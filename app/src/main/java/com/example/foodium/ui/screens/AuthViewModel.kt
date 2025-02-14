@@ -3,27 +3,23 @@ package com.example.foodium.ui.screens
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodium.network.BackendApi
 import kotlinx.coroutines.launch
 import java.io.IOException
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
+import com.example.foodium.BackendApi
 import com.example.foodium.FoodiumPreferencesStore
 import com.example.foodium.network.LoginData
 import com.example.foodium.network.RegisterData
-import com.example.foodium.network.RegisterResponse
+import com.example.foodium.network.AuthTokens
 import com.example.foodium.network.UsernameAddResponse
 import com.example.foodium.network.UsernameData
 import retrofit2.HttpException
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-
 sealed interface RegisterUiState {
-    data class Success(val auth: RegisterResponse) : RegisterUiState
+    data class Success(val auth: AuthTokens) : RegisterUiState
     data class Error(val message:String) : RegisterUiState
     object Loading : RegisterUiState
-    object InitialAuth :RegisterUiState
 }
 sealed interface UpdateUsernameUiState {
     data class Success(val usernameUpdate: UsernameAddResponse) : UpdateUsernameUiState
@@ -31,32 +27,34 @@ sealed interface UpdateUsernameUiState {
     object Loading : UpdateUsernameUiState
 }
 
-class AuthViewModel:ViewModel(){
+
+class AuthViewModel(
+    private val backendApi: BackendApi,
+    private val preferencesDataStore:FoodiumPreferencesStore
+):ViewModel(){
+    private var userAuthTokens:AuthTokens=AuthTokens("","")
     private val _authState = MutableLiveData<RegisterUiState>()
     val authState : LiveData<RegisterUiState> = _authState
     private val  _updateUsernameState =MutableLiveData<UpdateUsernameUiState>()
     val updateUsernameState:LiveData<UpdateUsernameUiState> = _updateUsernameState
-//    init {
-//        viewModelScope.launch {
-//            _authState.value=try {
-//                val accessToken=preferencesDataStore.getString("accessToken")
-//                val refreshToken=preferencesDataStore.getString("refreshToken")
-//                if(accessToken==null || refreshToken==null){
-//                    RegisterUiState.InitialAuth
-//                }else{
-//                    RegisterUiState.Success(RegisterResponse(accessToken,refreshToken))
-//                }
-//
-//            }catch(e:Exception){
-//                RegisterUiState.Error(e.toString())
-//            }
-//        }
-//    }
+    init {
+        viewModelScope.launch {
+            val accessToken=preferencesDataStore.getString("accessToken")
+            val refreshToken=preferencesDataStore.getString("refreshToken")
+            if(accessToken==null || refreshToken==null){
+                _authState.value=RegisterUiState.Error("Auth credentials not found")
+            }else{
+                getAuthTokensFromServer(AuthTokens(accessToken,refreshToken))
+            }
+        }
+    }
     fun registerUser(userData:RegisterData){
         viewModelScope.launch {
             _authState.value = try {
-                val result = BackendApi.retrofitService.registerUser(userData)
-                Log.d("register1 response",result.toString())
+                val result = backendApi.retrofitService.registerUser(userData)
+                preferencesDataStore.saveString("accessToken",result.accessToken)
+                preferencesDataStore.saveString("refreshToken",result.refreshToken)
+                userAuthTokens=result
                 RegisterUiState.Success(result)
             } catch (e: IOException) {
                 Log.d("error response", e.toString())
@@ -71,8 +69,10 @@ class AuthViewModel:ViewModel(){
     fun loginUser(userData: LoginData){
         viewModelScope.launch {
             _authState.value = try {
-                val result = BackendApi.retrofitService.loginUser(userData)
-                Log.d("register1 response",result.toString())
+                val result = backendApi.retrofitService.loginUser(userData)
+                preferencesDataStore.saveString("accessToken",result.accessToken)
+                preferencesDataStore.saveString("refreshToken",result.refreshToken)
+                userAuthTokens=result
                 RegisterUiState.Success(result)
             } catch (e: IOException) {
                 Log.d("error response", e.toString())
@@ -84,12 +84,12 @@ class AuthViewModel:ViewModel(){
             }
         }
     }
-    fun addUsername(usernameData:UsernameData){
+    fun addUsername(username:String){
         viewModelScope.launch {
             _updateUsernameState.value=try {
-                val result= BackendApi.retrofitService.addUsername(usernameData)
+                val result= backendApi.retrofitService.addUsername(UsernameData(username,userAuthTokens.accessToken,userAuthTokens.refreshToken))
                 if(result.newTokens!=null){
-                    updateTokens(result.newTokens)
+                    userAuthTokens=result.newTokens
                 }
                 UpdateUsernameUiState.Success(result)
             }catch (e:IOException){
@@ -101,12 +101,27 @@ class AuthViewModel:ViewModel(){
             }
         }
     }
-    private fun updateTokens(newTokens: RegisterResponse){
-        _authState.value=RegisterUiState.Success(newTokens)
+    fun updatePreferencesDataStore(accessToken:String,refreshToken:String){
+        viewModelScope.launch{
+            preferencesDataStore.saveString("accessToken",accessToken)
+            preferencesDataStore.saveString("refreshToken",refreshToken)
+        }
     }
-    fun addTokensToStore(newTokens: RegisterResponse){
+    fun updateUserAuthTokens(tokens:AuthTokens){
+        userAuthTokens=tokens
+    }
+    private fun getAuthTokensFromServer(tokens: AuthTokens){
         viewModelScope.launch {
-            updateTokens(newTokens)
+            _authState.value=try {
+                val result=backendApi.retrofitService.getAuthTokens(tokens)
+                preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
+                preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+                userAuthTokens=result.newTokens
+                RegisterUiState.Success(result.newTokens)
+            }catch (e:HttpException){
+                val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                RegisterUiState.Error(errorMessage)
+            }
         }
     }
 

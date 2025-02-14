@@ -13,7 +13,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.foodium.FoodiumAppScreen
-import com.example.foodium.network.UsernameData
 
 @Composable
 fun AddOauthUsername(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navController: NavController) {
@@ -21,8 +20,7 @@ fun AddOauthUsername(modifier: Modifier = Modifier,authViewModel: AuthViewModel,
         mutableStateOf("")
     }
     val usernameUpdateState=authViewModel.updateUsernameState.observeAsState()
-    val authState=authViewModel.authState.observeAsState()
-    Column {
+    Column(modifier=modifier) {
         OutlinedTextField(value=username,
             onValueChange = {username=it})
         when(val result=usernameUpdateState.value){
@@ -32,15 +30,10 @@ fun AddOauthUsername(modifier: Modifier = Modifier,authViewModel: AuthViewModel,
             null->{}
         }
         Button(onClick = {
-            when(val result=authState.value){
-                is RegisterUiState.InitialAuth->{}
-                is RegisterUiState.Error-> {}
-                is RegisterUiState.Loading->{}
-                is RegisterUiState.Success->authViewModel.addUsername(UsernameData(username,result.auth.accessToken,result  .auth.refreshToken))
-                null->{}
+            authViewModel.addUsername(username)
             }
 
-        }) {
+        ) {
             Text("add username")
         }
 

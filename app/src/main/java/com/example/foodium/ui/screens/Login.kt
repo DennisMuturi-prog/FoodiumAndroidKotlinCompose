@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.foodium.FoodiumAppScreen
 import com.example.foodium.network.LoginData
-import com.example.foodium.network.RegisterData
 
 @Composable
 fun Login(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navController:NavController) {
@@ -27,7 +26,7 @@ fun Login(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navControll
         mutableStateOf("")
     }
     val authResult=authViewModel.authState.observeAsState()
-    Column {
+    Column(modifier=modifier) {
         OutlinedTextField(
             value=username,
             onValueChange = {username=it},
@@ -47,7 +46,6 @@ fun Login(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navControll
             is RegisterUiState.Error->Text(text=result.message)
             is RegisterUiState.Loading->Text("loading")
             is RegisterUiState.Success->navController.navigate(FoodiumAppScreen.UserPreferences.name)
-            is RegisterUiState.InitialAuth->{}
             null->{}
         }
         TextButton(onClick = {

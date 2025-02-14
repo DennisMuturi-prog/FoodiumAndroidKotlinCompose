@@ -1,9 +1,7 @@
 package com.example.foodium.network
 import retrofit2.Retrofit
-import retrofit2.http.GET
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -19,15 +17,18 @@ private val retrofit = Retrofit.Builder()
 
 interface BackendApiService {
     @POST("register")
-    suspend fun registerUser(@Body userData:RegisterData): RegisterResponse
+    suspend fun registerUser(@Body userData:RegisterData): AuthTokens
     @POST("login")
-    suspend fun loginUser(@Body userData:LoginData): RegisterResponse
+    suspend fun loginUser(@Body userData:LoginData): AuthTokens
     @POST("addUsername")
     suspend fun addUsername(@Body username:UsernameData):UsernameAddResponse
+
+    @POST("protected")
+    suspend fun  getAuthTokens(@Body userTokens:AuthTokens):AuthenticatedUser
 }
 
-object BackendApi {
-    val retrofitService : BackendApiService by lazy {
-        retrofit.create(BackendApiService::class.java)
-    }
-}
+//object BackendApi {
+//    val retrofitService : BackendApiService by lazy {
+//        retrofit.create(BackendApiService::class.java)
+//    }
+//}
