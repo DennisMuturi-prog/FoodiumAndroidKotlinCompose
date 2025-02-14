@@ -18,13 +18,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
 
+
         setContent {
+            val authViewModel=viewModel<AuthViewModel>(
+                factory = viewModelFactory {
+                    AuthViewModel(MyApplication.appContainer.backendApi,MyApplication.appContainer.preferencesDataStore)
+                }
+            )
             FoodiumTheme {
-                val authViewModel=viewModel<AuthViewModel>(
-                    factory = viewModelFactory {
-                        AuthViewModel(MyApplication.appContainer.backendApi,MyApplication.appContainer.preferencesDataStore)
-                    }
-                )
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                    FoodiumNavigation(modifier=Modifier.padding(innerPadding),authViewModel=authViewModel)
                 }

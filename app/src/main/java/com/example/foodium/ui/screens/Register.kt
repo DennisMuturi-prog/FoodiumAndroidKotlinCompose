@@ -7,6 +7,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
@@ -29,7 +30,13 @@ fun Register(modifier:Modifier,authViewModel: AuthViewModel,navController:NavCon
     var password by remember {
         mutableStateOf("")
     }
-    val authResult=authViewModel.authState.observeAsState()
+    val authState=authViewModel.authState.observeAsState()
+    LaunchedEffect(authState.value) {
+        when(authState.value){
+            is AuthState.Success ->navController.navigate(FoodiumAppScreen.UserPreferences.name)
+            else -> Unit
+        }
+    }
     Column(modifier=modifier) {
         OutlinedTextField(
             value=username,
@@ -50,11 +57,11 @@ fun Register(modifier:Modifier,authViewModel: AuthViewModel,navController:NavCon
         }) {
             Text("register")
         }
-        when(val result=authResult.value){
-            is RegisterUiState.Error->Text(text=result.message)
-            is RegisterUiState.Loading->Text("loading")
-            is RegisterUiState.Success->navController.navigate(FoodiumAppScreen.UserPreferences.name)
-            is RegisterUiState.NotAuthenticated->{}
+        when(val result=authState.value){
+            is AuthState.Error->Text(text=result.message)
+            is AuthState.Loading->Text("loading")
+            is AuthState.Success->{}
+            is AuthState.NotAuthenticated->{}
             null->{}
         }
         TextButton(onClick = {

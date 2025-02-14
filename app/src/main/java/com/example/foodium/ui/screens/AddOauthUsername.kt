@@ -5,6 +5,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -19,14 +20,21 @@ fun AddOauthUsername(modifier: Modifier = Modifier,authViewModel: AuthViewModel,
     var username by remember {
         mutableStateOf("")
     }
-    val usernameUpdateState=authViewModel.updateUsernameState.observeAsState()
+    val updateUsernameState=authViewModel.updateUsernameState.observeAsState()
+    LaunchedEffect(updateUsernameState.value) {
+        when(updateUsernameState.value){
+            is UpdateUsernameUiState.Success ->navController.navigate(FoodiumAppScreen.UserPreferences.name)
+            else -> Unit
+        }
+    }
     Column(modifier=modifier) {
         OutlinedTextField(value=username,
             onValueChange = {username=it})
-        when(val result=usernameUpdateState.value){
+        when(val result=updateUsernameState.value){
             is UpdateUsernameUiState.Error-> Text(text=result.message)
             is UpdateUsernameUiState.Loading-> Text("loading")
-            is UpdateUsernameUiState.Success->navController.navigate(FoodiumAppScreen.UserPreferences.name)
+            is UpdateUsernameUiState.Success->{}
+            is UpdateUsernameUiState.NotAuthenticated->{}
             null->{}
         }
         Button(onClick = {

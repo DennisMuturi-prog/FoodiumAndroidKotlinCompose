@@ -29,7 +29,7 @@ enum class FoodiumAppScreen{
 @Composable
 fun FoodiumNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel) {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = FoodiumAppScreen.LandingScreen.name){
+    NavHost(navController, startDestination = FoodiumAppScreen.LandingScreen.name, builder = {
         composable(route=FoodiumAppScreen.LandingScreen.name){
             LandingScreen(modifier=modifier,authViewModel=authViewModel,navController=navController)
         }
@@ -64,8 +64,6 @@ fun FoodiumNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel
             authViewModel.updateUserAuthTokens(AuthTokens(accessToken,refreshToken))
             AddOauthUsername(modifier=modifier,authViewModel=authViewModel, navController = navController)
         }
-    }
 
-
-
+    })
 }
