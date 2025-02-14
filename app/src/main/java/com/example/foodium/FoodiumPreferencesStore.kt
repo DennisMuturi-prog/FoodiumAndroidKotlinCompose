@@ -9,7 +9,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.first
 // At the top level of your kotlin file:
-
 class FoodiumPreferencesStore (private val context:Context){
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
