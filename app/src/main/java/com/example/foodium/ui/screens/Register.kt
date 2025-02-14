@@ -54,6 +54,7 @@ fun Register(modifier:Modifier,authViewModel: AuthViewModel,navController:NavCon
             is RegisterUiState.Error->Text(text=result.message)
             is RegisterUiState.Loading->Text("loading")
             is RegisterUiState.Success->navController.navigate(FoodiumAppScreen.UserPreferences.name)
+            is RegisterUiState.NotAuthenticated->{}
             null->{}
         }
         TextButton(onClick = {

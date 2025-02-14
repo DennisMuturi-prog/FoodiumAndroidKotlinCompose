@@ -28,6 +28,6 @@ data class UsernameAddResponse(
 @Serializable
 data class AuthenticatedUser(
     val id:String,
-    val newTokens: AuthTokens
+    val newTokens: AuthTokens?=null
 )
 

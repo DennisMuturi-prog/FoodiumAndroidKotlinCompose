@@ -20,6 +20,7 @@ sealed interface RegisterUiState {
     data class Success(val auth: AuthTokens) : RegisterUiState
     data class Error(val message:String) : RegisterUiState
     object Loading : RegisterUiState
+    object NotAuthenticated:RegisterUiState
 }
 sealed interface UpdateUsernameUiState {
     data class Success(val usernameUpdate: UsernameAddResponse) : UpdateUsernameUiState
@@ -42,7 +43,7 @@ class AuthViewModel(
             val accessToken=preferencesDataStore.getString("accessToken")
             val refreshToken=preferencesDataStore.getString("refreshToken")
             if(accessToken==null || refreshToken==null){
-                _authState.value=RegisterUiState.Error("Auth credentials not found")
+                _authState.value=RegisterUiState.NotAuthenticated
             }else{
                 getAuthTokensFromServer(AuthTokens(accessToken,refreshToken))
             }
@@ -114,15 +115,31 @@ class AuthViewModel(
         viewModelScope.launch {
             _authState.value=try {
                 val result=backendApi.retrofitService.getAuthTokens(tokens)
-                preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
-                preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
-                userAuthTokens=result.newTokens
-                RegisterUiState.Success(result.newTokens)
+                Log.d("protected route",result.toString())
+
+                if(result.newTokens!=null){
+                    preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
+                    preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+                    userAuthTokens=result.newTokens
+                    RegisterUiState.Success(result.newTokens)
+                }
+                else{
+                    RegisterUiState.Success(tokens)
+                }
+
             }catch (e:HttpException){
                 val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
                 RegisterUiState.Error(errorMessage)
+            }catch (e:IOException){
+                RegisterUiState.Error(e.toString())
+            }catch (e:Exception){
+                println(e.toString())
+                RegisterUiState.Error(e.toString())
             }
         }
     }
-
+    fun logout(){
+        userAuthTokens=AuthTokens("","")
+        _authState.value=RegisterUiState.NotAuthenticated
+    }
 }
