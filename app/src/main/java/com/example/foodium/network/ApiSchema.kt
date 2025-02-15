@@ -14,6 +14,9 @@ data class LoginData(val username:String,val password:String)
 data class UsernameData(val username:String,val accessToken: String,val refreshToken: String)
 
 @Serializable
+data class userHealthAttributesData(val weight:Int,val dietType:String,val noOfMeals:Int,val accessToken: String,val refreshToken: String)
+
+@Serializable
 data class UsernameAddResponse(
     val fieldCount: Int,
     val affectedRows: Int,
