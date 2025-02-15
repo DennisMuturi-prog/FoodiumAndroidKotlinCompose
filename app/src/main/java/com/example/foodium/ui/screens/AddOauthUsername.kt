@@ -23,7 +23,7 @@ fun AddOauthUsername(modifier: Modifier = Modifier,authViewModel: AuthViewModel,
     val updateUsernameState=authViewModel.updateUsernameState.observeAsState()
     LaunchedEffect(updateUsernameState.value) {
         when(updateUsernameState.value){
-            is UpdateUsernameUiState.Success ->navController.navigate(FoodiumAppScreen.UserPreferences.name)
+            is AuthState.Success ->navController.navigate(FoodiumAppScreen.UserPreferences.name)
             else -> Unit
         }
     }
@@ -31,10 +31,10 @@ fun AddOauthUsername(modifier: Modifier = Modifier,authViewModel: AuthViewModel,
         OutlinedTextField(value=username,
             onValueChange = {username=it})
         when(val result=updateUsernameState.value){
-            is UpdateUsernameUiState.Error-> Text(text=result.message)
-            is UpdateUsernameUiState.Loading-> Text("loading")
-            is UpdateUsernameUiState.Success->{}
-            is UpdateUsernameUiState.NotAuthenticated->{}
+            is AuthState.Error-> Text(text=result.message)
+            is AuthState.Loading-> Text("loading")
+            is AuthState.Success->{}
+            is AuthState.NotAuthenticated->{}
             null->{}
         }
         Button(onClick = {

@@ -11,11 +11,12 @@ import com.example.foodium.FoodiumAppScreen
 
 @Composable
 fun LandingScreen(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navController: NavController) {
-    val authState=authViewModel.authState.observeAsState()
+    val authState=authViewModel.landingAuthState.observeAsState()
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.NotAuthenticated -> navController.navigate(FoodiumAppScreen.Login.name)
             is AuthState.Success ->navController.navigate(FoodiumAppScreen.Home.name)
+            is AuthState.Error ->navController.navigate(FoodiumAppScreen.Login.name)
             else -> Unit
         }
     }

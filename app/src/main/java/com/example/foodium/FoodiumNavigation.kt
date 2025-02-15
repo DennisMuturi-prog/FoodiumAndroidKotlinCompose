@@ -12,7 +12,6 @@ import com.example.foodium.ui.screens.UserPreferences
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import com.example.foodium.network.AuthTokens
 import com.example.foodium.ui.screens.Home
 import com.example.foodium.ui.screens.LandingScreen
 import com.example.foodium.ui.screens.Login
@@ -61,7 +60,6 @@ fun FoodiumNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel
             val accessToken = backStackEntry.arguments?.getString("accessToken") ?: ""
             val refreshToken = backStackEntry.arguments?.getString("refreshToken") ?: ""
             authViewModel.updatePreferencesDataStore(accessToken,refreshToken)
-            authViewModel.updateUserAuthTokens(AuthTokens(accessToken,refreshToken))
             AddOauthUsername(modifier=modifier,authViewModel=authViewModel, navController = navController)
         }
 

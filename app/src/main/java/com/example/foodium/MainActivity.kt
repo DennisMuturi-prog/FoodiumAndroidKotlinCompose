@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val authViewModel=viewModel<AuthViewModel>(
                 factory = viewModelFactory {
-                    AuthViewModel(MyApplication.appContainer.backendApi,MyApplication.appContainer.preferencesDataStore)
+                    AuthViewModel(MyApplication.appContainer.repository)
                 }
             )
             FoodiumTheme {

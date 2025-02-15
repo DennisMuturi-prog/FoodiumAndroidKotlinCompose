@@ -2,7 +2,7 @@ package com.example.foodium.network
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AuthTokens (val refreshToken:String, val accessToken:String)
+data class AuthTokens (val accessToken: String, val refreshToken: String)
 
 @Serializable
 data class RegisterData(val username:String,val email:String,val password:String)
