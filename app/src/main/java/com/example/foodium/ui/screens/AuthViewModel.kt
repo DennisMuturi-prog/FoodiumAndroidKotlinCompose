@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.foodium.network.HealthAttributesData
 import com.example.foodium.network.LoginData
 import com.example.foodium.network.RegisterData
 import com.example.foodium.repository.Repository
@@ -30,10 +31,13 @@ class AuthViewModel(
     val landingAuthState : LiveData<AuthState> = _landingAuthState
     private val  _updateUsernameState =MutableLiveData<AuthState>()
     val updateUsernameState:LiveData<AuthState> = _updateUsernameState
+    private val  _updateUserHealthAttrState =MutableLiveData<AuthState>()
+    val updateUserHealthAttrState:LiveData<AuthState> = _updateUserHealthAttrState
     init {
         getAuthTokensFromServer()
     }
     fun registerUser(userData:RegisterData){
+        _authState.value=AuthState.Loading
         viewModelScope.launch {
             _authState.value = try {
                 repository.registerUser(userData)
@@ -47,6 +51,7 @@ class AuthViewModel(
         }
     }
     fun loginUser(userData: LoginData){
+        _authState.value=AuthState.Loading
         viewModelScope.launch {
             _authState.value = try {
                 repository.loginUser(userData)
@@ -60,6 +65,7 @@ class AuthViewModel(
         }
     }
     fun addUsername(username:String){
+        _updateUsernameState.value=AuthState.Loading
         viewModelScope.launch {
             _updateUsernameState.value=try {
                 repository.addUsername(username)
@@ -79,6 +85,7 @@ class AuthViewModel(
         }
     }
     private fun getAuthTokensFromServer(){
+        _landingAuthState.value=AuthState.Loading
         viewModelScope.launch {
             _landingAuthState.value=try {
                 val result=repository.getAuthTokensFromServer()
@@ -105,5 +112,20 @@ class AuthViewModel(
             _authState.value=AuthState.NotAuthenticated
         }
 
+    }
+    fun addUserHealthAttributes(healthData:HealthAttributesData){
+        _updateUserHealthAttrState.value=AuthState.Loading
+        viewModelScope.launch {
+            _updateUserHealthAttrState.value=try {
+                repository.addUserHealthAttributes(healthData)
+                AuthState.Success
+            }catch (e:IOException){
+                AuthState.Error(e.toString())
+
+            }catch (e:HttpException){
+                val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                AuthState.Error(errorMessage)
+            }
+        }
     }
 }

@@ -1,21 +1,5 @@
 package com.example.foodium
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import com.example.foodium.ui.screens.AddOauthUsername
-import com.example.foodium.ui.screens.AuthViewModel
-import com.example.foodium.ui.screens.Register
-import com.example.foodium.ui.screens.UserPreferences
-import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
-import com.example.foodium.ui.screens.Home
-import com.example.foodium.ui.screens.LandingScreen
-import com.example.foodium.ui.screens.Login
-
 //enum class FoodiumAppScreen{
 //    LandingScreen,
 //    Home,

@@ -13,6 +13,9 @@ interface BackendApiService {
 
     @POST("protected")
     suspend fun  getAuthTokens(@Body userTokens:AuthTokens):AuthenticatedUser
+    @POST("addUserPreference")
+    suspend fun addUserHealthAttributes(@Body userHealthData:UserHealthAttributesData):UserHealthAttributesAddResponse
+
 }
 
 class BackendApi(private val retrofit:Retrofit){

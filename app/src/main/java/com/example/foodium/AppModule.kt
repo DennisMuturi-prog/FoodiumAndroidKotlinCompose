@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 
 
 private const val BASE_URL =
-    "https://foodiumnodejs.gentledune-9460edf8.southafricanorth.azurecontainerapps.io"
+    "https://nodejsbackend-g0f5g7ddh0eqekff.southafricanorth-01.azurewebsites.net"
 class AppContainer(private val appContext: Context) {
     private val retrofit by lazy {
         Retrofit.Builder()

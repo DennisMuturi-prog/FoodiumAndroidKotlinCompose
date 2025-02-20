@@ -3,8 +3,10 @@ package com.example.foodium.repository
 import com.example.foodium.FoodiumPreferencesStore
 import com.example.foodium.network.AuthTokens
 import com.example.foodium.network.BackendApi
+import com.example.foodium.network.HealthAttributesData
 import com.example.foodium.network.LoginData
 import com.example.foodium.network.RegisterData
+import com.example.foodium.network.UserHealthAttributesData
 import com.example.foodium.network.UsernameData
 
 class Repository(private val backendApi: BackendApi,private val preferencesDataStore: FoodiumPreferencesStore){
@@ -28,6 +30,16 @@ class Repository(private val backendApi: BackendApi,private val preferencesDataS
             preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
             preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
         }
+    }
+    suspend fun addUserHealthAttributes(healthData:HealthAttributesData){
+        val result=backendApi.retrofitService.addUserHealthAttributes(UserHealthAttributesData(healthData.userWeight,healthData.userDietType,healthData.userNumberOfMealsADay,authTokens.accessToken,authTokens.refreshToken))
+        if(result.newTokens!=null){
+            preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+        }
+        preferencesDataStore.saveString("userWeight",healthData.userWeight.toString())
+        preferencesDataStore.saveString("userNoOfMeals",healthData.userNumberOfMealsADay.toString())
+        preferencesDataStore.saveString("userDietType",healthData.userDietType)
     }
     suspend fun getAuthTokensFromServer():String{
         val accessToken=preferencesDataStore.getString("accessToken")

@@ -14,10 +14,26 @@ data class LoginData(val username:String,val password:String)
 data class UsernameData(val username:String,val accessToken: String,val refreshToken: String)
 
 @Serializable
-data class userHealthAttributesData(val weight:Int,val dietType:String,val noOfMeals:Int,val accessToken: String,val refreshToken: String)
+data class UserHealthAttributesData(val userWeight:Int,val userDietType:String,val userNumberOfMealsADay:Int,val accessToken: String,val refreshToken: String)
+
+@Serializable
+data class HealthAttributesData(val userWeight:Int,val userDietType:String,val userNumberOfMealsADay:Int)
 
 @Serializable
 data class UsernameAddResponse(
+    val fieldCount: Int,
+    val affectedRows: Int,
+    val insertId: Int,
+    val info: String,
+    val serverStatus: Int,
+    val warningStatus: Int,
+    val changedRows: Int,
+    val newTokens: AuthTokens? = null
+)
+
+@Serializable
+data class UserHealthAttributesAddResponse(
+    val message:String,
     val fieldCount: Int,
     val affectedRows: Int,
     val insertId: Int,

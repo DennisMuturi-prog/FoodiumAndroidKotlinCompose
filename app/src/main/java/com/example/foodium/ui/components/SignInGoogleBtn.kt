@@ -17,7 +17,7 @@ import com.example.foodium.R
 
 @Composable
 fun GoogleButton(modifier: Modifier = Modifier) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://foodiumnodejs.gentledune-9460edf8.southafricanorth.azurecontainerapps.io/auth/google")
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://nodejsbackend-g0f5g7ddh0eqekff.southafricanorth-01.azurewebsites.net/auth/google")
     )
     val ctx = LocalContext.current
     Column(

@@ -15,7 +15,7 @@ import com.example.foodium.ui.screens.Home
 import com.example.foodium.ui.screens.LandingScreen
 import com.example.foodium.ui.screens.Login
 import com.example.foodium.ui.screens.Register
-import com.example.foodium.ui.screens.UserPreferences
+import com.example.foodium.ui.screens.AddHealthAttributes
 
 
 enum class RootGraph{
@@ -74,9 +74,9 @@ fun AppNavigation(modifier: Modifier = Modifier,navController:NavHostController,
                     } })
             }
             composable(route= RootGraph.UserPreferences.name){
-                UserPreferences(modifier=modifier,
+                AddHealthAttributes(modifier=modifier,
                     authViewModel=authViewModel,
-                    onSuccessAddPreferences ={navController.navigate(RootGraph.HomeGraph.name){
+                    onSuccessAddHealthAttributes ={navController.navigate(RootGraph.HomeGraph.name){
                         popUpTo(route = RootGraph.AuthGraph.name){
                             inclusive=true
                         }
