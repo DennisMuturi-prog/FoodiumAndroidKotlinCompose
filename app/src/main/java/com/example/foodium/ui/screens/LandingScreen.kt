@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import com.example.foodium.ui.components.LoadingCircle
 
 @Composable
 fun LandingScreen(modifier: Modifier = Modifier,
@@ -30,6 +31,13 @@ fun LandingScreen(modifier: Modifier = Modifier,
             null->{}
         }
         Text(text="landing screen")
+        when(val result=authState.value){
+            is AuthState.Error->Text(text=result.message)
+            is AuthState.Loading-> LoadingCircle()
+            is AuthState.Success->{}
+            is AuthState.NotAuthenticated->{}
+            null->{}
+        }
 
     }
 

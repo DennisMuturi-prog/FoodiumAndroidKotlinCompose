@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.foodium.network.LoginData
 import com.example.foodium.ui.components.GoogleButton
+import com.example.foodium.ui.components.LoadingCircle
 
 @Composable
 fun Login(modifier: Modifier = Modifier,
@@ -73,7 +74,7 @@ fun Login(modifier: Modifier = Modifier,
         }
         when(val result=authState.value){
             is AuthState.Error->Text(text=result.message)
-            is AuthState.Loading->Text("loading")
+            is AuthState.Loading-> LoadingCircle()
             is AuthState.Success->{}
             is AuthState.NotAuthenticated->{}
             null->{}
