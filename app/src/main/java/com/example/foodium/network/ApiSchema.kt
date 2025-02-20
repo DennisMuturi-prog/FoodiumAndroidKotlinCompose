@@ -30,10 +30,8 @@ data class UsernameAddResponse(
     val changedRows: Int,
     val newTokens: AuthTokens? = null
 )
-
 @Serializable
-data class UserHealthAttributesAddResponse(
-    val message:String,
+data class MysqlAddFields(
     val fieldCount: Int,
     val affectedRows: Int,
     val insertId: Int,
@@ -41,6 +39,12 @@ data class UserHealthAttributesAddResponse(
     val serverStatus: Int,
     val warningStatus: Int,
     val changedRows: Int,
+)
+
+@Serializable
+data class UserHealthAttributesAddResponse(
+    val message:String,
+    val result:MysqlAddFields,
     val newTokens: AuthTokens? = null
 )
 

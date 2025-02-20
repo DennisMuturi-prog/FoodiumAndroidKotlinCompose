@@ -77,11 +77,14 @@ fun Register(modifier:Modifier,
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
+        Button(
+            onClick = {
             val result=authViewModel.registerUser(RegisterData(username,email, password))
 
             Log.d("register response", result.toString())
-        }) {
+            },
+            enabled = authState.value !is AuthState.Loading)
+        {
             Text("register")
         }
         when(val result=authState.value){

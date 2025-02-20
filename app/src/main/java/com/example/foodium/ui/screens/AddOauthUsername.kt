@@ -57,9 +57,11 @@ fun AddOauthUsername(modifier: Modifier = Modifier,
             null->{}
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
+        Button(
+            onClick = {
             authViewModel.addUsername(username)
-            }
+            },
+            enabled = updateUsernameState.value !is AuthState.Loading
 
         ) {
             Text("add username")

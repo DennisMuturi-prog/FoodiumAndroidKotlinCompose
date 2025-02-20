@@ -28,9 +28,11 @@ import com.example.foodium.ui.components.DietTypeSelection
 import com.example.foodium.ui.components.LoadingCircle
 
 @Composable
-fun AddHealthAttributes(modifier: Modifier = Modifier,
-                        authViewModel: AuthViewModel,
-                        onSuccessAddHealthAttributes:()->Unit) {
+fun AddHealthAttributes(
+    modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel,
+    onSuccessAddHealthAttributes: () -> Unit
+) {
     var dietType by remember {
         mutableStateOf("none")
     }
@@ -40,50 +42,59 @@ fun AddHealthAttributes(modifier: Modifier = Modifier,
     var userNoOfMealsADay by remember {
         mutableStateOf("")
     }
-    val healthAttributesState=authViewModel.updateUserHealthAttrState.observeAsState()
+    val healthAttributesState = authViewModel.updateUserHealthAttrState.observeAsState()
     LaunchedEffect(healthAttributesState.value) {
-        when(healthAttributesState.value){
-            is AuthState.Success ->onSuccessAddHealthAttributes()
+        when (healthAttributesState.value) {
+            is AuthState.Success -> onSuccessAddHealthAttributes()
             else -> Unit
         }
     }
     Column(
-        modifier=modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(text=dietType)
-        Text(text="Health Attributes", fontSize = 32.sp)
+        Text(text = dietType)
+        Text(text = "Health Attributes", fontSize = 32.sp)
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
-            value=userWeight,
-            onValueChange = {userWeight=it},
+            value = userWeight,
+            onValueChange = { userWeight = it },
             label = {
                 Text("weight")
             }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value=userNoOfMealsADay,
-            onValueChange = {userNoOfMealsADay=it},
+            value = userNoOfMealsADay,
+            onValueChange = { userNoOfMealsADay = it },
             label = {
                 Text("no of meals a day")
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        DietTypeSelection (onDietTypeSelect = {dietType=it})
-        Button(onClick = {
-            val result=authViewModel.addUserHealthAttributes(HealthAttributesData(userWeight.toInt(),dietType,userNoOfMealsADay.toInt()))
-            Log.d("register response", result.toString())
-        }) {
+        DietTypeSelection(onDietTypeSelect = { dietType = it })
+        Button(
+            onClick = {
+                val result = authViewModel.addUserHealthAttributes(
+                    HealthAttributesData(
+                        userWeight.toInt(),
+                        dietType,
+                        userNoOfMealsADay.toInt()
+                    )
+                )
+                Log.d("register response", result.toString())
+            },
+            enabled = healthAttributesState.value !is AuthState.Loading
+        ) {
             Text("Login")
         }
-        when(val result=healthAttributesState.value){
-            is AuthState.Error->Text(text=result.message)
-            is AuthState.Loading-> LoadingCircle()
-            is AuthState.Success->{}
-            is AuthState.NotAuthenticated->{}
-            null->{}
+        when (val result = healthAttributesState.value) {
+            is AuthState.Error -> Text(text = result.message)
+            is AuthState.Loading -> LoadingCircle()
+            is AuthState.Success -> {}
+            is AuthState.NotAuthenticated -> {}
+            null -> {}
         }
     }
 
