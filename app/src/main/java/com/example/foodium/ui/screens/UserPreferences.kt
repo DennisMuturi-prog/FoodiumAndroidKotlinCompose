@@ -12,11 +12,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import com.example.foodium.ui.components.DietTypeSelection
 
 @Composable
-fun UserPreferences(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navController: NavController) {
+fun UserPreferences(modifier: Modifier = Modifier,
+                    authViewModel: AuthViewModel,
+                    onSuccessAddPreferences:()->Unit) {
     var dietType by remember {
         mutableStateOf("")
     }

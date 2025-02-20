@@ -60,6 +60,7 @@ dependencies {
     // Kotlin serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     implementation("androidx.datastore:datastore-preferences:1.1.2")
+    implementation("androidx.navigation:navigation-compose:2.8.4")
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)

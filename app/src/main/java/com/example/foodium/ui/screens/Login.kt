@@ -21,13 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.example.foodium.FoodiumAppScreen
 import com.example.foodium.network.LoginData
 import com.example.foodium.ui.components.GoogleButton
 
 @Composable
-fun Login(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navController:NavController) {
+fun Login(modifier: Modifier = Modifier,
+          authViewModel: AuthViewModel,
+          onSuccessAuthentication:()->Unit,
+          navigateToSignUp:()->Unit) {
     var username by remember {
         mutableStateOf("")
     }
@@ -37,7 +38,7 @@ fun Login(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navControll
     val authState=authViewModel.authState.observeAsState()
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.Success ->navController.navigate(FoodiumAppScreen.Home.name)
+            is AuthState.Success ->onSuccessAuthentication()
             else -> Unit
         }
     }
@@ -78,7 +79,7 @@ fun Login(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navControll
             null->{}
         }
         TextButton(onClick = {
-            navController.navigate(FoodiumAppScreen.Signup.name)
+            navigateToSignUp()
         }) {
             Text(text = "Don't have an account, sign up")
         }

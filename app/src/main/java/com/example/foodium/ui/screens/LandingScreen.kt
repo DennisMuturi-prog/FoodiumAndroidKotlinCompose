@@ -6,17 +6,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import com.example.foodium.FoodiumAppScreen
 
 @Composable
-fun LandingScreen(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navController: NavController) {
+fun LandingScreen(modifier: Modifier = Modifier,
+                  authViewModel: AuthViewModel,
+                  onSuccessAuthentication:()->Unit,
+                  onFailedAuthentication:()->Unit) {
     val authState=authViewModel.landingAuthState.observeAsState()
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.NotAuthenticated -> navController.navigate(FoodiumAppScreen.Login.name)
-            is AuthState.Success ->navController.navigate(FoodiumAppScreen.Home.name)
-            is AuthState.Error ->navController.navigate(FoodiumAppScreen.Login.name)
+            is AuthState.NotAuthenticated ->onFailedAuthentication()
+            is AuthState.Success ->onSuccessAuthentication()
+            is AuthState.Error ->onFailedAuthentication()
             else -> Unit
         }
     }

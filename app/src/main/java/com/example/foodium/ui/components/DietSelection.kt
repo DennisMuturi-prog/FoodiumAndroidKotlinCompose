@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DietTypeSelection(modifier: Modifier = Modifier,onDietTypeSelect:(String)->Unit) {
-    val radioOptions = listOf("Weight loss", "Pregnant", "Ketogenic","Body Building","Diabetic")
+    val radioOptions = listOf("weight loss", "pregnancy", "ketogenic","bodybuilding","diabetic")
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
     // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
     Column(modifier.selectableGroup()) {

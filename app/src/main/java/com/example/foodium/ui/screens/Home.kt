@@ -8,14 +8,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.foodium.FoodiumAppScreen
 
 @Composable
-fun Home(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navController: NavController) {
+fun Home(modifier: Modifier = Modifier,authViewModel: AuthViewModel,
+         onLogout:()->Unit) {
     val authState=authViewModel.authState.observeAsState()
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.NotAuthenticated -> navController.navigate(FoodiumAppScreen.Login.name)
+            is AuthState.NotAuthenticated -> onLogout()
             else -> Unit
         }
     }

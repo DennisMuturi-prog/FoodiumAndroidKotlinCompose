@@ -21,13 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.example.foodium.FoodiumAppScreen
 import com.example.foodium.network.RegisterData
 import com.example.foodium.ui.components.GoogleButton
 
 @Composable
-fun Register(modifier:Modifier,authViewModel: AuthViewModel,navController:NavController) {
+fun Register(modifier:Modifier,
+             authViewModel: AuthViewModel,
+             onSuccessAuthentication:()->Unit,
+             navigateToLogin:()->Unit) {
     var username by remember {
         mutableStateOf("")
     }
@@ -40,7 +41,7 @@ fun Register(modifier:Modifier,authViewModel: AuthViewModel,navController:NavCon
     val authState=authViewModel.authState.observeAsState()
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.Success ->navController.navigate(FoodiumAppScreen.UserPreferences.name)
+            is AuthState.Success ->onSuccessAuthentication()
             else -> Unit
         }
     }
@@ -90,7 +91,7 @@ fun Register(modifier:Modifier,authViewModel: AuthViewModel,navController:NavCon
             null->{}
         }
         TextButton(onClick = {
-            navController.navigate(FoodiumAppScreen.Login.name)
+            navigateToLogin()
         }) {
             Text(text = "Already have an account, Login")
         }

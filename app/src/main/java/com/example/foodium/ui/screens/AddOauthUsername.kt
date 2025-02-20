@@ -19,18 +19,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.example.foodium.FoodiumAppScreen
+
 
 @Composable
-fun AddOauthUsername(modifier: Modifier = Modifier,authViewModel: AuthViewModel,navController: NavController) {
+fun AddOauthUsername(modifier: Modifier = Modifier,
+                     authViewModel: AuthViewModel,
+                     onSuccessAddUsername:()->Unit) {
     var username by remember {
         mutableStateOf("")
     }
     val updateUsernameState=authViewModel.updateUsernameState.observeAsState()
     LaunchedEffect(updateUsernameState.value) {
         when(updateUsernameState.value){
-            is AuthState.Success ->navController.navigate(FoodiumAppScreen.UserPreferences.name)
+            is AuthState.Success ->onSuccessAddUsername()
             else -> Unit
         }
     }
@@ -67,3 +68,4 @@ fun AddOauthUsername(modifier: Modifier = Modifier,authViewModel: AuthViewModel,
 
 
 }
+
