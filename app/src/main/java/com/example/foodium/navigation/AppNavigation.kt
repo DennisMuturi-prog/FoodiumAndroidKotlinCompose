@@ -18,7 +18,7 @@ import com.example.foodium.ui.screens.Register
 import com.example.foodium.ui.screens.AddHealthAttributes
 
 
-enum class RootGraph{
+enum class RootGraph {
     LandingScreen,
     Home,
     Signup,
@@ -33,59 +33,72 @@ enum class RootGraph{
 
 
 @Composable
-fun AppNavigation(modifier: Modifier = Modifier,navController:NavHostController,authViewModel: AuthViewModel) {
+fun AppNavigation(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    authViewModel: AuthViewModel
+) {
     NavHost(navController, startDestination = RootGraph.AuthGraph.name) {
-        navigation(route = RootGraph.AuthGraph.name, startDestination = RootGraph.Login.name){
-            composable(route= RootGraph.LandingScreen.name){
+        navigation(route = RootGraph.AuthGraph.name, startDestination = RootGraph.LandingScreen.name) {
+            composable(route = RootGraph.LandingScreen.name) {
                 LandingScreen(
-                    modifier=modifier,authViewModel=authViewModel,
-                    onSuccessAuthentication={navController.navigate(RootGraph.HomeGraph.name){
-                        popUpTo(route = RootGraph.AuthGraph.name){
-                            inclusive=true
+                    modifier = modifier, authViewModel = authViewModel,
+                    onSuccessAuthentication = {
+                        navController.navigate(RootGraph.HomeGraph.name) {
+                            popUpTo(route = RootGraph.AuthGraph.name) {
+                                inclusive = true
+                            }
                         }
-                    } },
-                    onFailedAuthentication={navController.navigate(RootGraph.Login.name)}
+                    },
+                    onFailedAuthentication = { navController.navigate(RootGraph.Login.name) }
 
-                    )
+                )
             }
-            composable(route= RootGraph.Signup.name){
-                Register(modifier=modifier,
-                    authViewModel=authViewModel,
-                    onSuccessAuthentication={navController.navigate(RootGraph.OauthUsername.name)},
-                    navigateToLogin ={navController.navigate(RootGraph.Login.name)})
+            composable(route = RootGraph.Signup.name) {
+                Register(modifier = modifier,
+                    authViewModel = authViewModel,
+                    onSuccessAuthentication = { navController.navigate(RootGraph.OauthUsername.name) },
+                    navigateToLogin = { navController.navigate(RootGraph.Login.name) })
             }
-            composable(route= RootGraph.Login.name){
-                Login(modifier=modifier,
-                    authViewModel=authViewModel,
-                    onSuccessAuthentication={navController.navigate(RootGraph.HomeGraph.name){
-                        popUpTo(route = RootGraph.AuthGraph.name){
-                            inclusive=true
+            composable(route = RootGraph.Login.name) {
+                Login(modifier = modifier,
+                    authViewModel = authViewModel,
+                    onSuccessAuthentication = {
+                        navController.navigate(RootGraph.HomeGraph.name) {
+                            popUpTo(route = RootGraph.AuthGraph.name) {
+                                inclusive = true
+                            }
                         }
-                    } },
-                    navigateToSignUp ={navController.navigate(RootGraph.Signup.name)})
+                    },
+                    navigateToSignUp = { navController.navigate(RootGraph.Signup.name) })
             }
-            composable(route= RootGraph.OauthUsername.name){
-                AddOauthUsername(modifier=modifier,
-                    authViewModel=authViewModel,
-                    onSuccessAddUsername ={navController.navigate(RootGraph.UserPreferences.name){
-                        popUpTo(route = RootGraph.AuthGraph.name){
-                            inclusive=true
+            composable(route = RootGraph.OauthUsername.name) {
+                AddOauthUsername(modifier = modifier,
+                    authViewModel = authViewModel,
+                    onSuccessAddUsername = {
+                        navController.navigate(RootGraph.UserPreferences.name) {
+                            popUpTo(route = RootGraph.AuthGraph.name) {
+                                inclusive = true
+                            }
                         }
-                    } })
+                    })
             }
-            composable(route= RootGraph.UserPreferences.name){
-                AddHealthAttributes(modifier=modifier,
-                    authViewModel=authViewModel,
-                    onSuccessAddHealthAttributes ={navController.navigate(RootGraph.HomeGraph.name){
-                        popUpTo(route = RootGraph.AuthGraph.name){
-                            inclusive=true
+            composable(route = RootGraph.UserPreferences.name) {
+                AddHealthAttributes(modifier = modifier,
+                    authViewModel = authViewModel,
+                    onSuccessAddHealthAttributes = {
+                        navController.navigate(RootGraph.HomeGraph.name) {
+                            popUpTo(route = RootGraph.AuthGraph.name) {
+                                inclusive = true
+                            }
                         }
-                    } })
+                    })
             }
             composable(
                 route = "addUsername?accessToken={accessToken}&refreshToken={refreshToken}",
                 deepLinks = listOf(navDeepLink {
-                    uriPattern = "foodiumapp://oauth?accessToken={accessToken}&refreshToken={refreshToken}"
+                    uriPattern =
+                        "foodiumapp://oauth?accessToken={accessToken}&refreshToken={refreshToken}"
                 }),
                 arguments = listOf(
                     navArgument("accessToken") { type = NavType.StringType; defaultValue = "" },
@@ -94,22 +107,24 @@ fun AppNavigation(modifier: Modifier = Modifier,navController:NavHostController,
             ) { backStackEntry ->
                 val accessToken = backStackEntry.arguments?.getString("accessToken") ?: ""
                 val refreshToken = backStackEntry.arguments?.getString("refreshToken") ?: ""
-                authViewModel.updatePreferencesDataStore(accessToken,refreshToken)
-                AddOauthUsername(modifier=modifier,
-                    authViewModel=authViewModel,
-                    onSuccessAddUsername ={navController.navigate(RootGraph.UserPreferences.name)})
+                authViewModel.updatePreferencesDataStore(accessToken, refreshToken)
+                AddOauthUsername(modifier = modifier,
+                    authViewModel = authViewModel,
+                    onSuccessAddUsername = { navController.navigate(RootGraph.UserPreferences.name) })
             }
-            
+
         }
-        navigation(startDestination = RootGraph.Home.name, route = RootGraph.HomeGraph.name){
-            composable(route= RootGraph.Home.name){
-                Home(modifier=modifier,
-                    authViewModel=authViewModel,
-                    onLogout={navController.navigate(RootGraph.AuthGraph.name){
-                        popUpTo(route = RootGraph.HomeGraph.name){
-                            inclusive=true
+        navigation(startDestination = RootGraph.Home.name, route = RootGraph.HomeGraph.name) {
+            composable(route = RootGraph.Home.name) {
+                Home(modifier = modifier,
+                    authViewModel = authViewModel,
+                    onLogout = {
+                        navController.navigate(RootGraph.AuthGraph.name) {
+                            popUpTo(route = RootGraph.HomeGraph.name) {
+                                inclusive = true
+                            }
                         }
-                    } })
+                    })
             }
         }
     }

@@ -1,23 +1,34 @@
 package com.example.foodium.network
+
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AuthTokens (val accessToken: String, val refreshToken: String)
+data class AuthTokens(val accessToken: String, val refreshToken: String)
 
 @Serializable
-data class RegisterData(val username:String,val email:String,val password:String)
+data class RegisterData(val username: String, val email: String, val password: String)
 
 @Serializable
-data class LoginData(val username:String,val password:String)
+data class LoginData(val username: String, val password: String)
 
 @Serializable
-data class UsernameData(val username:String,val accessToken: String,val refreshToken: String)
+data class UsernameData(val username: String, val accessToken: String, val refreshToken: String)
 
 @Serializable
-data class UserHealthAttributesData(val userWeight:Int,val userDietType:String,val userNumberOfMealsADay:Int,val accessToken: String,val refreshToken: String)
+data class UserHealthAttributesData(
+    val userWeight: Int,
+    val userDietType: String,
+    val userNumberOfMealsADay: Int,
+    val accessToken: String,
+    val refreshToken: String
+)
 
 @Serializable
-data class HealthAttributesData(val userWeight:Int,val userDietType:String,val userNumberOfMealsADay:Int)
+data class HealthAttributesData(
+    val userWeight: Int,
+    val userDietType: String,
+    val userNumberOfMealsADay: Int
+)
 
 @Serializable
 data class UsernameAddResponse(
@@ -30,6 +41,7 @@ data class UsernameAddResponse(
     val changedRows: Int,
     val newTokens: AuthTokens? = null
 )
+
 @Serializable
 data class MysqlAddFields(
     val fieldCount: Int,
@@ -43,14 +55,14 @@ data class MysqlAddFields(
 
 @Serializable
 data class UserHealthAttributesAddResponse(
-    val message:String,
-    val result:MysqlAddFields,
+    val message: String,
+    val result: MysqlAddFields,
     val newTokens: AuthTokens? = null
 )
 
 @Serializable
 data class AuthenticatedUser(
-    val id:String,
-    val newTokens: AuthTokens?=null
+    val id: String,
+    val newTokens: AuthTokens? = null
 )
 

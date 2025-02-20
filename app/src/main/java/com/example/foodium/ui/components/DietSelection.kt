@@ -16,12 +16,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DietTypeSelection(modifier: Modifier = Modifier,onDietTypeSelect:(String)->Unit) {
-    val radioOptions = listOf("weight loss", "pregnancy", "ketogenic","bodybuilding","diabetic","none")
+fun DietTypeSelection(modifier: Modifier = Modifier, onDietTypeSelect: (String) -> Unit) {
+    val radioOptions =
+        listOf("none", "pregnancy", "ketogenic", "bodybuilding", "diabetic", "weight loss")
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
     // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
     Column(modifier.selectableGroup()) {
@@ -34,7 +34,8 @@ fun DietTypeSelection(modifier: Modifier = Modifier,onDietTypeSelect:(String)->U
                         selected = (text == selectedOption),
                         onClick = {
                             onOptionSelected(text)
-                            onDietTypeSelect(text)},
+                            onDietTypeSelect(text)
+                        },
                         role = Role.RadioButton
                     )
                     .padding(horizontal = 16.dp),

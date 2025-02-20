@@ -1,5 +1,6 @@
 package com.example.foodium.ui.screens
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -90,6 +91,7 @@ class AuthViewModel(
             _landingAuthState.value=try {
                 val result=repository.getAuthTokensFromServer()
                 if(result=="authenticated"){
+                    Log.d("tokens datastore","tokens found")
                     AuthState.Success
                 }
                 else{
@@ -97,6 +99,7 @@ class AuthViewModel(
                 }
             }catch (e:HttpException){
                 val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                Log.d("error at init",errorMessage)
                 AuthState.Error(errorMessage)
             }catch (e:IOException){
                 AuthState.Error(e.toString())

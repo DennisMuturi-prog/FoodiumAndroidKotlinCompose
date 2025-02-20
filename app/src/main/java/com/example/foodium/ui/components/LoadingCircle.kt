@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoadingCircle(modifier: Modifier = Modifier) {
+fun LoadingCircle() {
     CircularProgressIndicator(
         modifier = Modifier.width(64.dp),
         color = MaterialTheme.colorScheme.secondary,

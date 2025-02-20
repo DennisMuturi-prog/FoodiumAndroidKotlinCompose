@@ -23,13 +23,6 @@ fun LandingScreen(modifier: Modifier = Modifier,
         }
     }
     Column(modifier=modifier) {
-        when(val result=authState.value){
-            is AuthState.Error->Text(result.message)
-            is AuthState.Loading-> Text("loading")
-            is AuthState.Success->{}
-            is AuthState.NotAuthenticated->{}
-            null->{}
-        }
         Text(text="landing screen")
         when(val result=authState.value){
             is AuthState.Error->Text(text=result.message)
