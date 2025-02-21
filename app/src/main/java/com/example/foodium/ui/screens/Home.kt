@@ -8,18 +8,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.paging.compose.LazyPagingItems
+import com.example.foodium.models.WorldwideRecipe
 
 @Composable
-fun Home(modifier: Modifier = Modifier,authViewModel: AuthViewModel,
-         onLogout:()->Unit) {
-    val authState=authViewModel.authState.observeAsState()
+fun Home(
+    modifier: Modifier = Modifier, authViewModel: AuthViewModel,
+    onLogout: () -> Unit,
+    recipes: LazyPagingItems<WorldwideRecipe>
+    ) {
+    val authState = authViewModel.authState.observeAsState()
     LaunchedEffect(authState.value) {
-        when(authState.value){
+        when (authState.value) {
             is AuthState.NotAuthenticated -> onLogout()
             else -> Unit
         }
     }
-    Column(modifier=modifier) {
+    Column(modifier = modifier) {
         Text(
             text = "Home",
         )

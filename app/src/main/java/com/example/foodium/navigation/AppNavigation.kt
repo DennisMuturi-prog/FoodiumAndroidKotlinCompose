@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.foodium.ui.screens.AddOauthUsername
 import com.example.foodium.ui.screens.AuthViewModel
 import com.example.foodium.ui.screens.Home
@@ -40,8 +41,12 @@ fun AppNavigation(
     authViewModel: AuthViewModel,
     recipesViewModel: RecipesViewModel
 ) {
+    val recipesPagingItems = recipesViewModel.recipes.collectAsLazyPagingItems()
     NavHost(navController, startDestination = RootGraph.AuthGraph.name) {
-        navigation(route = RootGraph.AuthGraph.name, startDestination = RootGraph.LandingScreen.name) {
+        navigation(
+            route = RootGraph.AuthGraph.name,
+            startDestination = RootGraph.LandingScreen.name
+        ) {
             composable(route = RootGraph.LandingScreen.name) {
                 LandingScreen(
                     modifier = modifier, authViewModel = authViewModel,
@@ -118,7 +123,8 @@ fun AppNavigation(
         }
         navigation(startDestination = RootGraph.Home.name, route = RootGraph.HomeGraph.name) {
             composable(route = RootGraph.Home.name) {
-                Home(modifier = modifier,
+                Home(
+                    modifier = modifier,
                     authViewModel = authViewModel,
                     onLogout = {
                         navController.navigate(RootGraph.AuthGraph.name) {
@@ -126,7 +132,9 @@ fun AppNavigation(
                                 inclusive = true
                             }
                         }
-                    })
+                    },
+                    recipes = recipesPagingItems
+                )
             }
         }
     }
