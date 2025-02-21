@@ -65,4 +65,12 @@ data class AuthenticatedUser(
     val id: String,
     val newTokens: AuthTokens? = null
 )
+@Serializable
+data class RecipesRequest(
+    val numberOfResults:Int,
+    val region:String,
+    val next:String,
+    val accessToken: String,
+    val refreshToken: String
+)
 

@@ -1,11 +1,7 @@
 package com.example.foodium.ui.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -21,23 +17,24 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.foodium.navigation.RootGraph
 
 data class TopLevelRoute(val name: String, val route: String, val icon: ImageVector)
+
 @Composable
-fun BottomBarUi(modifier: Modifier = Modifier,navController:NavHostController) {
+fun BottomBarUi(modifier: Modifier = Modifier, navController: NavHostController) {
     val topLevelRoutes = listOf(
         TopLevelRoute("Home", RootGraph.Home.name, Icons.Default.Home),
 
-    )
+        )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val bottomBarDestination = topLevelRoutes.any { it.route == currentDestination?.route }
-    if(bottomBarDestination){
+    if (bottomBarDestination) {
         NavigationBar {
 
             topLevelRoutes.forEach { topLevelRoute ->
                 NavigationBarItem(
                     icon = { Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name) },
                     label = { Text(topLevelRoute.name) },
-                    selected =  currentDestination?.hierarchy?.any {
+                    selected = currentDestination?.hierarchy?.any {
                         it.route == topLevelRoute.route
                     } == true,
                     onClick = {

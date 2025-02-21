@@ -1,6 +1,7 @@
 package com.example.foodium.repository
 
 import com.example.foodium.FoodiumPreferencesStore
+import com.example.foodium.models.KenyanRecipe
 import com.example.foodium.network.AuthTokens
 import com.example.foodium.network.BackendApi
 import com.example.foodium.network.HealthAttributesData
@@ -8,10 +9,18 @@ import com.example.foodium.network.LoginData
 import com.example.foodium.network.RegisterData
 import com.example.foodium.network.UserHealthAttributesData
 import com.example.foodium.network.UsernameData
+import com.example.foodium.pagination.RecipesPagination
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.pagination.WorldwideRecipesPagination
+import kotlinx.coroutines.flow.Flow
 
 class Repository(
     private val backendApi: BackendApi,
-    private val preferencesDataStore: FoodiumPreferencesStore
+    private val preferencesDataStore: FoodiumPreferencesStore,
+
 ) {
     private var authTokens = AuthTokens("", "")
     suspend fun registerUser(userData: RegisterData) {
@@ -96,6 +105,18 @@ class Repository(
         preferencesDataStore.saveString("accessToken", accessToken)
         preferencesDataStore.saveString("refreshToken", refreshToken)
         authTokens = AuthTokens(accessToken, refreshToken)
+    }
+    fun getKenyanRecipes():Flow<PagingData<KenyanRecipe>>{
+        return Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = { RecipesPagination(backendApi,authTokens) }
+        ).flow
+    }
+    fun getWorldwideRecipes():Flow<PagingData<WorldwideRecipe>>{
+        return Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = { WorldwideRecipesPagination(backendApi,authTokens) }
+        ).flow
     }
 
 }

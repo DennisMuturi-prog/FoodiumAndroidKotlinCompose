@@ -1,5 +1,7 @@
 package com.example.foodium.network
 
+import com.example.foodium.models.KenyanRecipes
+import com.example.foodium.models.WorldwideRecipes
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -19,6 +21,14 @@ interface BackendApiService {
 
     @POST("addUserPreference")
     suspend fun addUserHealthAttributes(@Body userHealthData: UserHealthAttributesData): UserHealthAttributesAddResponse
+
+    @POST("getRecipes")
+    suspend fun getKenyanRecipes(@Body recipesRequest: RecipesRequest):KenyanRecipes
+
+    @POST("getRecipes")
+    suspend fun getWorldwideRecipes(@Body recipesRequest: RecipesRequest):WorldwideRecipes
+
+
 
 }
 

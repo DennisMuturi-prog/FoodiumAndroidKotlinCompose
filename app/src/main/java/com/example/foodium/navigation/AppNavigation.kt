@@ -16,6 +16,7 @@ import com.example.foodium.ui.screens.LandingScreen
 import com.example.foodium.ui.screens.Login
 import com.example.foodium.ui.screens.Register
 import com.example.foodium.ui.screens.AddHealthAttributes
+import com.example.foodium.ui.screens.RecipesViewModel
 
 
 enum class RootGraph {
@@ -36,7 +37,8 @@ enum class RootGraph {
 fun AppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    recipesViewModel: RecipesViewModel
 ) {
     NavHost(navController, startDestination = RootGraph.AuthGraph.name) {
         navigation(route = RootGraph.AuthGraph.name, startDestination = RootGraph.LandingScreen.name) {

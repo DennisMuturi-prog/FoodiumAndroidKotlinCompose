@@ -61,6 +61,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     implementation("androidx.datastore:datastore-preferences:1.1.2")
     implementation("androidx.navigation:navigation-compose:2.8.4")
+
+    //paging
+    //Paging3
+    val paging_version = "3.2.1"
+    implementation("androidx.paging:paging-compose:$paging_version")
+    implementation("androidx.paging:paging-runtime-ktx:$paging_version")
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
