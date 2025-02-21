@@ -7,9 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.ui.components.RecipeCard
+import androidx.compose.foundation.lazy.LazyColumn
 
 @Composable
 fun Home(
@@ -24,6 +25,16 @@ fun Home(
             else -> Unit
         }
     }
+
+    LazyColumn {
+        items(recipes.itemCount) { index ->
+            recipes[index]?.let { recipe ->
+                RecipeCard(recipe=recipe)
+            }
+        }
+    }
+
+
     Column(modifier = modifier) {
         Text(
             text = "Home",

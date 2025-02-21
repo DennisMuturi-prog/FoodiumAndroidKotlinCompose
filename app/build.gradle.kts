@@ -68,6 +68,9 @@ dependencies {
     implementation("androidx.paging:paging-compose:$paging_version")
     implementation("androidx.paging:paging-runtime-ktx:$paging_version")
 
+    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
