@@ -1,6 +1,8 @@
 package com.example.foodium.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,13 +13,16 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.foodium.models.WorldwideRecipe
 import com.example.foodium.ui.components.RecipeCard
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.paging.compose.collectAsLazyPagingItems
 
 @Composable
 fun Home(
-    modifier: Modifier = Modifier, authViewModel: AuthViewModel,
+    modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel,
+    recipesViewModel: RecipesViewModel,
     onLogout: () -> Unit,
-    recipes: LazyPagingItems<WorldwideRecipe>
     ) {
+    val recipes = recipesViewModel.recipes.collectAsLazyPagingItems()
     val authState = authViewModel.authState.observeAsState()
     LaunchedEffect(authState.value) {
         when (authState.value) {
@@ -26,26 +31,28 @@ fun Home(
         }
     }
 
-    LazyColumn {
-        items(recipes.itemCount) { index ->
-            recipes[index]?.let { recipe ->
-                RecipeCard(recipe=recipe)
-            }
-        }
-    }
 
 
     Column(modifier = modifier) {
-        Text(
-            text = "Home",
-        )
-        Button(onClick = {
-            authViewModel.logout()
-        }) {
-            Text("log out")
+        Row {
+            Text(
+                text = "Home",
+            )
+            Button(onClick = {
+                authViewModel.logout()
+            }) {
+                Text("log out")
+
+            }
 
         }
-
+        LazyColumn {
+            items(recipes.itemCount) { index ->
+                recipes[index]?.let { recipe ->
+                    RecipeCard(recipe=recipe)
+                }
+            }
+        }
 
     }
 

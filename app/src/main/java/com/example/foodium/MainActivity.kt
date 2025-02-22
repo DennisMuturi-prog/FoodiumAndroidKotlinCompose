@@ -18,7 +18,9 @@ import com.example.foodium.ui.screens.RecipesViewModel
 import com.example.foodium.ui.theme.FoodiumTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

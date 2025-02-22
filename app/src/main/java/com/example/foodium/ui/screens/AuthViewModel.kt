@@ -91,7 +91,6 @@ class AuthViewModel(
             _landingAuthState.value=try {
                 val result=repository.getAuthTokensFromServer()
                 if(result=="authenticated"){
-                    Log.d("tokens datastore","tokens found")
                     AuthState.Success
                 }
                 else{
@@ -99,20 +98,18 @@ class AuthViewModel(
                 }
             }catch (e:HttpException){
                 val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
-                Log.d("error at init",errorMessage)
                 AuthState.Error(errorMessage)
             }catch (e:IOException){
                 AuthState.Error(e.toString())
             }catch (e:Exception){
-                println(e.toString())
                 AuthState.Error(e.toString())
             }
         }
     }
     fun logout(){
+        _authState.value=AuthState.NotAuthenticated
         viewModelScope.launch {
             repository.logout()
-            _authState.value=AuthState.NotAuthenticated
         }
 
     }

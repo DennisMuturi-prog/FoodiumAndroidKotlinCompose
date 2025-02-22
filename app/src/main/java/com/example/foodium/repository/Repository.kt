@@ -1,5 +1,6 @@
 package com.example.foodium.repository
 
+import android.util.Log
 import com.example.foodium.FoodiumPreferencesStore
 import com.example.foodium.models.KenyanRecipe
 import com.example.foodium.network.AuthTokens
@@ -90,6 +91,25 @@ class Repository(
                 return "authenticated"
             } else {
                 return "authenticated"
+            }
+        }
+
+    }
+    suspend fun getAuthTokens(){
+        val accessToken = preferencesDataStore.getString("accessToken")
+        val refreshToken = preferencesDataStore.getString("refreshToken")
+        if (accessToken == null || refreshToken == null) {
+            return
+        } else {
+            val result =
+                backendApi.retrofitService.getAuthTokens(AuthTokens(accessToken, refreshToken))
+
+            if (result.newTokens != null) {
+                preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+                preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
+                authTokens=result.newTokens
+            } else {
+                authTokens=AuthTokens(accessToken,refreshToken)
             }
         }
 

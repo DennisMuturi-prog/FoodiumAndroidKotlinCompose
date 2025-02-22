@@ -41,7 +41,6 @@ fun AppNavigation(
     authViewModel: AuthViewModel,
     recipesViewModel: RecipesViewModel
 ) {
-    val recipesPagingItems = recipesViewModel.recipes.collectAsLazyPagingItems()
     NavHost(navController, startDestination = RootGraph.AuthGraph.name) {
         navigation(
             route = RootGraph.AuthGraph.name,
@@ -127,13 +126,13 @@ fun AppNavigation(
                     modifier = modifier,
                     authViewModel = authViewModel,
                     onLogout = {
-                        navController.navigate(RootGraph.AuthGraph.name) {
+                        navController.navigate(RootGraph.Login.name) {
                             popUpTo(route = RootGraph.HomeGraph.name) {
                                 inclusive = true
                             }
                         }
                     },
-                    recipes = recipesPagingItems
+                    recipesViewModel = recipesViewModel
                 )
             }
         }
