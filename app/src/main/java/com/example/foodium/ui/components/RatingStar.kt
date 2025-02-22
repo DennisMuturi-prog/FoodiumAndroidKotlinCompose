@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 @Preview
 @Composable
 fun RatingStar(
-    rating: Float = 4.7f,
+    rating: Float = 0f,
     maxRating: Int = 5,
     onStarClick: (Int) -> Unit={},
     isIndicator: Boolean = false

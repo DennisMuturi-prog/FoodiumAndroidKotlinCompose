@@ -1,5 +1,6 @@
 package com.example.foodium.navigation
 
+import androidx.camera.view.LifecycleCameraController
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -9,15 +10,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.foodium.domain.Classification
+import com.example.foodium.ui.screens.AddHealthAttributes
 import com.example.foodium.ui.screens.AddOauthUsername
 import com.example.foodium.ui.screens.AuthViewModel
+import com.example.foodium.ui.screens.FoodClassifierScreen
 import com.example.foodium.ui.screens.Home
 import com.example.foodium.ui.screens.LandingScreen
 import com.example.foodium.ui.screens.Login
-import com.example.foodium.ui.screens.Register
-import com.example.foodium.ui.screens.AddHealthAttributes
 import com.example.foodium.ui.screens.RecipesViewModel
+import com.example.foodium.ui.screens.Register
 
 
 enum class RootGraph {
@@ -29,7 +31,7 @@ enum class RootGraph {
     UserPreferences,
     AuthGraph,
     HomeGraph,
-    Intake
+    ImageClassifier
 
 }
 
@@ -39,7 +41,9 @@ fun AppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     authViewModel: AuthViewModel,
-    recipesViewModel: RecipesViewModel
+    recipesViewModel: RecipesViewModel,
+    controller: LifecycleCameraController,
+    classifications: List<Classification>
 ) {
     NavHost(navController, startDestination = RootGraph.AuthGraph.name) {
         navigation(
@@ -134,6 +138,10 @@ fun AppNavigation(
                     },
                     recipesViewModel = recipesViewModel
                 )
+            }
+            composable(route=RootGraph.ImageClassifier.name){
+                FoodClassifierScreen(modifier=modifier,classifications = classifications, controller = controller)
+
             }
         }
     }
