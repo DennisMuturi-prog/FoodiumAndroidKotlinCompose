@@ -31,7 +31,7 @@ data class WorldwideRecipe(
     @SerialName("recipe_name")
     val recipeName: String,
     @SerialName("recipe_rating")
-    val recipeRating: Int,
+    val recipeRating: Float,
     @SerialName("Retinol")
     val retinol: Double,
     @SerialName("Riboflavin")
