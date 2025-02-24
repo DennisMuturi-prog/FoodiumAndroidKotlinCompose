@@ -4,6 +4,7 @@ import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,16 +35,28 @@ fun FoodClassifierScreen(modifier: Modifier = Modifier,controller: LifecycleCame
                 .align(Alignment.TopCenter)
         ) {
             classifications.forEach {
-                Text(
-                    text = it.name,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.primaryContainer)
-                        .padding(8.dp),
-                    textAlign = TextAlign.Center,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                Row {
+                    Text(
+                        text = it.name,
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                            .padding(8.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        text = it.score.toString(),
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                            .padding(8.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                }
+
             }
         }
     }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,7 @@ import com.example.foodium.ui.components.BottomBarUi
 import com.example.foodium.ui.screens.AuthViewModel
 import com.example.foodium.ui.screens.RecipesViewModel
 import com.example.foodium.ui.theme.FoodiumTheme
+
 
 class MainActivity : ComponentActivity() {
 
@@ -57,12 +59,14 @@ class MainActivity : ComponentActivity() {
             val controller = remember {
                 LifecycleCameraController(applicationContext).apply {
                     setEnabledUseCases(CameraController.IMAGE_ANALYSIS)
+                    imageAnalysisOutputImageFormat=ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888
                     setImageAnalysisAnalyzer(
                         ContextCompat.getMainExecutor(applicationContext),
                         analyzer
                     )
                 }
             }
+
 
             val authViewModel=viewModel<AuthViewModel>(
                 factory = viewModelFactory {

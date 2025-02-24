@@ -66,7 +66,7 @@ dependencies {
 //    implementation(libs.tensorflow.lite.metadata)
 //    implementation(libs.tensorflow.lite.gpu)
 
-    val cameraxVersion = "1.3.0-rc01"
+    val cameraxVersion = "1.4.1"
 
     implementation("androidx.camera:camera-core:$cameraxVersion")
     implementation("androidx.camera:camera-camera2:$cameraxVersion")

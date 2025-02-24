@@ -5,11 +5,14 @@ import android.graphics.Bitmap
 import android.view.Surface
 import com.example.foodium.domain.Classification
 import com.example.foodium.domain.FoodClassifier
+import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.task.core.BaseOptions
 import org.tensorflow.lite.task.core.vision.ImageProcessingOptions
 import org.tensorflow.lite.task.vision.classifier.ImageClassifier
+
 
 class TfLiteFoodClassifier(
     private val context: Context,
@@ -45,7 +48,10 @@ class TfLiteFoodClassifier(
             setupClassifier()
         }
 
-        val imageProcessor = ImageProcessor.Builder().build()
+        val imageProcessor = ImageProcessor.Builder()
+            .add(ResizeOp(192, 192, ResizeOp.ResizeMethod.BILINEAR))
+            .add(NormalizeOp(0.0f,1.0f))
+            .build()
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(bitmap))
 
         val imageProcessingOptions = ImageProcessingOptions.builder()
@@ -54,8 +60,8 @@ class TfLiteFoodClassifier(
 
         val results = classifier?.classify(tensorImage, imageProcessingOptions)
 
-        return results?.flatMap { classications ->
-            classications.categories.map { category ->
+        return results?.flatMap { classifications ->
+            classifications.categories.map { category ->
                 Classification(
                     name = category.displayName,
                     score = category.score
