@@ -3,6 +3,7 @@ package com.example.foodium.ui.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -23,7 +24,8 @@ data class TopLevelRoute(val name: String, val route: String, val icon: ImageVec
 fun BottomBarUi(modifier: Modifier = Modifier, navController: NavHostController) {
     val topLevelRoutes = listOf(
         TopLevelRoute("Home", RootGraph.Home.name, Icons.Default.Home),
-        TopLevelRoute("CNN", RootGraph.ImageClassifier.name, Icons.Default.Build)
+        TopLevelRoute("CNN", RootGraph.ImageClassifier.name, Icons.Default.Build),
+        TopLevelRoute("Scanner", RootGraph.BarCodeScanner.name, Icons.Default.Info)
 
     )
 

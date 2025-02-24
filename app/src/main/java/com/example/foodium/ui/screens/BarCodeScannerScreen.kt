@@ -47,7 +47,7 @@ fun BarCodeScannerScreen(modifier: Modifier = Modifier) {
 
         // Box to hold the UI elements and center them on the screen
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize() // Make the Box take up the entire screen
                 .background(Color.LightGray) // Optional: Add a background color for visibility
         ) {

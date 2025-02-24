@@ -14,6 +14,7 @@ import com.example.foodium.domain.Classification
 import com.example.foodium.ui.screens.AddHealthAttributes
 import com.example.foodium.ui.screens.AddOauthUsername
 import com.example.foodium.ui.screens.AuthViewModel
+import com.example.foodium.ui.screens.BarCodeScannerScreen
 import com.example.foodium.ui.screens.FoodClassifierScreen
 import com.example.foodium.ui.screens.Home
 import com.example.foodium.ui.screens.LandingScreen
@@ -31,7 +32,8 @@ enum class RootGraph {
     UserPreferences,
     AuthGraph,
     HomeGraph,
-    ImageClassifier
+    ImageClassifier,
+    BarCodeScanner
 
 }
 
@@ -142,6 +144,9 @@ fun AppNavigation(
             composable(route=RootGraph.ImageClassifier.name){
                 FoodClassifierScreen(modifier=modifier,classifications = classifications, controller = controller)
 
+            }
+            composable(route=RootGraph.BarCodeScanner.name) {
+                BarCodeScannerScreen(modifier=modifier)
             }
         }
     }
