@@ -9,7 +9,7 @@ data class OpenFoodFactsData(
     @SerialName("code")
     val code: String,
     @SerialName("product")
-    val product: Product,
+    val product: Product?=null,
     @SerialName("status")
     val status: Int,
     @SerialName("status_verbose")

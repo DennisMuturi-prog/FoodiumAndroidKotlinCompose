@@ -7,95 +7,95 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Nutriments(
     @SerialName("carbohydrates")
-    val carbohydrates: Double,
+    val carbohydrates: Double?= null,
     @SerialName("carbohydrates_100g")
-    val carbohydrates100g: Double,
+    val carbohydrates100g: Double?= null,
     @SerialName("carbohydrates_unit")
-    val carbohydratesUnit: String,
+    val carbohydratesUnit: String?= null,
     @SerialName("carbohydrates_value")
-    val carbohydratesValue: Double,
+    val carbohydratesValue: Double?= null,
     @SerialName("energy")
-    val energy: Int,
+    val energy: Int?= null,
     @SerialName("energy_100g")
-    val energy100g: Int,
+    val energy100g: Int?= null,
     @SerialName("energy-kcal")
-    val energyKcal: Int,
+    val energyKcal: Int?= null,
     @SerialName("energy-kcal_100g")
-    val energyKcal100g: Int,
+    val energyKcal100g: Int?= null,
     @SerialName("energy-kcal_unit")
-    val energyKcalUnit: String,
+    val energyKcalUnit: String?= null,
     @SerialName("energy-kcal_value")
-    val energyKcalValue: Int,
+    val energyKcalValue: Int?= null,
     @SerialName("energy-kcal_value_computed")
-    val energyKcalValueComputed: Double,
+    val energyKcalValueComputed: Double?= null,
     @SerialName("energy_unit")
-    val energyUnit: String,
+    val energyUnit: String?= null,
     @SerialName("energy_value")
-    val energyValue: Int,
+    val energyValue: Int?= null,
     @SerialName("fat")
-    val fat: Double,
+    val fat: Double?= null,
     @SerialName("fat_100g")
-    val fat100g: Double,
+    val fat100g: Double?= null,
     @SerialName("fat_unit")
-    val fatUnit: String,
+    val fatUnit: String?= null,
     @SerialName("fat_value")
-    val fatValue: Double,
+    val fatValue: Double?= null,
     @SerialName("fruits-vegetables-legumes-estimate-from-ingredients_100g")
-    val fruitsVegetablesLegumesEstimateFromIngredients100g: Int,
+    val fruitsVegetablesLegumesEstimateFromIngredients100g: Int?= null,
     @SerialName("fruits-vegetables-legumes-estimate-from-ingredients_serving")
-    val fruitsVegetablesLegumesEstimateFromIngredientsServing: Int,
+    val fruitsVegetablesLegumesEstimateFromIngredientsServing: Int?= null,
     @SerialName("fruits-vegetables-nuts-estimate-from-ingredients_100g")
-    val fruitsVegetablesNutsEstimateFromIngredients100g: Double,
+    val fruitsVegetablesNutsEstimateFromIngredients100g: Double?= null,
     @SerialName("fruits-vegetables-nuts-estimate-from-ingredients_serving")
-    val fruitsVegetablesNutsEstimateFromIngredientsServing: Double,
+    val fruitsVegetablesNutsEstimateFromIngredientsServing: Double?= null,
     @SerialName("nova-group")
-    val novaGroup: Int,
+    val novaGroup: Int?= null,
     @SerialName("nova-group_100g")
-    val novaGroup100g: Int,
+    val novaGroup100g: Int?= null,
     @SerialName("nova-group_serving")
-    val novaGroupServing: Int,
+    val novaGroupServing: Int?= null,
     @SerialName("nutrition-score-fr")
-    val nutritionScoreFr: Int,
+    val nutritionScoreFr: Int?= null,
     @SerialName("nutrition-score-fr_100g")
-    val nutritionScoreFr100g: Int,
+    val nutritionScoreFr100g: Int?= null,
     @SerialName("proteins")
-    val proteins: Double,
+    val proteins: Double?= null,
     @SerialName("proteins_100g")
-    val proteins100g: Double,
+    val proteins100g: Double?= null,
     @SerialName("proteins_unit")
-    val proteinsUnit: String,
+    val proteinsUnit: String?= null,
     @SerialName("proteins_value")
-    val proteinsValue: Double,
+    val proteinsValue: Double?= null,
     @SerialName("salt")
-    val salt: Double,
+    val salt: Double?= null,
     @SerialName("salt_100g")
-    val salt100g: Double,
+    val salt100g: Double?= null,
     @SerialName("salt_unit")
-    val saltUnit: String,
+    val saltUnit: String?= null,
     @SerialName("salt_value")
-    val saltValue: Double,
+    val saltValue: Double?= null,
     @SerialName("saturated-fat")
-    val saturatedFat: Double,
+    val saturatedFat: Double?= null,
     @SerialName("saturated-fat_100g")
-    val saturatedFat100g: Double,
+    val saturatedFat100g: Double?= null,
     @SerialName("saturated-fat_unit")
-    val saturatedFatUnit: String,
+    val saturatedFatUnit: String?= null,
     @SerialName("saturated-fat_value")
-    val saturatedFatValue: Double,
+    val saturatedFatValue: Double?= null,
     @SerialName("sodium")
-    val sodium: Double,
+    val sodium: Double?= null,
     @SerialName("sodium_100g")
-    val sodium100g: Double,
+    val sodium100g: Double?= null,
     @SerialName("sodium_unit")
-    val sodiumUnit: String,
+    val sodiumUnit: String?= null,
     @SerialName("sodium_value")
-    val sodiumValue: Double,
+    val sodiumValue: Double?= null,
     @SerialName("sugars")
-    val sugars: Double,
+    val sugars: Double?= null,
     @SerialName("sugars_100g")
-    val sugars100g: Double,
+    val sugars100g: Double?= null,
     @SerialName("sugars_unit")
-    val sugarsUnit: String,
+    val sugarsUnit: String?= null,
     @SerialName("sugars_value")
-    val sugarsValue: Double
+    val sugarsValue: Double?= null
 )

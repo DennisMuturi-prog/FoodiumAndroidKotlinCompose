@@ -5,6 +5,7 @@ import com.example.foodium.models.OpenFoodFactsData
 import com.example.foodium.models.WorldwideRecipes
 import retrofit2.Retrofit
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -37,7 +38,7 @@ interface BackendApiService {
 
 }
 interface OpenFoodFactsService {
-    @POST("api/v2/product/{barCodeString}")
+    @GET("api/v2/product/{barCodeString}")
     suspend fun getFoodInfo(@Path("barCodeString") barCodeString:String,@Query("fields") fields:String= queryFields):OpenFoodFactsData
 
 }

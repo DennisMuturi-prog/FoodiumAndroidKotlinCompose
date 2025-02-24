@@ -55,8 +55,7 @@ fun BarCodeScannerScreen(modifier: Modifier = Modifier,openFoodFactsViewModel: O
         // Box to hold the UI elements and center them on the screen
         Box(
             modifier = modifier
-                .fillMaxSize() // Make the Box take up the entire screen
-                .background(Color.LightGray) // Optional: Add a background color for visibility
+                .fillMaxSize() // Make the Box take up the entire screen // Optional: Add a background color for visibility
         ) {
             // Column to arrange UI elements vertically and center them
             Column(

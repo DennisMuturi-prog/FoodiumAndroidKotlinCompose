@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Product(
     @SerialName("nutriments")
-    val nutriments: Nutriments,
+    val nutriments: Nutriments?,
     @SerialName("nutrition_grades")
     val nutritionGrades: String,
     @SerialName("product_name")
