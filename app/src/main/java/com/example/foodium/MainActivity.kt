@@ -29,6 +29,7 @@ import com.example.foodium.ui.components.BottomBarUi
 import com.example.foodium.ui.screens.AuthViewModel
 import com.example.foodium.ui.screens.RecipesViewModel
 import com.example.foodium.ui.theme.FoodiumTheme
+import com.example.foodium.ui.viewmodels.OpenFoodFactsViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -78,6 +79,11 @@ class MainActivity : ComponentActivity() {
                     RecipesViewModel(MyApplication.appContainer.repository)
                 }
             )
+            val openFoodFactsViewModel= viewModel<OpenFoodFactsViewModel>(
+                factory = viewModelFactory {
+                    OpenFoodFactsViewModel(MyApplication.appContainer.repository)
+                }
+            )
             val navController = rememberNavController()
             FoodiumTheme {
                 Scaffold(
@@ -86,7 +92,8 @@ class MainActivity : ComponentActivity() {
                         BottomBarUi(navController=navController)
                     }
                 ) { innerPadding ->
-                   AppNavigation(modifier=Modifier.padding(innerPadding),authViewModel=authViewModel, navController = navController,recipesViewModel=recipesViewModel,controller=controller,classifications=classifications)
+                   AppNavigation(modifier=Modifier.padding(innerPadding),authViewModel=authViewModel, navController = navController,recipesViewModel=recipesViewModel,controller=controller,classifications=classifications,
+                       openFoodFactsViewModel = openFoodFactsViewModel)
                 }
             }
         }

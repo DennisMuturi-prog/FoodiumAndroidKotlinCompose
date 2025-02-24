@@ -17,17 +17,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.foodium.ui.components.FoodFacts
+import com.example.foodium.ui.components.LoadingCircle
 import com.example.foodium.ui.components.ScanCode
 import com.example.foodium.ui.components.ShowRationaleDialog
+import com.example.foodium.ui.viewmodels.FoodInfoState
+import com.example.foodium.ui.viewmodels.OpenFoodFactsViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 @OptIn(ExperimentalPermissionsApi::class) // Opt-in to use experimental permissions API
 @Composable
-fun BarCodeScannerScreen(modifier: Modifier = Modifier) {
+fun BarCodeScannerScreen(modifier: Modifier = Modifier,openFoodFactsViewModel: OpenFoodFactsViewModel) {
+    val foodInfoState=openFoodFactsViewModel.foodInfoState.observeAsState()
 
     // State to hold the scanned barcode value, saved across recompositions
     var barcode by rememberSaveable { mutableStateOf<String?>("No Code Scanned") }
@@ -41,6 +47,7 @@ fun BarCodeScannerScreen(modifier: Modifier = Modifier) {
     var oncancel by remember(permissionState.status.shouldShowRationale) {
         mutableStateOf(permissionState.status.shouldShowRationale)
     }
+
 
     // Check if a barcode has been scanned
     if (barcode != null) {
@@ -59,6 +66,12 @@ fun BarCodeScannerScreen(modifier: Modifier = Modifier) {
                 horizontalAlignment = Alignment.CenterHorizontally, // Center children horizontally
                 verticalArrangement = Arrangement.Center // Center children vertically
             ) {
+                when(val result=foodInfoState.value){
+                    is FoodInfoState.Success-> FoodFacts(foodInfo = result.foodFacts)
+                    is FoodInfoState.Error-> Text(result.message)
+                    is FoodInfoState.Loading-> LoadingCircle()
+                    null->{}
+                }
                 // Show rationale dialog if permission is denied and rationale can be shown
                 if (oncancel) {
                     ShowRationaleDialog(
@@ -103,7 +116,9 @@ fun BarCodeScannerScreen(modifier: Modifier = Modifier) {
     } else {
         // If no barcode has been scanned, show the QR/barcode scanner
         ScanCode(onQrCodeDetected = {
-            barcode = it // Update the barcode state with the scanned value
+            barcode = it
+            openFoodFactsViewModel.getFoodInfo(it)
+        // Update the barcode state with the scanned value
         })
     }
 

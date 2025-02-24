@@ -21,6 +21,7 @@ import com.example.foodium.ui.screens.LandingScreen
 import com.example.foodium.ui.screens.Login
 import com.example.foodium.ui.screens.RecipesViewModel
 import com.example.foodium.ui.screens.Register
+import com.example.foodium.ui.viewmodels.OpenFoodFactsViewModel
 
 
 enum class RootGraph {
@@ -45,7 +46,8 @@ fun AppNavigation(
     authViewModel: AuthViewModel,
     recipesViewModel: RecipesViewModel,
     controller: LifecycleCameraController,
-    classifications: List<Classification>
+    classifications: List<Classification>,
+    openFoodFactsViewModel: OpenFoodFactsViewModel
 ) {
     NavHost(navController, startDestination = RootGraph.AuthGraph.name) {
         navigation(
@@ -146,7 +148,7 @@ fun AppNavigation(
 
             }
             composable(route=RootGraph.BarCodeScanner.name) {
-                BarCodeScannerScreen(modifier=modifier)
+                BarCodeScannerScreen(modifier=modifier,openFoodFactsViewModel=openFoodFactsViewModel)
             }
         }
     }

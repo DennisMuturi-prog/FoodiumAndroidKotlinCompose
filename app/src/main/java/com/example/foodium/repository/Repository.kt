@@ -14,13 +14,16 @@ import com.example.foodium.pagination.RecipesPagination
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.foodium.models.OpenFoodFactsData
 import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.network.OpenFoodFactsApi
 import com.example.foodium.pagination.WorldwideRecipesPagination
 import kotlinx.coroutines.flow.Flow
 
 class Repository(
     private val backendApi: BackendApi,
     private val preferencesDataStore: FoodiumPreferencesStore,
+    private val openFoodFactsApi: OpenFoodFactsApi
 
 ) {
     private var authTokens = AuthTokens("", "")
@@ -137,6 +140,9 @@ class Repository(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
             pagingSourceFactory = { WorldwideRecipesPagination(backendApi,authTokens) }
         ).flow
+    }
+    suspend fun getFoodInfo(barcode:String):OpenFoodFactsData{
+        return openFoodFactsApi.openFoodFactsService.getFoodInfo(barCodeString = barcode)
     }
 
 }
