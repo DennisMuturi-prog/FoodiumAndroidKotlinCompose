@@ -11,5 +11,5 @@ data class Product(
     @SerialName("nutrition_grades")
     val nutritionGrades: String,
     @SerialName("product_name")
-    val productName: String
+    val productName: String?=null,
 )

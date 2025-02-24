@@ -22,7 +22,7 @@ fun FoodFacts(modifier: Modifier = Modifier, foodInfo: OpenFoodFactsData) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        foodInfo.product?.let { Text(text = it.productName, fontSize = 32.sp) }
+        foodInfo.product?.let { it.productName?.let { it1 -> Text(text = it1, fontSize = 32.sp) } }
 
     }
     Row(
@@ -30,7 +30,7 @@ fun FoodFacts(modifier: Modifier = Modifier, foodInfo: OpenFoodFactsData) {
         horizontalArrangement = Arrangement.Center
     ) {
         Text(text = "Nutritional grade : ")
-        foodInfo.product?.let { Text(text = it.nutritionGrades) }
+        foodInfo.product?.let { Text(text = it.nutritionGrades)}
 
     }
     Row(

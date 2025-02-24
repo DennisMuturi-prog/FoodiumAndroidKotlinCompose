@@ -10,6 +10,8 @@ data class Nutriments(
     val carbohydrates: Double?= null,
     @SerialName("carbohydrates_100g")
     val carbohydrates100g: Double?= null,
+    @SerialName("carbohydrates_serving")
+    val carbohydratesServing: String?= null,
     @SerialName("carbohydrates_unit")
     val carbohydratesUnit: String?= null,
     @SerialName("carbohydrates_value")
@@ -97,5 +99,5 @@ data class Nutriments(
     @SerialName("sugars_unit")
     val sugarsUnit: String?= null,
     @SerialName("sugars_value")
-    val sugarsValue: Double?= null
+    val sugarsValue: Double?= null,
 )
