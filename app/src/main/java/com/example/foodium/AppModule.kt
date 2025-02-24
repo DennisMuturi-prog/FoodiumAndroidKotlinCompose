@@ -15,6 +15,9 @@ private const val BASE_URL =
 private const val OPEN_FOOD_FACTS_BASE_URL=
     "https://world.openfoodfacts.net"
 class AppContainer(private val appContext: Context) {
+    private val json = Json {
+        ignoreUnknownKeys = true // Ignores unexpected fields
+    }
     private val retrofit by lazy {
         Retrofit.Builder()
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
@@ -23,7 +26,7 @@ class AppContainer(private val appContext: Context) {
     }
     private val openFoodFactsRetrofit by lazy {
         Retrofit.Builder()
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .baseUrl(OPEN_FOOD_FACTS_BASE_URL)
             .build()
     }
