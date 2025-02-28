@@ -1,16 +1,22 @@
 package com.example.foodium.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.foodium.R
 import com.example.foodium.models.WorldwideRecipe
@@ -46,28 +52,35 @@ fun RecipeInfo(modifier: Modifier = Modifier,recipesViewModel: RecipesViewModel)
 
 @Composable
 fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendReview:(String)->Unit,onSendRating:(Int)->Unit) {
+    val scrollState= rememberScrollState()
     Column(
-        modifier=modifier.fillMaxSize()
+        modifier=modifier.fillMaxSize().verticalScroll(scrollState).padding(16.dp)
     ) {
-        Text(text = recipe.recipeName)
+        Text(text = recipe.recipeName, fontSize = 32.sp)
         AsyncImage(
             model=recipe.imageUrl,
             contentDescription = recipe.recipeName
         )
-        Row {
-            Text("rating")
-            RatingStar(rating = recipe.recipeRating)
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text("rating", fontSize = 25.sp)
+            RatingStar(rating = recipe.recipeRating, isIndicator = true)
         }
-        Text(text = "Ingredients")
+        Text(text = "Ingredients", fontSize = 25.sp)
         recipe.ingredients.forEach {ingredient->
             Text(text = ingredient)
         }
-        Text(text = "instructions")
+        Text(text = "instructions", fontSize =25.sp)
         recipe.directions.forEach { direction->
             Text(text = "•$direction")
         }
-        Text(text="nutrients")
-        Row {
+        Text(text="nutrients", fontSize = 25.sp)
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.calories_svgrepo_com),
                 contentDescription = "energy",
@@ -75,7 +88,10 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("Energy:${recipe.energy}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.grain_gluten_wheat_carbohydrates_svgrepo_com),
                 contentDescription = "carbohydrates",
@@ -83,7 +99,10 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("carbohydrates by summation:${recipe.carbohydrateBySummation}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.icons8_fiber_48),
                 contentDescription = "fiber",
@@ -91,7 +110,10 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("fiber:${recipe.fiberTotalDietary}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.icons8_wheat_48),
                 contentDescription = "starch",
@@ -99,7 +121,10 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("starch:${recipe.starch}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.icons8_proteins_64),
                 contentDescription = "protein",
@@ -107,7 +132,10 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("proteins:${recipe.protein}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.protein_fat_svgrepo_com),
                 contentDescription = "fats",
@@ -115,7 +143,10 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("fats:${recipe.protein}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.sugar_svgrepo_com),
                 contentDescription = "sugar",
@@ -123,7 +154,10 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("sugar:${recipe.sugarsTotal}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.icons8_biting_a_carrot_48),
                 contentDescription = "vitamin A",
@@ -131,7 +165,10 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("VitaminA:${recipe.vitaminARAE}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.icons8_watermelon_50),
                 contentDescription = "vitamin B12",
@@ -139,7 +176,10 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("vitamin B12:${recipe.vitaminB12}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.icons8_lime_48),
                 contentDescription = "vitamin C",
@@ -147,15 +187,21 @@ fun RecipeDetails(modifier: Modifier = Modifier,recipe:WorldwideRecipe,onSendRev
             )
             Text("vitamin C:${recipe.vitaminCTotalAscorbicAcid}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.icons8_cod_48),
                 contentDescription = "vitamin D",
                 modifier = Modifier.size(48.dp)
             )
-            Text("proteins:${recipe.vitaminD4}")
+            Text("vitamin D:${recipe.vitaminD4}")
         }
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
             Image(
                 painter = painterResource(R.drawable.icons8_iron_ore_48),
                 contentDescription = "iron",
