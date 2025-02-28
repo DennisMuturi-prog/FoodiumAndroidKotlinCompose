@@ -1,29 +1,62 @@
 package com.example.foodium.ui.screens
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.foodium.models.KenyanRecipe
 import com.example.foodium.models.WorldwideRecipe
 import com.example.foodium.repository.Repository
 import kotlinx.coroutines.flow.Flow
-import androidx.lifecycle.viewModelScope
-import com.example.foodium.models.KenyanRecipe
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.io.IOException
 
 
+sealed interface CurrentWorldwideRecipeState {
+    data class Success(val currentWorldwideRecipe:WorldwideRecipe) : CurrentWorldwideRecipeState
+}
+sealed interface CurrentKenyanRecipeState {
+    data class Success(val currentKenyanRecipe:KenyanRecipe) : CurrentKenyanRecipeState
+}
+sealed interface AddRatingState {
+    data object Success:AddRatingState
+    data class Error(val message:String):AddRatingState
+    data object Loading:AddRatingState
+}
+sealed interface AddReviewState {
+    data object Success:AddReviewState
+    data class Error(val message:String):AddReviewState
+    data object Loading:AddReviewState
+}
 class RecipesViewModel(private val repository: Repository) : ViewModel() {
     var recipes: Flow<PagingData<WorldwideRecipe>> =
         repository.getWorldwideRecipes().cachedIn(viewModelScope)
     var kenyanRecipes: Flow<PagingData<KenyanRecipe>> =
         repository.getKenyanRecipes().cachedIn(viewModelScope)
+    private val _currentWorldwideRecipeState=MutableLiveData<CurrentWorldwideRecipeState>()
+    val currentWorldwideRecipeState:LiveData<CurrentWorldwideRecipeState> = _currentWorldwideRecipeState
+    private val _currentKenyanRecipeState=MutableLiveData<CurrentKenyanRecipeState>()
+    val currentKenyanRecipeState:LiveData<CurrentKenyanRecipeState> = _currentKenyanRecipeState
+    private val _addRatingState=MutableLiveData<AddRatingState>()
+    val addRatingState:LiveData<AddRatingState> =_addRatingState
+    private val _addReviewState=MutableLiveData<AddReviewState>()
+    val addReviewState:LiveData<AddReviewState> =_addReviewState
+
 
     init {
         getTokens()
     }
 
+    fun changeCurrentRecipe(recipe:WorldwideRecipe){
+        _currentWorldwideRecipeState.value=CurrentWorldwideRecipeState.Success(recipe)
+    }
+    fun changeCurrentKenyanRecipe(recipe:KenyanRecipe){
+        _currentKenyanRecipeState.value=CurrentKenyanRecipeState.Success(recipe)
+    }
     private fun attachDataSource() {
         recipes = repository.getWorldwideRecipes().cachedIn(viewModelScope)
         kenyanRecipes = repository.getKenyanRecipes().cachedIn(viewModelScope)
@@ -40,6 +73,37 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
             }
         }
 
+    }
+    fun addRating(ratingNumber:Int,region:String,recipeId:String){
+        viewModelScope.launch {
+            _addRatingState.value=try {
+                repository.addRating(ratingNumber=ratingNumber,region=region,recipeId=recipeId)
+                AddRatingState.Success
+
+            }catch (e:HttpException){
+                val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                AddRatingState.Error(errorMessage)
+
+            }catch (e:IOException){
+                AddRatingState.Error(e.toString())
+            }
+        }
+    }
+    fun addReview(reviewText:String,region:String,recipeId:String){
+        _addReviewState.value=AddReviewState.Loading
+        viewModelScope.launch {
+            _addReviewState.value=try {
+                repository.addReview(reviewText=reviewText,region=region,recipeId=recipeId)
+                AddReviewState.Success
+
+            }catch (e:HttpException){
+                val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                AddReviewState.Error(errorMessage)
+
+            }catch (e:IOException){
+                AddReviewState.Error(e.toString())
+            }
+        }
     }
 
 }

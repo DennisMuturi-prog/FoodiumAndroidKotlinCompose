@@ -19,6 +19,7 @@ import com.example.foodium.ui.screens.FoodClassifierScreen
 import com.example.foodium.ui.screens.Home
 import com.example.foodium.ui.screens.LandingScreen
 import com.example.foodium.ui.screens.Login
+import com.example.foodium.ui.screens.RecipeInfo
 import com.example.foodium.ui.screens.RecipesViewModel
 import com.example.foodium.ui.screens.Register
 import com.example.foodium.ui.viewmodels.OpenFoodFactsViewModel
@@ -34,7 +35,8 @@ enum class RootGraph {
     AuthGraph,
     HomeGraph,
     ImageClassifier,
-    BarCodeScanner
+    BarCodeScanner,
+    RecipeInfo
 
 }
 
@@ -140,7 +142,8 @@ fun AppNavigation(
                             }
                         }
                     },
-                    recipesViewModel = recipesViewModel
+                    recipesViewModel = recipesViewModel,
+                    onRecipeInfoClick = {navController.navigate(RootGraph.RecipeInfo.name)}
                 )
             }
             composable(route=RootGraph.ImageClassifier.name){
@@ -149,6 +152,9 @@ fun AppNavigation(
             }
             composable(route=RootGraph.BarCodeScanner.name) {
                 BarCodeScannerScreen(modifier=modifier,openFoodFactsViewModel=openFoodFactsViewModel)
+            }
+            composable(route=RootGraph.RecipeInfo.name) {
+                RecipeInfo(modifier=modifier,recipesViewModel=recipesViewModel)
             }
         }
     }

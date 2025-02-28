@@ -19,6 +19,7 @@ fun Home(
     authViewModel: AuthViewModel,
     recipesViewModel: RecipesViewModel,
     onLogout: () -> Unit,
+    onRecipeInfoClick:()->Unit,
     ) {
     val recipes = recipesViewModel.recipes.collectAsLazyPagingItems()
     val authState = authViewModel.authState.observeAsState()
@@ -47,7 +48,10 @@ fun Home(
         LazyColumn {
             items(recipes.itemCount) { index ->
                 recipes[index]?.let { recipe ->
-                    ChatgptRecipeCard(recipe=recipe)
+                    ChatgptRecipeCard(recipe=recipe,onRecipeInfoClick={
+                        recipesViewModel.changeCurrentRecipe(it)
+                        onRecipeInfoClick()
+                    })
                 }
             }
         }

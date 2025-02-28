@@ -74,5 +74,25 @@ data class RecipesRequest(
     val refreshToken: String
 )
 
-
+@Serializable
+data class AddReview(
+    val reviewText:String,
+    val recipeId:String,
+    val region:String,
+    val accessToken: String,
+    val refreshToken: String
+)
+@Serializable
+data class AddRating(
+    val ratingNumber:Int,
+    val recipeId:String,
+    val region:String,
+    val accessToken: String,
+    val refreshToken: String
+)
+@Serializable
+data class AddReviewResponse(
+    val task:String,
+    val newTokens:AuthTokens?=null
+)
 

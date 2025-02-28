@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 
-@Preview
 @Composable
 fun RatingStar(
     rating: Float = 0f,

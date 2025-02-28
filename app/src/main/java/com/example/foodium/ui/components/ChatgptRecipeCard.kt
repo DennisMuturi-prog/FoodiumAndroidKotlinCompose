@@ -26,11 +26,13 @@ import com.example.foodium.models.WorldwideRecipe
 @Composable
 fun ChatgptRecipeCard(
     recipe: WorldwideRecipe,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRecipeInfoClick:(WorldwideRecipe)->Unit
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        onClick = {onRecipeInfoClick(recipe)},
         modifier = modifier
             .width(500.dp) // Ensuring uniform width
             .height(250.dp) // Ensuring uniform height

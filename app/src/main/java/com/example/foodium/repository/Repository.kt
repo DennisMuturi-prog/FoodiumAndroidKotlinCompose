@@ -16,6 +16,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.foodium.models.OpenFoodFactsData
 import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.network.AddRating
+import com.example.foodium.network.AddReview
+import com.example.foodium.network.AddReviewResponse
 import com.example.foodium.network.OpenFoodFactsApi
 import com.example.foodium.pagination.WorldwideRecipesPagination
 import kotlinx.coroutines.flow.Flow
@@ -144,5 +147,22 @@ class Repository(
     suspend fun getFoodInfo(barcode:String):OpenFoodFactsData{
         return openFoodFactsApi.openFoodFactsService.getFoodInfo(barCodeString = barcode)
     }
-
+    suspend fun  addReview(reviewText:String,region:String,recipeId:String):AddReviewResponse{
+        val result=backendApi.retrofitService.addReview(AddReview(reviewText=reviewText,region=region, recipeId = recipeId, accessToken = authTokens.accessToken, refreshToken = authTokens.refreshToken))
+        if(result.newTokens!=null){
+            authTokens=result.newTokens
+            preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+        }
+        return result
+    }
+    suspend fun  addRating(ratingNumber:Int,region:String,recipeId:String):AddReviewResponse{
+        val result=backendApi.retrofitService.addRating(AddRating(ratingNumber=ratingNumber,region=region, recipeId = recipeId, accessToken = authTokens.accessToken, refreshToken = authTokens.refreshToken))
+        if(result.newTokens!=null){
+            authTokens=result.newTokens
+            preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+        }
+        return result
+    }
 }

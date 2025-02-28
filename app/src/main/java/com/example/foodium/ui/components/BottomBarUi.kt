@@ -11,21 +11,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.foodium.R
 import com.example.foodium.navigation.RootGraph
 
-data class TopLevelRoute(val name: String, val route: String, val icon: ImageVector)
+data class TopLevelRoute(val name: String, val route: String, val icon: ImageVector?=null,
+    val painterIconId:Int?=null)
 
 @Composable
 fun BottomBarUi(modifier: Modifier = Modifier, navController: NavHostController) {
     val topLevelRoutes = listOf(
-        TopLevelRoute("Home", RootGraph.Home.name, Icons.Default.Home),
-        TopLevelRoute("CNN", RootGraph.ImageClassifier.name, Icons.Default.Build),
-        TopLevelRoute("Scanner", RootGraph.BarCodeScanner.name, Icons.Default.Info)
+        TopLevelRoute(name="Home", route=RootGraph.Home.name, icon=Icons.Default.Home),
+        TopLevelRoute(name="CNN", route=RootGraph.ImageClassifier.name, painterIconId = R.drawable.image_search_24dp_e8eaed_fill0_wght400_grad0_opsz24),
+        TopLevelRoute(name="Scanner", route=RootGraph.BarCodeScanner.name, painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24)
 
     )
 
@@ -37,7 +41,16 @@ fun BottomBarUi(modifier: Modifier = Modifier, navController: NavHostController)
 
             topLevelRoutes.forEach { topLevelRoute ->
                 NavigationBarItem(
-                    icon = { Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name) },
+                    icon = {
+                        if(topLevelRoute.icon!=null){
+                            Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name)
+
+                        }else if(topLevelRoute.painterIconId!=null){
+                            Icon(painter= painterResource(topLevelRoute.painterIconId), contentDescription = topLevelRoute.name)
+
+                        }
+
+                    },
                     label = { Text(topLevelRoute.name) },
                     selected = currentDestination?.hierarchy?.any {
                         it.route == topLevelRoute.route
