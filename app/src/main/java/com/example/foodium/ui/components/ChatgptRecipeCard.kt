@@ -35,7 +35,7 @@ fun ChatgptRecipeCard(
         onClick = {onRecipeInfoClick(recipe)},
         modifier = modifier
             .width(500.dp) // Ensuring uniform width
-            .height(250.dp) // Ensuring uniform height
+            .height(350.dp) // Ensuring uniform height
             .padding(8.dp)
     ) {
         Column(
@@ -79,7 +79,7 @@ fun ChatgptRecipeCard(
 
             // Ingredients Snippet
             Text(
-                text = "Ingredients: ${recipe.ingredients.take(3).joinToString(", ")}...",
+                text = "Ingredients: ${recipe.ingredients.take(5).joinToString(", ")}...",
                 fontSize = 12.sp,
                 color = Color.Gray,
                 maxLines = 2,

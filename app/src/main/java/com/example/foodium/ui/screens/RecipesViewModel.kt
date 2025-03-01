@@ -10,6 +10,8 @@ import androidx.paging.cachedIn
 import com.example.foodium.models.KenyanRecipe
 import com.example.foodium.models.WorldwideRecipe
 import com.example.foodium.repository.Repository
+import com.example.foodium.ui.components.snackbarconfig.SnackbarController
+import com.example.foodium.ui.components.snackbarconfig.SnackbarEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -78,6 +80,11 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             _addRatingState.value=try {
                 repository.addRating(ratingNumber=ratingNumber,region=region,recipeId=recipeId)
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(
+                        message = "login successful",
+                    )
+                )
                 AddRatingState.Success
 
             }catch (e:HttpException){
@@ -94,6 +101,11 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             _addReviewState.value=try {
                 repository.addReview(reviewText=reviewText,region=region,recipeId=recipeId)
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(
+                        message = "login successful",
+                    )
+                )
                 AddReviewState.Success
 
             }catch (e:HttpException){
