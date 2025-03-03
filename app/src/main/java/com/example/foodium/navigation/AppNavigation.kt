@@ -11,6 +11,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.example.foodium.domain.Classification
+import com.example.foodium.ui.components.KenyanRecipeInfo
 import com.example.foodium.ui.screens.AddHealthAttributes
 import com.example.foodium.ui.screens.AddOauthUsername
 import com.example.foodium.ui.screens.AuthViewModel
@@ -36,8 +37,8 @@ enum class RootGraph {
     HomeGraph,
     ImageClassifier,
     BarCodeScanner,
-    RecipeInfo
-
+    RecipeInfo,
+    KenyanRecipeInfo
 }
 
 
@@ -143,7 +144,9 @@ fun AppNavigation(
                         }
                     },
                     recipesViewModel = recipesViewModel,
-                    onRecipeInfoClick = {navController.navigate(RootGraph.RecipeInfo.name)}
+                    onRecipeInfoClick = {navController.navigate(RootGraph.RecipeInfo.name)
+                    },
+                    onKenyanRecipeInfoClick = {navController.navigate(RootGraph.KenyanRecipeInfo.name)}
                 )
             }
             composable(route=RootGraph.ImageClassifier.name){
@@ -155,6 +158,9 @@ fun AppNavigation(
             }
             composable(route=RootGraph.RecipeInfo.name) {
                 RecipeInfo(modifier=modifier,recipesViewModel=recipesViewModel)
+            }
+            composable(route=RootGraph.KenyanRecipeInfo.name) {
+                KenyanRecipeInfo(modifier=modifier,recipesViewModel=recipesViewModel)
             }
         }
     }

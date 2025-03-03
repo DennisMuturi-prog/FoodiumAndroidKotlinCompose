@@ -15,7 +15,7 @@ import com.example.foodium.ui.components.snackbarconfig.SnackbarEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.io.IOException
+import okio.IOException
 
 
 sealed interface CurrentWorldwideRecipeState {
@@ -113,7 +113,8 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
                 AddReviewState.Error(errorMessage)
 
             }catch (e:IOException){
-                AddReviewState.Error(e.toString())
+                val errorMessage=e.message?:"io error"
+                AddReviewState.Error(errorMessage)
             }
         }
     }

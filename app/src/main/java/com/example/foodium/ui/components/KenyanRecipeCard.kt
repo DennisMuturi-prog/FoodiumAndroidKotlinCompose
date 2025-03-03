@@ -1,6 +1,5 @@
 package com.example.foodium.ui.components
 
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,18 +20,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.models.KenyanRecipe
 
 @Composable
-fun ChatgptRecipeCard(
-    recipe: WorldwideRecipe,
+fun KenyanRecipeCard(
+    recipe: KenyanRecipe,
     modifier: Modifier = Modifier,
-    onRecipeInfoClick:(WorldwideRecipe)->Unit
+    onRecipeInfoClick: (KenyanRecipe) -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        onClick = {onRecipeInfoClick(recipe)},
+        onClick = { onRecipeInfoClick(recipe) },
         modifier = modifier
             .width(500.dp) // Ensuring uniform width
             .height(300.dp) // Ensuring uniform height
@@ -79,7 +78,7 @@ fun ChatgptRecipeCard(
 
             // Ingredients Snippet
             Text(
-                text = "Ingredients: ${recipe.ingredients.take(5).joinToString(", ")}...",
+                text = "Ingredients: ${recipe.parsedIngredientsList.take(5).joinToString(", ")}...",
                 fontSize = 12.sp,
                 color = Color.Gray,
                 maxLines = 2,
@@ -90,6 +89,3 @@ fun ChatgptRecipeCard(
         }
     }
 }
-
-
-

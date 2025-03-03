@@ -43,7 +43,7 @@ data class KenyanRecipe(
     @SerialName("recipe_name")
     val recipeName: String,
     @SerialName("recipe_rating")
-    val recipeRating: Int,
+    val recipeRating: Float,
     @SerialName("supplementary_ingredients")
     val supplementaryIngredients: String,
     @SerialName("supplementary_instructions")

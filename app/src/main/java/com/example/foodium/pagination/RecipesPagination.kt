@@ -1,10 +1,10 @@
 package com.example.foodium.pagination
 
-import com.example.foodium.network.BackendApi
 import androidx.paging.PagingSource
-import com.example.foodium.models.KenyanRecipe
 import androidx.paging.PagingState
+import com.example.foodium.models.KenyanRecipe
 import com.example.foodium.network.AuthTokens
+import com.example.foodium.network.BackendApi
 import com.example.foodium.network.RecipesRequest
 import retrofit2.HttpException
 import java.io.IOException
@@ -27,7 +27,7 @@ class RecipesPagination(
         val startKey = params.key ?: STARTING_KEY
         return try {
             val recipesResult = api.retrofitService.getKenyanRecipes(RecipesRequest(region = "kenyan", numberOfResults = 10, next = startKey, accessToken =authTokens.accessToken, refreshToken = authTokens.refreshToken ))
-            val previousKey=recipesResult.previous
+            val previousKey=if(startKey== STARTING_KEY) null else recipesResult.previous
             val nextKey = recipesResult.next
             LoadResult.Page(
                 data = recipesResult.results,

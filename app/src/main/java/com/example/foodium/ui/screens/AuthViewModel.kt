@@ -12,9 +12,11 @@ import com.example.foodium.repository.Repository
 import com.example.foodium.ui.components.snackbarconfig.SnackbarAction
 import com.example.foodium.ui.components.snackbarconfig.SnackbarController
 import com.example.foodium.ui.components.snackbarconfig.SnackbarEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okio.IOException
+import java.io.IOException
 import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 sealed interface AuthState {
     data object Success : AuthState
@@ -109,7 +111,7 @@ class AuthViewModel(
 
     private fun getAuthTokensFromServer() {
         _landingAuthState.value = AuthState.Loading
-        viewModelScope.launch {
+        viewModelScope.launch{
             _landingAuthState.value = try {
                 val result = repository.getAuthTokensFromServer()
                 if (result == "authenticated") {
@@ -117,6 +119,18 @@ class AuthViewModel(
                 } else {
                     AuthState.NotAuthenticated
                 }
+            } catch (e: SocketTimeoutException) {
+                // Handle timeout (e.g., show a message to the user)
+                SnackbarController.sendEvent(
+                    event=SnackbarEvent(
+                        message = "connection timed out",
+                        action = SnackbarAction(
+                            name = "retry",
+                            action = {getAuthTokensFromServer()}
+                        )
+                    )
+                )
+                AuthState.Error(e.toString())
             } catch (e: HttpException) {
                 val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
                 AuthState.Error(errorMessage)
