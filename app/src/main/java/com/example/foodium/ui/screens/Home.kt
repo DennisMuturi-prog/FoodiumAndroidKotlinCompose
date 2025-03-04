@@ -15,9 +15,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.foodium.ui.components.ChatgptRecipeCard
 import com.example.foodium.ui.components.KenyanRecipeCard
+import com.example.foodium.ui.components.RecipesSearchBar
 
 @Composable
 fun Home(
@@ -40,6 +42,8 @@ fun Home(
             else -> Unit
         }
     }
+    val searchResults by recipesViewModel.searchResults.collectAsStateWithLifecycle()
+
 
 
 
@@ -54,6 +58,7 @@ fun Home(
             }
 
         }
+        RecipesSearchBar(searchResults =searchResults, searchQuery = recipesViewModel.searchQuery, onSearchQueryChange = {recipesViewModel.onSearchQueryChange(it)})
         Row {
             TextButton (onClick = {
                 currentRegion="Kenyan"

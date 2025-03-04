@@ -95,4 +95,11 @@ data class AddReviewResponse(
     val task:String,
     val newTokens:AuthTokens?=null
 )
+@Serializable
+data class Search(
+    val searchTerm:String,
+    val region:String,
+    val accessToken: String,
+    val refreshToken: String
+)
 

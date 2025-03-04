@@ -1,7 +1,9 @@
 package com.example.foodium.network
 
+import com.example.foodium.models.KenyanRecipeSearchResults
 import com.example.foodium.models.KenyanRecipes
 import com.example.foodium.models.OpenFoodFactsData
+import com.example.foodium.models.WorldwideRecipeSearchResults
 import com.example.foodium.models.WorldwideRecipes
 import retrofit2.Retrofit
 import retrofit2.http.Body
@@ -40,8 +42,11 @@ interface BackendApiService {
     @POST("addRating")
     suspend fun  addRating(@Body rating:AddRating):AddReviewResponse
 
+    @POST("searchRecipes")
+    suspend fun searchKenyanRecipes(@Body search:Search):KenyanRecipeSearchResults
 
-
+    @POST("searchRecipes")
+    suspend fun searchWorldwideRecipes(@Body search:Search):WorldwideRecipeSearchResults
 
 }
 interface OpenFoodFactsService {
