@@ -85,6 +85,16 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
+    //server sent events
+    // Okhttp
+
+    // Server Sent Events
+    implementation ("com.squareup.okhttp3:okhttp-sse:4.9.3")
+    testImplementation ("com.squareup.okhttp3:okhttp-sse:4.9.3")
+
+    // Gson
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.accompanistPermissions)
