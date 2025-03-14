@@ -31,6 +31,7 @@ import com.example.foodium.data.TfLiteFoodClassifier
 import com.example.foodium.domain.Classification
 import com.example.foodium.navigation.AppNavigation
 import com.example.foodium.presentation.FoodImageAnalyzer
+import com.example.foodium.serverSentEvents.NewReviewsViewModel
 import com.example.foodium.ui.components.BottomBarUi
 import com.example.foodium.ui.components.snackbarconfig.ObserveAsEvents
 import com.example.foodium.ui.components.snackbarconfig.SnackbarController
@@ -93,6 +94,11 @@ class MainActivity : ComponentActivity() {
                     OpenFoodFactsViewModel(MyApplication.appContainer.repository)
                 }
             )
+            val newReviewsViewModel= viewModel<NewReviewsViewModel>(
+                factory = viewModelFactory {
+                    NewReviewsViewModel()
+                }
+            )
             val navController = rememberNavController()
             FoodiumTheme {
                 val snackbarHostState = remember {
@@ -109,7 +115,7 @@ class MainActivity : ComponentActivity() {
                         val result = snackbarHostState.showSnackbar(
                             message = event.message,
                             actionLabel = event.action?.name,
-                            duration = SnackbarDuration.Long
+                            duration = SnackbarDuration.Short
                         )
 
                         if(result == SnackbarResult.ActionPerformed) {
@@ -129,7 +135,7 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                    AppNavigation(modifier=Modifier.padding(innerPadding),authViewModel=authViewModel, navController = navController,recipesViewModel=recipesViewModel,controller=controller,classifications=classifications,
-                       openFoodFactsViewModel = openFoodFactsViewModel)
+                       openFoodFactsViewModel = openFoodFactsViewModel, newReviewsViewModel = newReviewsViewModel)
                 }
             }
         }

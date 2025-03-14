@@ -38,7 +38,7 @@ fun RecipesSearchBar(
                 onSearch = { expanded = false },
                 expanded = expanded,
                 onExpandedChange = { expanded = it },
-                placeholder = { Text("search text") },
+                placeholder = { Text("search recipe") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 trailingIcon = { Icon(Icons.Default.MoreVert, contentDescription = null) },
                 query = searchQuery,

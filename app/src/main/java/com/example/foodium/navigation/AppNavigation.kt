@@ -11,6 +11,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.example.foodium.domain.Classification
+import com.example.foodium.serverSentEvents.NewReviewsViewModel
 import com.example.foodium.ui.components.KenyanRecipeInfo
 import com.example.foodium.ui.screens.AddHealthAttributes
 import com.example.foodium.ui.screens.AddOauthUsername
@@ -50,7 +51,8 @@ fun AppNavigation(
     recipesViewModel: RecipesViewModel,
     controller: LifecycleCameraController,
     classifications: List<Classification>,
-    openFoodFactsViewModel: OpenFoodFactsViewModel
+    openFoodFactsViewModel: OpenFoodFactsViewModel,
+    newReviewsViewModel: NewReviewsViewModel
 ) {
     NavHost(navController, startDestination = RootGraph.AuthGraph.name) {
         navigation(
@@ -157,7 +159,7 @@ fun AppNavigation(
                 BarCodeScannerScreen(modifier=modifier,openFoodFactsViewModel=openFoodFactsViewModel)
             }
             composable(route=RootGraph.RecipeInfo.name) {
-                RecipeInfo(modifier=modifier,recipesViewModel=recipesViewModel)
+                RecipeInfo(modifier=modifier,recipesViewModel=recipesViewModel,newReviewsViewModel=newReviewsViewModel)
             }
             composable(route=RootGraph.KenyanRecipeInfo.name) {
                 KenyanRecipeInfo(modifier=modifier,recipesViewModel=recipesViewModel)

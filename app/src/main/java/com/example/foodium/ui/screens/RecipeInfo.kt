@@ -21,12 +21,15 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.foodium.R
 import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.serverSentEvents.NewReviewsViewModel
+import com.example.foodium.serverSentEvents.SSEEventData
 import com.example.foodium.ui.components.AddReview
 import com.example.foodium.ui.components.LoadingCircle
+import com.example.foodium.ui.components.NewReviews
 import com.example.foodium.ui.components.RatingStar
 
 @Composable
-fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel) {
+fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel,newReviewsViewModel: NewReviewsViewModel) {
     val currentRecipeState = recipesViewModel.currentWorldwideRecipeState.observeAsState()
     val addReviewState = recipesViewModel.addReviewState.observeAsState()
     val addRatingState = recipesViewModel.addRatingState.observeAsState()
@@ -72,6 +75,7 @@ fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel
 
             null -> {}
         }
+        NewReviews(newReviewsViewModel=newReviewsViewModel)
 
 
     }

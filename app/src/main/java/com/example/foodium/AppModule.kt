@@ -11,7 +11,7 @@ import retrofit2.Retrofit
 
 
 private const val BASE_URL =
-    "https://nodejsbackend-g0f5g7ddh0eqekff.southafricanorth-01.azurewebsites.net"
+    "https://335c-102-219-210-254.ngrok-free.app"
 private const val OPEN_FOOD_FACTS_BASE_URL=
     "https://world.openfoodfacts.net"
 class AppContainer(private val appContext: Context) {
@@ -20,7 +20,7 @@ class AppContainer(private val appContext: Context) {
     }
     private val retrofit by lazy {
         Retrofit.Builder()
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .baseUrl(BASE_URL)
             .build()
     }

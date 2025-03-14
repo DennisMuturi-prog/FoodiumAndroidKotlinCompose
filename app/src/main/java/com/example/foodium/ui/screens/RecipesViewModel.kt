@@ -150,7 +150,7 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
                 repository.addReview(reviewText = reviewText, region = region, recipeId = recipeId)
                 SnackbarController.sendEvent(
                     event = SnackbarEvent(
-                        message = "login successful",
+                        message = "review added successful",
                     )
                 )
                 AddReviewState.Success

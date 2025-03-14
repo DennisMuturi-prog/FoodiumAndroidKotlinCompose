@@ -22,14 +22,13 @@ class SSERepository(private val recipeId:String,private val accessToken:String,p
         .readTimeout(10, TimeUnit.MINUTES)
         .writeTimeout(10, TimeUnit.MINUTES)
         .build()
-    private val jsonMediaType = "application/json".toMediaType()
-    private val requestBody = """{"recipeId": "$recipeId","accessToken:"$accessToken","refreshToken:"$refreshToken"}""".toRequestBody(jsonMediaType)
+//    private val jsonMediaType = "application/json".toMediaType()
+//    private val requestBody = """{"recipeId": "$recipeId","accessToken:"$accessToken","refreshToken:"$refreshToken"}""".toRequestBody(jsonMediaType)
 
     private val sseRequest = Request.Builder()
         .url(EVENTS_URL)
         .header("Accept", "application/json")
         .addHeader("Accept", "text/event-stream")
-        .post(requestBody)
         .build()
 
     var sseEventsFlow = MutableStateFlow(SSEEventData(STATUS.NONE))
@@ -47,7 +46,7 @@ class SSERepository(private val recipeId:String,private val accessToken:String,p
             super.onEvent(eventSource, id, type, data)
             Log.d(TAG, "onEvent: $data")
             if (data.isNotEmpty()) {
-                val reviewData = Gson().fromJson(data, SSEEventData::class.java)
+                val reviewData = Gson().fromJson(data, SSEEventResponse::class.java)
                 val event = SSEEventData(STATUS.SUCCESS, reviewText = reviewData.reviewText, reviewerName = reviewData.reviewerName,
                     createdAt = reviewData.createdAt)
                 sseEventsFlow.tryEmit(event)
@@ -89,7 +88,7 @@ class SSERepository(private val recipeId:String,private val accessToken:String,p
 
     companion object {
         private const val TAG = "SSERepository"
-        private const val EVENTS_URL = "http://10.0.2.2:3000/images"
+        private const val EVENTS_URL = "https://335c-102-219-210-254.ngrok-free.app/reviewsEvent"
     }
 
 }
