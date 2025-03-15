@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.foodium.models.KenyanRecipe
+import com.example.foodium.models.RecipeReview
 import com.example.foodium.models.WorldwideRecipe
 import com.example.foodium.repository.Repository
 import com.example.foodium.ui.components.snackbarconfig.SnackbarController

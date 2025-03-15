@@ -33,11 +33,10 @@ fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel
     val currentRecipeState = recipesViewModel.currentWorldwideRecipeState.observeAsState()
     val addReviewState = recipesViewModel.addReviewState.observeAsState()
     val addRatingState = recipesViewModel.addRatingState.observeAsState()
-    val scrollState = rememberScrollState()
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
         when (val result = addReviewState.value) {
@@ -72,11 +71,11 @@ fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel
                         recipeId = result.currentWorldwideRecipe.uuid
                     )
                 },
+                newReviewsViewModel=newReviewsViewModel
             )
 
             null -> {}
         }
-        NewReviews(newReviewsViewModel = newReviewsViewModel)
     }
 
 
@@ -88,6 +87,7 @@ fun RecipeDetails(
     recipe: WorldwideRecipe,
     onSendReview: (String) -> Unit,
     onSendRating: (Int) -> Unit,
+    newReviewsViewModel: NewReviewsViewModel
 ) {
 
     Text(text = recipe.recipeName, fontSize = 32.sp)
@@ -249,6 +249,7 @@ fun RecipeDetails(
     AddReview(onSend = {
         onSendReview(it)
     })
+    NewReviews(newReviewsViewModel = newReviewsViewModel, recipeId = recipe.uuid)
 
 
 }

@@ -15,12 +15,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.foodium.models.OpenFoodFactsData
+import com.example.foodium.models.RecipeReview
 import com.example.foodium.models.WorldwideRecipe
 import com.example.foodium.network.AddRating
 import com.example.foodium.network.AddReview
 import com.example.foodium.network.AddReviewResponse
 import com.example.foodium.network.OpenFoodFactsApi
 import com.example.foodium.network.Search
+import com.example.foodium.pagination.ReviewsPagination
 import com.example.foodium.pagination.WorldwideRecipesPagination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -146,6 +148,12 @@ class Repository(
             pagingSourceFactory = { WorldwideRecipesPagination(backendApi,authTokens) }
         ).flow
     }
+    fun getRecipeReviews(recipeId: String):Flow<PagingData<RecipeReview>>{
+        return Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = { ReviewsPagination(api = backendApi,authTokens=authTokens,recipeId= recipeId) }
+        ).flow
+    }
     suspend fun getFoodInfo(barcode:String):OpenFoodFactsData{
         return openFoodFactsApi.openFoodFactsService.getFoodInfo(barCodeString = barcode)
     }
@@ -177,4 +185,6 @@ class Repository(
         return flowOf(result.results)
 
     }
+
+
 }

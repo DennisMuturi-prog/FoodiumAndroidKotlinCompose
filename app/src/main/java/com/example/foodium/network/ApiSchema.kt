@@ -103,3 +103,13 @@ data class Search(
     val refreshToken: String
 )
 
+@Serializable
+data class RecipeReviewsFetch(
+    val region:String,
+    val next:String,
+    val recipeId:String,
+    val numberOfResults: Int,
+    val accessToken:String,
+    val refreshToken: String
+)
+

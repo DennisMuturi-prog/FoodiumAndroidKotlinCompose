@@ -96,7 +96,7 @@ class MainActivity : ComponentActivity() {
             )
             val newReviewsViewModel= viewModel<NewReviewsViewModel>(
                 factory = viewModelFactory {
-                    NewReviewsViewModel(MyApplication.appContainer.sseRepository)
+                    NewReviewsViewModel(sseRepository = MyApplication.appContainer.sseRepository, repository = MyApplication.appContainer.repository)
                 }
             )
             val navController = rememberNavController()
