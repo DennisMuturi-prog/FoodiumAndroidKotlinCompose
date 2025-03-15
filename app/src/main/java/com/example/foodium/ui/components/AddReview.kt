@@ -1,5 +1,6 @@
 package com.example.foodium.ui.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.Button
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 fun AddReview(modifier: Modifier = Modifier,onSend:(String)->Unit) {
     var review by remember {mutableStateOf("")}
     TextField(
+        modifier = Modifier.fillMaxWidth(),
         value = review,
         onValueChange = {review=it},
         placeholder = {Text("write a review")}
@@ -29,6 +31,7 @@ fun AddReview(modifier: Modifier = Modifier,onSend:(String)->Unit) {
        Icon(imageVector = Icons.AutoMirrored.Filled.Send,
            contentDescription = "send"
            )
+        Text("review")
 
     }
 

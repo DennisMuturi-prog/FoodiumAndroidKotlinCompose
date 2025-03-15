@@ -31,6 +31,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -89,11 +90,12 @@ dependencies {
     // Okhttp
 
     // Server Sent Events
-    implementation ("com.squareup.okhttp3:okhttp-sse:4.9.3")
-    testImplementation ("com.squareup.okhttp3:okhttp-sse:4.9.3")
+    implementation (libs.okhttp.sse)
+    testImplementation (libs.okhttp.sse)
 
     // Gson
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation (libs.converter.gson)
+
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
@@ -107,6 +109,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
 
 }
