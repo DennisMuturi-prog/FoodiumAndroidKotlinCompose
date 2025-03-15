@@ -16,7 +16,7 @@ import okhttp3.sse.EventSourceListener
 import okhttp3.sse.EventSources
 
 
-class SSERepository(private val recipeId:String,private val accessToken:String,private val refreshToken:String) {
+class SSERepository() {
     private val sseClient = OkHttpClient.Builder()
         .connectTimeout(6, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.MINUTES)

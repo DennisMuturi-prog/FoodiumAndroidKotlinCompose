@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.foodium.network.BackendApi
 import com.example.foodium.network.OpenFoodFactsApi
 import com.example.foodium.repository.Repository
+import com.example.foodium.serverSentEvents.SSERepository
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -32,6 +33,7 @@ class AppContainer(private val appContext: Context) {
     }
     private val openFoodFactsAPi by lazy {OpenFoodFactsApi(openFoodFactsRetrofit)}
     private val backendApi by lazy { BackendApi(retrofit) }
+    val sseRepository by lazy {SSERepository()}
     private val preferencesDataStore by lazy { FoodiumPreferencesStore(appContext) }
     val repository by lazy {Repository(backendApi=backendApi,preferencesDataStore=preferencesDataStore,openFoodFactsApi=openFoodFactsAPi)
     }

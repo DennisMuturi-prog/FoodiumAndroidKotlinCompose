@@ -12,10 +12,10 @@ import com.example.foodium.serverSentEvents.NewReviewsViewModel
 @Composable
 fun NewReviews(modifier: Modifier = Modifier, newReviewsViewModel: NewReviewsViewModel) {
     val newReviewsState = newReviewsViewModel.sseEvents.observeAsState()
-    LaunchedEffect(Unit) {
-        Log.d("launched foof","done")
-        newReviewsViewModel.getSSEEvents()
-    }
+//    LaunchedEffect(Unit) {
+//        Log.d("launched foof","done")
+//        newReviewsViewModel.getSSEEvents()
+//    }
     if (newReviewsState.value != null) {
         val newReviews = newReviewsState.value
         if (newReviews != null) {
