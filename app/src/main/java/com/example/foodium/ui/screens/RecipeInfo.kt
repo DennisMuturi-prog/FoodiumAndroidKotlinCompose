@@ -53,6 +53,7 @@ fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel
             null -> {}
         }
 
+
         when (val result = currentRecipeState.value) {
             is CurrentWorldwideRecipeState.Success -> RecipeDetails(
                 modifier = modifier,
@@ -75,9 +76,7 @@ fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel
 
             null -> {}
         }
-        NewReviews(newReviewsViewModel=newReviewsViewModel)
-
-
+        NewReviews(newReviewsViewModel = newReviewsViewModel)
     }
 
 

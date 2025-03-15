@@ -22,8 +22,7 @@ class SSERepository(private val recipeId:String,private val accessToken:String,p
         .readTimeout(10, TimeUnit.MINUTES)
         .writeTimeout(10, TimeUnit.MINUTES)
         .build()
-//    private val jsonMediaType = "application/json".toMediaType()
-//    private val requestBody = """{"recipeId": "$recipeId","accessToken:"$accessToken","refreshToken:"$refreshToken"}""".toRequestBody(jsonMediaType)
+
 
     private val sseRequest = Request.Builder()
         .url(EVENTS_URL)
@@ -48,16 +47,8 @@ class SSERepository(private val recipeId:String,private val accessToken:String,p
             if (data.isNotEmpty()) {
                 val reviewData = Gson().fromJson(data, SSEEventResponse::class.java)
                 val event = SSEEventData(STATUS.SUCCESS, reviewText = reviewData.reviewText, reviewerName = reviewData.reviewerName,
-                    createdAt = reviewData.createdAt)
+                    createdAt = reviewData.createdAt, recipeId = reviewData.recipeId)
                 sseEventsFlow.tryEmit(event)
-//                if (data.startsWith("[") && data.endsWith("]")) {
-//                    val listType: Type = object : TypeToken<List<SSEEventData>>() {}.type
-//                    val imageData = Gson().fromJson<List<SSEEventData>>(data, listType).asReversed()
-//                    val event = SSEEventData(STATUS.SUCCESS, image = imageData.firstOrNull()?.image)
-//                    sseEventsFlow.tryEmit(event)
-//                } else if (data.startsWith("{") && data.endsWith("}")) {
-//
-//                }
             }
         }
 
@@ -78,6 +69,7 @@ class SSERepository(private val recipeId:String,private val accessToken:String,p
     }
 
     init {
+        Log.d("created sse","one")
         initEventSource()
     }
 

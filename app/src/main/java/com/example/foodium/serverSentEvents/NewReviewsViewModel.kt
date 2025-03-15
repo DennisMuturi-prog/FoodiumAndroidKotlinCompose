@@ -20,10 +20,15 @@ class NewReviewsViewModel: ViewModel() {
     fun getSSEEvents() = viewModelScope.launch {
         repository.sseEventsFlow
             .onEach { sseEventData ->
-                Log.d("SSE",sseEventData.toString())
+                Log.d("SSE trial",sseEventData.toString())
                 _sseEvents.value=(_sseEvents.value?: emptyList())+sseEventData
+                val myList=_sseEvents.value
+                if (myList != null) {
+                    Log.d("array size",myList.size.toString())
+                }
             }
             .catch {
+                Log.d("error hot","error hot")
                 _sseEvents.value= (_sseEvents.value?: emptyList())+ SSEEventData(status = STATUS.ERROR)
             }
             .launchIn(viewModelScope)

@@ -1,5 +1,6 @@
 package com.example.foodium.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import com.example.foodium.serverSentEvents.NewReviewsViewModel
 fun NewReviews(modifier: Modifier = Modifier, newReviewsViewModel: NewReviewsViewModel) {
     val newReviewsState = newReviewsViewModel.sseEvents.observeAsState()
     LaunchedEffect(Unit) {
+        Log.d("launched foof","done")
         newReviewsViewModel.getSSEEvents()
     }
     if (newReviewsState.value != null) {
