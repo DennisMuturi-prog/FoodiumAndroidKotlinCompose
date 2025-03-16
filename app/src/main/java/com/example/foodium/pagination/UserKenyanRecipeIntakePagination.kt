@@ -1,45 +1,45 @@
 package com.example.foodium.pagination
 
 import android.util.Log
-import com.example.foodium.network.BackendApi
 import androidx.paging.PagingSource
-import com.example.foodium.models.WorldwideRecipe
 import androidx.paging.PagingState
+import com.example.foodium.models.UserIntake
+import com.example.foodium.models.UserKenyanIntake
 import com.example.foodium.network.AuthTokens
-import com.example.foodium.network.RecipesRequest
+import com.example.foodium.network.BackendApi
+import com.example.foodium.network.UserRecipeIntakeRequest
 import retrofit2.HttpException
 import java.io.IOException
 
-class WorldwideRecipesPagination(
+class KenyanRecipesIntakePagination(
     private val api: BackendApi,
     private val authTokens: AuthTokens,
     private val updateAuthTokens:(AuthTokens)->Unit
-) : PagingSource<String, WorldwideRecipe>() {
+) : PagingSource<String, UserKenyanIntake>() {
     companion object {
         private const val STARTING_KEY = "first page"
     }
 
-    override fun getRefreshKey(state: PagingState<String, WorldwideRecipe>): String? {
+    override fun getRefreshKey(state: PagingState<String, UserKenyanIntake>): String? {
         return state.anchorPosition?.let {
             state.closestItemToPosition(it)?.uuid
         }
     }
 
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, WorldwideRecipe> {
+    override suspend fun load(params: LoadParams<String>): LoadResult<String, UserKenyanIntake> {
         val startKey = params.key ?: STARTING_KEY
         return try {
-            val recipesResult = api.retrofitService.getWorldwideRecipes(RecipesRequest(region = "worldwide", numberOfResults = params.loadSize, next = startKey, accessToken =authTokens.accessToken, refreshToken = authTokens.refreshToken ))
-            val previousKey=if(startKey== STARTING_KEY) null else recipesResult.previous
-            val nextKey = recipesResult.next
-            if(recipesResult.newTokens!=null){
-                updateAuthTokens(recipesResult.newTokens)
+            val recipesIntakeResult = api.retrofitService.fetchUserKenyanRecipeIntake(UserRecipeIntakeRequest(region = "kenyan", next = startKey, accessToken =authTokens.accessToken, refreshToken = authTokens.refreshToken ))
+            val previousKey=if(startKey== STARTING_KEY) null else recipesIntakeResult.previous
+            val nextKey = recipesIntakeResult.next
+            if(recipesIntakeResult.newTokens!=null){
+                updateAuthTokens(recipesIntakeResult.newTokens)
             }
             LoadResult.Page(
-                data = recipesResult.results,
+                data = recipesIntakeResult.results,
                 prevKey = previousKey,
                 nextKey = nextKey
             )
-
 
 
         } catch (e: IOException) {

@@ -6,14 +6,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class WorldwideRecipes(
-    @SerialName("previous")
-    val previous: String?=null,
+data class UserKenyanRecipeIntake(
+    @SerialName("newTokens")
+    val newTokens: AuthTokens?=null,
     @SerialName("next")
     val next: String,
+    @SerialName("previous")
+    val previous: String,
     @SerialName("results")
-    val results: List<WorldwideRecipe>,
-
-    @SerialName("newTokens")
-    val newTokens: AuthTokens?=null
+    val results: List<UserKenyanIntake>
 )

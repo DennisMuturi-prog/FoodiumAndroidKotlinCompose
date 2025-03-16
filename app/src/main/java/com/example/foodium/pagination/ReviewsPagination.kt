@@ -17,7 +17,9 @@ class ReviewsPagination(
     private val api: BackendApi,
     private val authTokens: AuthTokens,
     private val recipeId:String,
-    private val region: String
+    private val region: String,
+    private val updateAuthTokens:(AuthTokens)->Unit
+
 ) : PagingSource<String, RecipeReview>() {
     companion object {
         private const val STARTING_KEY = "first page"
@@ -32,11 +34,14 @@ class ReviewsPagination(
     override suspend fun load(params: LoadParams<String>): LoadResult<String, RecipeReview> {
         val startKey = params.key ?: STARTING_KEY
         return try {
-            val recipesResult = api.retrofitService.getRecipeReviews(RecipeReviewsFetch(region = region, numberOfResults = params.loadSize, next = startKey, recipeId = recipeId, accessToken =authTokens.accessToken, refreshToken = authTokens.refreshToken ))
-            val previousKey=if(startKey== STARTING_KEY) null else recipesResult.previous
-            val nextKey = recipesResult.next
+            val recipeReviewsResult = api.retrofitService.getRecipeReviews(RecipeReviewsFetch(region = region, numberOfResults = params.loadSize, next = startKey, recipeId = recipeId, accessToken =authTokens.accessToken, refreshToken = authTokens.refreshToken ))
+            val previousKey=if(startKey== STARTING_KEY) null else recipeReviewsResult.previous
+            val nextKey = recipeReviewsResult.next
+            if(recipeReviewsResult.newTokens!=null){
+                updateAuthTokens(recipeReviewsResult.newTokens)
+            }
             LoadResult.Page(
-                data = recipesResult.results,
+                data = recipeReviewsResult.results,
                 prevKey = previousKey,
                 nextKey = nextKey
             )

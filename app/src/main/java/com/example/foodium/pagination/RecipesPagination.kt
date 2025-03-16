@@ -11,7 +11,8 @@ import java.io.IOException
 
 class RecipesPagination(
     private val api: BackendApi,
-    private val authTokens: AuthTokens
+    private val authTokens: AuthTokens,
+    private val updateAuthTokens:(AuthTokens)->Unit
 ) : PagingSource<String, KenyanRecipe>() {
     companion object {
         private const val STARTING_KEY = "first page"
@@ -29,6 +30,9 @@ class RecipesPagination(
             val recipesResult = api.retrofitService.getKenyanRecipes(RecipesRequest(region = "kenyan", numberOfResults = 10, next = startKey, accessToken =authTokens.accessToken, refreshToken = authTokens.refreshToken ))
             val previousKey=if(startKey== STARTING_KEY) null else recipesResult.previous
             val nextKey = recipesResult.next
+            if(recipesResult.newTokens!=null){
+                updateAuthTokens(recipesResult.newTokens)
+            }
             LoadResult.Page(
                 data = recipesResult.results,
                 prevKey = previousKey,

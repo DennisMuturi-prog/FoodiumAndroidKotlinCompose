@@ -16,6 +16,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.foodium.models.OpenFoodFactsData
 import com.example.foodium.models.RecipeReview
+import com.example.foodium.models.UserIntake
+import com.example.foodium.models.UserKenyanIntake
+import com.example.foodium.models.UserRecipeIntake
 import com.example.foodium.models.WorldwideRecipe
 import com.example.foodium.network.AddRating
 import com.example.foodium.network.AddReview
@@ -23,7 +26,9 @@ import com.example.foodium.network.AddReviewResponse
 import com.example.foodium.network.OpenFoodFactsApi
 import com.example.foodium.network.RecipeIntakeAdd
 import com.example.foodium.network.Search
+import com.example.foodium.pagination.KenyanRecipesIntakePagination
 import com.example.foodium.pagination.ReviewsPagination
+import com.example.foodium.pagination.WorldwideRecipesIntakePagination
 import com.example.foodium.pagination.WorldwideRecipesPagination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -140,19 +145,42 @@ class Repository(
     fun getKenyanRecipes():Flow<PagingData<KenyanRecipe>>{
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = { RecipesPagination(backendApi,authTokens) }
+            pagingSourceFactory = { RecipesPagination(backendApi,authTokens, updateAuthTokens = {
+                authTokens=it
+            }) }
         ).flow
     }
     fun getWorldwideRecipes():Flow<PagingData<WorldwideRecipe>>{
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = { WorldwideRecipesPagination(backendApi,authTokens) }
+            pagingSourceFactory = { WorldwideRecipesPagination(backendApi,authTokens, updateAuthTokens = {
+                authTokens=it
+            }) }
         ).flow
     }
     fun getRecipeReviews(recipeId: String,region: String):Flow<PagingData<RecipeReview>>{
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = { ReviewsPagination(api = backendApi,authTokens=authTokens,recipeId= recipeId,region=region) }
+            pagingSourceFactory = { ReviewsPagination(api = backendApi,authTokens=authTokens,recipeId= recipeId,region=region,
+                updateAuthTokens = {
+                    authTokens=it
+                }) }
+        ).flow
+    }
+    fun getRecipeIntake():Flow<PagingData<UserIntake>>{
+        return Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = { WorldwideRecipesIntakePagination(api = backendApi,authTokens=authTokens, updateAuthTokens = {
+                authTokens=it
+            }) }
+        ).flow
+    }
+    fun getKenyanRecipeIntake():Flow<PagingData<UserKenyanIntake>>{
+        return Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = { KenyanRecipesIntakePagination(api = backendApi,authTokens=authTokens, updateAuthTokens = {
+                authTokens=it
+            }) }
         ).flow
     }
     suspend fun getFoodInfo(barcode:String):OpenFoodFactsData{

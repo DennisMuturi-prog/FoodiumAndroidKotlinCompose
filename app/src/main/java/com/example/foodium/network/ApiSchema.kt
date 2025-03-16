@@ -126,3 +126,11 @@ data class OnAddIntakeDetails(
     val region: String
 )
 
+@Serializable
+data class UserRecipeIntakeRequest(
+    val region: String,
+    val next:String,
+    val accessToken: String,
+    val refreshToken: String
+)
+

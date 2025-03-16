@@ -1,13 +1,14 @@
 package com.example.foodium.models
 
 
+import com.example.foodium.network.AuthTokens
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class KenyanRecipes(
     @SerialName("newTokens")
-    val newTokens: NewTokens?=null,
+    val newTokens: AuthTokens?=null,
     @SerialName("previous")
     val previous: String?=null,
     @SerialName("next")
