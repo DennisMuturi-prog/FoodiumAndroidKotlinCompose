@@ -12,17 +12,21 @@ import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,6 +37,7 @@ import com.example.foodium.navigation.AppNavigation
 import com.example.foodium.presentation.FoodImageAnalyzer
 import com.example.foodium.serverSentEvents.NewReviewsViewModel
 import com.example.foodium.ui.components.BottomBarUi
+import com.example.foodium.ui.components.CustomTopAppBar
 import com.example.foodium.ui.components.snackbarconfig.ObserveAsEvents
 import com.example.foodium.ui.components.snackbarconfig.SnackbarController
 import com.example.foodium.ui.screens.AuthViewModel
@@ -44,6 +49,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -123,13 +129,17 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+                val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
                 Scaffold(
+                    topBar = {
+                        CustomTopAppBar(navController=navController, authViewModel = authViewModel, scrollBehavior = scrollBehavior)
+                    },
                     snackbarHost = {
                         SnackbarHost(
                             hostState = snackbarHostState
                         )
                     },
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
                     bottomBar = {
                         BottomBarUi(navController=navController)
                     }

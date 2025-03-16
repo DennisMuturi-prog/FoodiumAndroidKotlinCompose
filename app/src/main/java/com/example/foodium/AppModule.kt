@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 
 
 private const val BASE_URL =
-    "https://335c-102-219-210-254.ngrok-free.app"
+    "https://a1a5-102-219-210-254.ngrok-free.app"
 private const val OPEN_FOOD_FACTS_BASE_URL=
     "https://world.openfoodfacts.net"
 class AppContainer(private val appContext: Context) {

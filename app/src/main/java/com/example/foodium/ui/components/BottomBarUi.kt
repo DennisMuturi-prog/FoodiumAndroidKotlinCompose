@@ -32,10 +32,11 @@ fun BottomBarUi(modifier: Modifier = Modifier, navController: NavHostController)
         TopLevelRoute(name="Scanner", route=RootGraph.BarCodeScanner.name, painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24)
 
     )
+    val homeGraphRoutes = listOf(RootGraph.WorldwideRecipes.name,RootGraph.KenyanRecipes.name)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val bottomBarDestination = topLevelRoutes.any { it.route == currentDestination?.route }
+    val bottomBarDestination = topLevelRoutes.any { it.route == currentDestination?.route } || homeGraphRoutes.contains(currentDestination?.route)
     if (bottomBarDestination) {
         NavigationBar {
 

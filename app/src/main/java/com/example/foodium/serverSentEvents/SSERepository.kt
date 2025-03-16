@@ -80,7 +80,7 @@ class SSERepository() {
 
     companion object {
         private const val TAG = "SSERepository"
-        private const val EVENTS_URL = "https://335c-102-219-210-254.ngrok-free.app/reviewsEvent"
+        private const val EVENTS_URL = "https://a1a5-102-219-210-254.ngrok-free.app/reviewsEvent"
     }
 
 }
