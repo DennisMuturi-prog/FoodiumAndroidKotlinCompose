@@ -1,5 +1,6 @@
 package com.example.foodium.network
 
+import com.example.foodium.models.AddRecipeIntakeResponse
 import com.example.foodium.models.KenyanRecipeSearchResults
 import com.example.foodium.models.KenyanRecipes
 import com.example.foodium.models.OpenFoodFactsData
@@ -51,6 +52,9 @@ interface BackendApiService {
 
     @POST("getRecipeReviews")
     suspend fun getRecipeReviews(@Body recipe:RecipeReviewsFetch):Reviews
+
+    @POST("addRecipeIntake")
+    suspend fun addRecipeIntake(@Body recipeIntake:RecipeIntakeAdd):AddRecipeIntakeResponse
 
 }
 interface OpenFoodFactsService {

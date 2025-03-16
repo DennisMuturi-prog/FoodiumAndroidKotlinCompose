@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class RecipeReview(
     @SerialName("created_at")
     val createdAt: String,
-    @SerialName("review_text")
+    @SerialName("reviewText")
     val reviewText: String,
     @SerialName("username")
     val username: String,

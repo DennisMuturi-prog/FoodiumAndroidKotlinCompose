@@ -162,7 +162,7 @@ fun AppNavigation(
                 RecipeInfo(modifier=modifier,recipesViewModel=recipesViewModel,newReviewsViewModel=newReviewsViewModel)
             }
             composable(route=RootGraph.KenyanRecipeInfo.name) {
-                KenyanRecipeInfo(modifier=modifier,recipesViewModel=recipesViewModel)
+                KenyanRecipeInfo(modifier=modifier,recipesViewModel=recipesViewModel,newReviewsViewModel=newReviewsViewModel)
             }
         }
     }

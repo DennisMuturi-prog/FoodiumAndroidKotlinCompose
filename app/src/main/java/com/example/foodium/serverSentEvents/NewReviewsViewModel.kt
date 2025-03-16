@@ -1,5 +1,6 @@
 package com.example.foodium.serverSentEvents
 
+import android.graphics.Region
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,13 +22,13 @@ class NewReviewsViewModel(private val sseRepository:SSERepository,
     private val _sseEvents = MutableLiveData<List<SSEEventData>>()
     val sseEvents:LiveData<List<SSEEventData>> = _sseEvents
     var reviews: Flow<PagingData<RecipeReview>> =
-        repository.getRecipeReviews("01948f0f-6846-77f7-99c8-479951831682").cachedIn(viewModelScope)
+        repository.getRecipeReviews("01948f0f-6846-77f7-99c8-479951831682","kenyan").cachedIn(viewModelScope)
 
     init{
         getSSEEvents()
     }
-    fun changeToCurrentRecipeReviews(recipeId:String){
-        reviews=repository.getRecipeReviews(recipeId).cachedIn(viewModelScope)
+    fun changeToCurrentRecipeReviews(recipeId:String,region: String){
+        reviews=repository.getRecipeReviews(recipeId=recipeId,region=region).cachedIn(viewModelScope)
     }
 
     private fun getSSEEvents() = viewModelScope.launch {

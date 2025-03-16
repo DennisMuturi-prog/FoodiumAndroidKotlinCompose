@@ -24,18 +24,20 @@ import java.time.ZonedDateTime
 
 
 @Composable
-fun NewReviews(modifier: Modifier = Modifier, newReviewsViewModel: NewReviewsViewModel,recipeId:String) {
+fun NewReviews(modifier: Modifier = Modifier, newReviewsViewModel: NewReviewsViewModel,recipeId:String,region:String) {
     val newReviewsState = newReviewsViewModel.sseEvents.observeAsState()
     LaunchedEffect(Unit) {
-        newReviewsViewModel.changeToCurrentRecipeReviews(recipeId)
+        newReviewsViewModel.changeToCurrentRecipeReviews(recipeId,region)
     }
     val recipeReviews=newReviewsViewModel.reviews.collectAsLazyPagingItems()
     if (newReviewsState.value != null) {
         val newReviews = newReviewsState.value
         if (newReviews != null) {
             newReviews.forEach { review ->
-                review.reviewText?.let { Text(it) }
-                review.reviewerName?.let { Text(it) }
+                if(review.reviewText!=null && review.reviewerName!=null && review.createdAt!=null && review.recipeId==recipeId){
+                    YoutubeStyleReviewItem(reviewText = review.reviewText, reviewerName = review.reviewerName, createdAt = convertDateToAFormat(review.createdAt))
+
+                }
             }
         }
 

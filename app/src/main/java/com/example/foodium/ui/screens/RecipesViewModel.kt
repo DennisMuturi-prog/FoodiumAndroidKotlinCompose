@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.foodium.models.AddRecipeIntakeResponse
 import com.example.foodium.models.KenyanRecipe
 import com.example.foodium.models.RecipeReview
 import com.example.foodium.models.WorldwideRecipe
@@ -51,6 +52,11 @@ sealed interface AddReviewState {
     data class Error(val message: String) : AddReviewState
     data object Loading : AddReviewState
 }
+sealed interface AddRecipeIntakeState {
+    data object Success : AddRecipeIntakeState
+    data class Error(val message: String) : AddRecipeIntakeState
+    data object Loading : AddRecipeIntakeState
+}
 
 class RecipesViewModel(private val repository: Repository) : ViewModel() {
     var searchQuery by mutableStateOf("")
@@ -83,7 +89,8 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
     val addRatingState: LiveData<AddRatingState> = _addRatingState
     private val _addReviewState = MutableLiveData<AddReviewState>()
     val addReviewState: LiveData<AddReviewState> = _addReviewState
-
+    private val _addRecipeIntakeState = MutableLiveData<AddRecipeIntakeState>()
+    val addRecipeIntakeState: LiveData<AddRecipeIntakeState> = _addRecipeIntakeState
 
     init {
         getTokens()
@@ -136,9 +143,15 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
 
             } catch (e: HttpException) {
                 val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = errorMessage)
+                )
                 AddRatingState.Error(errorMessage)
 
             } catch (e: IOException) {
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = "connection error")
+                )
                 AddRatingState.Error(e.toString())
             }
         }
@@ -158,13 +171,48 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
 
             } catch (e: HttpException) {
                 val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = errorMessage)
+                )
                 AddReviewState.Error(errorMessage)
 
             } catch (e: IOException) {
                 val errorMessage = e.message ?: "io error"
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = "connection error")
+                )
                 AddReviewState.Error(errorMessage)
             }
         }
+    }
+    fun addRecipeIntake(recipeId: String,region: String){
+        _addRecipeIntakeState.value=AddRecipeIntakeState.Loading
+        viewModelScope.launch {
+            _addRecipeIntakeState.value=try {
+                repository.addRecipeIntake(recipeId=recipeId,region=region)
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = "added to your intake successful")
+                )
+                AddRecipeIntakeState.Success
+
+            }catch (e:HttpException){
+                val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = errorMessage)
+                )
+
+                AddRecipeIntakeState.Error(errorMessage)
+
+            }catch (e:IOException){
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = "connection error")
+                )
+                AddRecipeIntakeState.Error(e.toString())
+
+            }
+        }
+
+
     }
 
 }

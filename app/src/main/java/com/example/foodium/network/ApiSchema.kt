@@ -113,3 +113,16 @@ data class RecipeReviewsFetch(
     val refreshToken: String
 )
 
+@Serializable
+data class RecipeIntakeAdd(
+    val region:String,
+    val recipeId:String,
+    val accessToken: String,
+    val refreshToken: String
+)
+@Serializable
+data class OnAddIntakeDetails(
+    val recipeId: String,
+    val region: String
+)
+

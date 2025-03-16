@@ -21,6 +21,7 @@ import com.example.foodium.network.AddRating
 import com.example.foodium.network.AddReview
 import com.example.foodium.network.AddReviewResponse
 import com.example.foodium.network.OpenFoodFactsApi
+import com.example.foodium.network.RecipeIntakeAdd
 import com.example.foodium.network.Search
 import com.example.foodium.pagination.ReviewsPagination
 import com.example.foodium.pagination.WorldwideRecipesPagination
@@ -148,10 +149,10 @@ class Repository(
             pagingSourceFactory = { WorldwideRecipesPagination(backendApi,authTokens) }
         ).flow
     }
-    fun getRecipeReviews(recipeId: String):Flow<PagingData<RecipeReview>>{
+    fun getRecipeReviews(recipeId: String,region: String):Flow<PagingData<RecipeReview>>{
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = { ReviewsPagination(api = backendApi,authTokens=authTokens,recipeId= recipeId) }
+            pagingSourceFactory = { ReviewsPagination(api = backendApi,authTokens=authTokens,recipeId= recipeId,region=region) }
         ).flow
     }
     suspend fun getFoodInfo(barcode:String):OpenFoodFactsData{
@@ -184,6 +185,15 @@ class Repository(
         }
         return flowOf(result.results)
 
+    }
+    suspend fun addRecipeIntake(recipeId:String,region: String){
+        val result=backendApi.retrofitService.addRecipeIntake(RecipeIntakeAdd(recipeId  = recipeId, region = region, accessToken = authTokens.accessToken, refreshToken = authTokens.refreshToken))
+        if(result.newTokens!=null){
+            authTokens=result.newTokens
+            preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+
+        }
     }
 
 

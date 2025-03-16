@@ -249,7 +249,7 @@ fun RecipeDetails(
     AddReview(onSend = {
         onSendReview(it)
     })
-    NewReviews(newReviewsViewModel = newReviewsViewModel, recipeId = recipe.uuid)
+    NewReviews(newReviewsViewModel = newReviewsViewModel, recipeId = recipe.uuid, region = "worldwide")
 
 
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -22,6 +23,8 @@ import coil3.compose.AsyncImage
 import com.example.foodium.R
 import com.example.foodium.models.KenyanRecipe
 import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.network.OnAddIntakeDetails
+import com.example.foodium.serverSentEvents.NewReviewsViewModel
 import com.example.foodium.ui.components.AddReview
 import com.example.foodium.ui.components.LoadingCircle
 import com.example.foodium.ui.components.RatingStar
@@ -31,11 +34,18 @@ import com.example.foodium.ui.screens.CurrentKenyanRecipeState
 import com.example.foodium.ui.screens.CurrentWorldwideRecipeState
 import com.example.foodium.ui.screens.RecipesViewModel
 
+
+
 @Composable
-fun KenyanRecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel) {
+fun KenyanRecipeInfo(
+    modifier: Modifier = Modifier,
+    recipesViewModel: RecipesViewModel,
+    newReviewsViewModel: NewReviewsViewModel
+) {
     val currentRecipeState = recipesViewModel.currentKenyanRecipeState.observeAsState()
     val addReviewState = recipesViewModel.addReviewState.observeAsState()
     val addRatingState = recipesViewModel.addRatingState.observeAsState()
+    val addRecipeIntakeState = recipesViewModel.addRecipeIntakeState.observeAsState()
     val scrollState = rememberScrollState()
     Column(
         modifier = modifier
@@ -45,7 +55,7 @@ fun KenyanRecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesVie
     ) {
         when (val result = addReviewState.value) {
             is AddReviewState.Success -> {}
-            is AddReviewState.Error -> Text(result.message,color= Color.Red)
+            is AddReviewState.Error -> Text(result.message, color = Color.Red)
             is AddReviewState.Loading -> LoadingCircle()
             null -> {}
         }
@@ -74,6 +84,10 @@ fun KenyanRecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesVie
                         recipeId = result.currentKenyanRecipe.uuid
                     )
                 },
+                newReviewsViewModel = newReviewsViewModel,
+                onAddIntake = {
+                    recipesViewModel.addRecipeIntake(recipeId = it.recipeId, region = it.region)
+                }
             )
 
             null -> {}
@@ -91,9 +105,14 @@ fun KenyanRecipeDetails(
     recipe: KenyanRecipe,
     onSendReview: (String) -> Unit,
     onSendRating: (Int) -> Unit,
+    newReviewsViewModel: NewReviewsViewModel,
+    onAddIntake: (OnAddIntakeDetails) -> Unit
 ) {
 
     Text(text = recipe.recipeName, fontSize = 32.sp)
+    Button(onClick = { onAddIntake(OnAddIntakeDetails(recipeId = recipe.uuid, region = "kenyan")) }) {
+        Text("add to my intake")
+    }
     AsyncImage(
         model = recipe.imageUrl,
         contentDescription = recipe.recipeName
@@ -106,7 +125,7 @@ fun KenyanRecipeDetails(
         RatingStar(rating = recipe.recipeRating, isIndicator = true)
     }
     Text("About", fontSize = 25.sp)
-    Text(text=recipe.about)
+    Text(text = recipe.about)
     Text(text = "Ingredients", fontSize = 25.sp)
     recipe.parsedIngredientsList.forEach { ingredient ->
         Text(text = ingredient)
@@ -210,6 +229,7 @@ fun KenyanRecipeDetails(
     AddReview(onSend = {
         onSendReview(it)
     })
+    NewReviews(newReviewsViewModel = newReviewsViewModel, recipeId = recipe.uuid, region = "kenyan")
 
 
 }
