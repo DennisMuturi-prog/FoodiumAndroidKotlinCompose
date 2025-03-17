@@ -68,8 +68,7 @@ fun Login(modifier: Modifier = Modifier,
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-            val result=authViewModel.loginUser(LoginData(username, password))
-            Log.d("register response", result.toString())
+            authViewModel.loginUser(LoginData(username, password))
             },
             enabled = authState.value !is AuthState.Loading
         )
@@ -79,7 +78,7 @@ fun Login(modifier: Modifier = Modifier,
         when(val result=authState.value){
             is AuthState.Error->Text(text=result.message)
             is AuthState.Loading-> LoadingCircle()
-            is AuthState.Success->{}
+            is AuthState.Success->{Text("Successful login")}
             is AuthState.NotAuthenticated->{}
             null->{}
         }

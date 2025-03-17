@@ -10,6 +10,8 @@ data class UserIntake(
     val carbohydrateByDifference: Double,
     @SerialName("Carbohydrate_by_summation")
     val carbohydrateBySummation: Double,
+    @SerialName("created_at")
+    val createdAt:String,
     @SerialName("directions")
     val directions: List<String>,
     @SerialName("Energy")
@@ -57,3 +59,32 @@ data class UserIntake(
     @SerialName("Vitamin_D_D2_and_D3")
     val vitaminDD2AndD3: Double
 )
+
+fun UserIntake.toWorldwideRecipe(): WorldwideRecipe {
+    return WorldwideRecipe(
+        carbohydrateByDifference = this.carbohydrateByDifference,
+        carbohydrateBySummation = this.carbohydrateBySummation,
+        directions = this.directions,
+        energy = this.energy,
+        fiberTotalDietary = this.fiberTotalDietary,
+        imageUrl = this.imageUrl,
+        ingredients = this.ingredients,
+        ironFe = this.ironFe,
+        nER = this.nER,
+        noOfRatings = this.noOfRatings,
+        protein = this.protein,
+        recipeName = this.recipeName,
+        recipeRating = this.recipeRating.toFloat(), // Convert Double to Float
+        retinol = this.retinol,
+        riboflavin = this.riboflavin,
+        starch = this.starch,
+        sugarsTotal = this.sugarsTotal,
+        totalFatNLEA = this.totalFatNLEA,
+        uuid = this.recipeUuid, // Use `recipeUuid` from `UserIntake` for `uuid`
+        vitaminARAE = this.vitaminARAE,
+        vitaminB12 = this.vitaminB12,
+        vitaminCTotalAscorbicAcid = this.vitaminCTotalAscorbicAcid,
+        vitaminD4 = this.vitaminD4,
+        vitaminDD2AndD3 = this.vitaminDD2AndD3
+    )
+}

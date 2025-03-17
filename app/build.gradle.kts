@@ -63,7 +63,7 @@ dependencies {
     // Kotlin serialization
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.navigation.compose.v284)
+//    implementation(libs.androidx.navigation.compose.v284)
 
 
     implementation(libs.androidx.camera.core)

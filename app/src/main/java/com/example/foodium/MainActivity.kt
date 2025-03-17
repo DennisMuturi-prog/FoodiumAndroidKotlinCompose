@@ -34,6 +34,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.foodium.data.TfLiteFoodClassifier
 import com.example.foodium.domain.Classification
 import com.example.foodium.navigation.AppNavigation
+import com.example.foodium.navigation.RootNav
 import com.example.foodium.presentation.FoodImageAnalyzer
 import com.example.foodium.serverSentEvents.NewReviewsViewModel
 import com.example.foodium.ui.components.BottomBarUi
@@ -60,29 +61,29 @@ class MainActivity : ComponentActivity() {
         }
         enableEdgeToEdge()
         setContent {
-            var classifications by remember {
-                mutableStateOf(emptyList<Classification>())
-            }
-            val analyzer = remember {
-                FoodImageAnalyzer(
-                    classifier = TfLiteFoodClassifier(
-                        context = applicationContext
-                    ),
-                    onResults = {
-                        classifications = it
-                    }
-                )
-            }
-            val controller = remember {
-                LifecycleCameraController(applicationContext).apply {
-                    setEnabledUseCases(CameraController.IMAGE_ANALYSIS)
-                    imageAnalysisOutputImageFormat=ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888
-                    setImageAnalysisAnalyzer(
-                        ContextCompat.getMainExecutor(applicationContext),
-                        analyzer
-                    )
-                }
-            }
+//            var classifications by remember {
+//                mutableStateOf(emptyList<Classification>())
+//            }
+//            val analyzer = remember {
+//                FoodImageAnalyzer(
+//                    classifier = TfLiteFoodClassifier(
+//                        context = applicationContext
+//                    ),
+//                    onResults = {
+//                        classifications = it
+//                    }
+//                )
+//            }
+//            val controller = remember {
+//                LifecycleCameraController(applicationContext).apply {
+//                    setEnabledUseCases(CameraController.IMAGE_ANALYSIS)
+//                    imageAnalysisOutputImageFormat=ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888
+//                    setImageAnalysisAnalyzer(
+//                        ContextCompat.getMainExecutor(applicationContext),
+//                        analyzer
+//                    )
+//                }
+//            }
 
 
             val authViewModel=viewModel<AuthViewModel>(
@@ -95,17 +96,22 @@ class MainActivity : ComponentActivity() {
                     RecipesViewModel(MyApplication.appContainer.repository)
                 }
             )
-            val openFoodFactsViewModel= viewModel<OpenFoodFactsViewModel>(
-                factory = viewModelFactory {
-                    OpenFoodFactsViewModel(MyApplication.appContainer.repository)
-                }
-            )
-            val newReviewsViewModel= viewModel<NewReviewsViewModel>(
-                factory = viewModelFactory {
-                    NewReviewsViewModel(sseRepository = MyApplication.appContainer.sseRepository, repository = MyApplication.appContainer.repository)
-                }
-            )
-            val navController = rememberNavController()
+//            val openFoodFactsViewModel= viewModel<OpenFoodFactsViewModel>(
+//                factory = viewModelFactory {
+//                    OpenFoodFactsViewModel(MyApplication.appContainer.repository)
+//                }
+//            )
+//            val newReviewsViewModel= viewModel<NewReviewsViewModel>(
+//                factory = viewModelFactory {
+//                    NewReviewsViewModel(sseRepository = MyApplication.appContainer.sseRepository, repository = MyApplication.appContainer.repository)
+//                }
+//            )
+//            val navController = rememberNavController()
+//            val authViewModel = viewModel<AuthViewModel>(
+//                factory = viewModelFactory {
+//                    AuthViewModel(MyApplication.appContainer.repository)
+//                }
+//            )
             FoodiumTheme {
                 val snackbarHostState = remember {
                     SnackbarHostState()
@@ -129,24 +135,25 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-                val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-                Scaffold(
-                    topBar = {
-                        CustomTopAppBar(navController=navController, authViewModel = authViewModel, scrollBehavior = scrollBehavior)
-                    },
-                    snackbarHost = {
-                        SnackbarHost(
-                            hostState = snackbarHostState
-                        )
-                    },
-                    modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
-                    bottomBar = {
-                        BottomBarUi(navController=navController)
-                    }
-                ) { innerPadding ->
-                   AppNavigation(modifier=Modifier.padding(innerPadding),authViewModel=authViewModel, navController = navController,recipesViewModel=recipesViewModel,controller=controller,classifications=classifications,
-                       openFoodFactsViewModel = openFoodFactsViewModel, newReviewsViewModel = newReviewsViewModel)
-                }
+                RootNav(authViewModel=authViewModel,recipesViewModel=recipesViewModel,snackbarHostState=snackbarHostState)
+//                val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+//                Scaffold(
+//                    topBar = {
+//                        CustomTopAppBar(navController=navController, authViewModel = authViewModel, scrollBehavior = scrollBehavior)
+//                    },
+//                    snackbarHost = {
+//                        SnackbarHost(
+//                            hostState = snackbarHostState
+//                        )
+//                    },
+//                    modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
+//                    bottomBar = {
+//                        BottomBarUi(navController=navController)
+//                    }
+//                ) { innerPadding ->
+//                   AppNavigation(modifier=Modifier.padding(innerPadding),authViewModel=authViewModel, navController = navController,recipesViewModel=recipesViewModel,controller=controller,classifications=classifications,
+//                       openFoodFactsViewModel = openFoodFactsViewModel, newReviewsViewModel = newReviewsViewModel)
+//                }
             }
         }
     }

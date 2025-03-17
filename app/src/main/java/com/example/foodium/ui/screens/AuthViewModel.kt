@@ -41,7 +41,6 @@ class AuthViewModel(
     init {
         getAuthTokensFromServer()
     }
-
     fun registerUser(userData: RegisterData) {
         _authState.value = AuthState.Loading
         viewModelScope.launch {
@@ -144,6 +143,7 @@ class AuthViewModel(
 
     fun logout() {
         _authState.value = AuthState.NotAuthenticated
+        _landingAuthState.value =AuthState.NotAuthenticated
         viewModelScope.launch {
             repository.logout()
             SnackbarController.sendEvent(

@@ -17,30 +17,32 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.foodium.navigation.RootGraph
+import com.example.foodium.navigation.ScreenRoutes
 import com.example.foodium.ui.screens.AuthState
 import com.example.foodium.ui.screens.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar(modifier: Modifier = Modifier,navController:NavHostController,authViewModel: AuthViewModel,scrollBehavior: TopAppBarScrollBehavior) {
-    val topLevelRoutes= listOf("Home","RecipeInfo","KenyanRecipeInfo","KenyanRecipes","WorldwideRecipes")
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
+fun CustomTopAppBar(modifier: Modifier = Modifier,navController:NavHostController,authViewModel: AuthViewModel,scrollBehavior: TopAppBarScrollBehavior,logout:()->Unit) {
+    val topLevelRoutes= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route)
+    val navBackStackEntry by  navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val bottomBarDestination = topLevelRoutes.any { it == currentDestination?.route }
     val authState = authViewModel.authState.observeAsState()
-    LaunchedEffect(authState.value) {
-        when (authState.value) {
-            is AuthState.NotAuthenticated -> navController.navigate(RootGraph.Login.name) {
-                            popUpTo(route = RootGraph.HomeGraph.name) {
-                                inclusive = true
-                            }
-                        }
-            else -> Unit
-        }
-    }
+//    LaunchedEffect(authState.value) {
+//        when (authState.value) {
+//            is AuthState.NotAuthenticated -> navController.navigate(RootGraph.Login.name) {
+//                            popUpTo(route = RootGraph.HomeGraph.name) {
+//                                inclusive = true
+//                            }
+//                        }
+//            else -> Unit
+//        }
+//    }
     if(bottomBarDestination){
 //        if(currentDestination?.route==RootGraph.RecipeInfo.name){
 //            TopAppBar(
@@ -81,12 +83,30 @@ fun CustomTopAppBar(modifier: Modifier = Modifier,navController:NavHostControlle
             title = {
                 Row {
                     TextButton(onClick = {
-                        navController.navigate(RootGraph.KenyanRecipes.name)
+                        navController.navigate(ScreenRoutes.KenyanRecipesScreen.route){
+                            navController.graph.startDestinationRoute?.let { route->
+                                popUpTo(route) {
+                                    saveState =true
+                                }
+                                launchSingleTop=true
+                                restoreState=true
+
+                            }
+                        }
                     }) {
                         Text("kenyan recipes")
                     }
                     TextButton(onClick = {
-                        navController.navigate(RootGraph.WorldwideRecipes.name)
+                        navController.navigate(ScreenRoutes.WorldRecipesScreen.route){
+                            navController.graph.startDestinationRoute?.let { route->
+                                popUpTo(route) {
+                                    saveState =true
+                                }
+                                launchSingleTop=true
+                                restoreState=true
+
+                            }
+                        }
                     }) {
                         Text("worldwide recipes")
                     }
@@ -101,7 +121,7 @@ fun CustomTopAppBar(modifier: Modifier = Modifier,navController:NavHostControlle
             },
             actions = {
                 IconButton(onClick = {
-                    navController.navigate(RootGraph.Search.name)
+                    navController.navigate(ScreenRoutes.SearchScreen.route)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -110,6 +130,7 @@ fun CustomTopAppBar(modifier: Modifier = Modifier,navController:NavHostControlle
                 }
                 TextButton(onClick = {
                     authViewModel.logout()
+                    logout()
                 }) {
                     Text("logout")
                 }

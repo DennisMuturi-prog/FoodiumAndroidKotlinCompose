@@ -10,6 +10,8 @@ data class UserKenyanIntake(
     val about: String,
     @SerialName("carbohydrates(g)")
     val carbohydratesg: Double,
+    @SerialName("created_at")
+    val createdAt:String,
     @SerialName("energy(kcal)")
     val energykcal: Int,
     @SerialName("F_factor_est")
@@ -53,3 +55,32 @@ data class UserKenyanIntake(
     @SerialName("zinc(mg)")
     val zincmg: Double
 )
+
+fun UserKenyanIntake.toKenyanRecipe(): KenyanRecipe {
+    return KenyanRecipe(
+        about = this.about,
+        carbohydratesg = this.carbohydratesg,
+        energykcal = this.energykcal,
+        fFactorEst = this.fFactorEst,
+        fatg = this.fatg,
+        fibreg = this.fibreg,
+        imageUrl = this.imageUrl,
+        ingredients = this.ingredients,
+        ingridients = this.ingridients,
+        instructions = this.instructions,
+        ironmg = this.ironmg,
+        noOfRatings = 0, // Default since UserKenyanIntake doesn't have this field
+        nutritionPer100gOfRecipe = this.nutritionPer100gOfRecipe,
+        page = this.page,
+        parsedIngredientsList = this.parsedIngredientsList,
+        preparation = this.preparation,
+        proteinsg = this.proteinsg,
+        recipeName = this.recipeName,
+        recipeRating = 0.0f, // Default since UserKenyanIntake doesn't have this field
+        supplementaryIngredients = this.supplementaryIngredients,
+        supplementaryInstructions = this.supplementaryInstructions,
+        uuid = this.recipeUuid, // Mapping `recipe_uuid` from UserKenyanIntake to `uuid`
+        vitaminAmcg = this.vitaminAmcg,
+        zincmg = this.zincmg
+    )
+}

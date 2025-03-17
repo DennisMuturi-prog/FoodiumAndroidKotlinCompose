@@ -140,38 +140,19 @@ fun AppNavigation(
             }
 
         }
-        navigation(startDestination = RootGraph.Home.name, route = RootGraph.HomeGraph.name) {
-            navigation(startDestination = RootGraph.KenyanRecipes.name,route=RootGraph.Home.name){
-                composable(route=RootGraph.KenyanRecipes.name){
-                    KenyanRecipesScreen(modifier=modifier,recipesViewModel = recipesViewModel, onKenyanRecipeInfoClick ={navController.navigate(RootGraph.KenyanRecipeInfo.name)} )
+        navigation(startDestination = RootGraph.KenyanRecipes.name, route = RootGraph.HomeGraph.name) {
+            composable(route=RootGraph.KenyanRecipes.name){
+                KenyanRecipesScreen(modifier=modifier,recipesViewModel = recipesViewModel, onKenyanRecipeInfoClick ={navController.navigate(RootGraph.KenyanRecipeInfo.name)} )
 
-
-                }
-                composable(route=RootGraph.WorldwideRecipes.name){
-                    WorldwideRecipesScreen(modifier=modifier,recipesViewModel = recipesViewModel, onRecipeInfoClick = {navController.navigate(RootGraph.RecipeInfo.name)})
-                }
-                composable(route=RootGraph.Search.name){
-                    SearchScreen(recipesViewModel = recipesViewModel, modifier = modifier)
-                }
 
             }
-//            composable(route = RootGraph.Home.name) {
-//                Home(
-//                    modifier = modifier,
-//                    authViewModel = authViewModel,
-//                    onLogout = {
-//                        navController.navigate(RootGraph.Login.name) {
-//                            popUpTo(route = RootGraph.HomeGraph.name) {
-//                                inclusive = true
-//                            }
-//                        }
-//                    },
-//                    recipesViewModel = recipesViewModel,
-//                    onRecipeInfoClick = {navController.navigate(RootGraph.RecipeInfo.name)
-//                    },
-//                    onKenyanRecipeInfoClick = {navController.navigate(RootGraph.KenyanRecipeInfo.name)}
-//                )
-//            }
+            composable(route=RootGraph.WorldwideRecipes.name){
+                WorldwideRecipesScreen(modifier=modifier,recipesViewModel = recipesViewModel, onRecipeInfoClick = {navController.navigate(RootGraph.RecipeInfo.name)})
+            }
+            composable(route=RootGraph.Search.name){
+                SearchScreen(recipesViewModel = recipesViewModel, modifier = modifier)
+            }
+
             composable(route=RootGraph.ImageClassifier.name){
                 FoodClassifierScreen(modifier=modifier,classifications = classifications, controller = controller)
 

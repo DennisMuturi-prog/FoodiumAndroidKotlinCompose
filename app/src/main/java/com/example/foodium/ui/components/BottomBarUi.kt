@@ -20,6 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.foodium.R
 import com.example.foodium.navigation.RootGraph
+import com.example.foodium.navigation.ScreenRoutes
 
 data class TopLevelRoute(val name: String, val route: String, val icon: ImageVector?=null,
     val painterIconId:Int?=null)
@@ -27,9 +28,9 @@ data class TopLevelRoute(val name: String, val route: String, val icon: ImageVec
 @Composable
 fun BottomBarUi(modifier: Modifier = Modifier, navController: NavHostController) {
     val topLevelRoutes = listOf(
-        TopLevelRoute(name="Home", route=RootGraph.Home.name, icon=Icons.Default.Home),
-        TopLevelRoute(name="CNN", route=RootGraph.ImageClassifier.name, painterIconId = R.drawable.image_search_24dp_e8eaed_fill0_wght400_grad0_opsz24),
-        TopLevelRoute(name="Scanner", route=RootGraph.BarCodeScanner.name, painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24)
+        TopLevelRoute(name="Home", route=ScreenRoutes.KenyanRecipesScreen.route, icon=Icons.Default.Home),
+        TopLevelRoute(name="CNN", route=ScreenRoutes.CNNScreen.route, painterIconId = R.drawable.image_search_24dp_e8eaed_fill0_wght400_grad0_opsz24),
+        TopLevelRoute(name="Scanner", route=ScreenRoutes.BarcodeScannerScreen.route, painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24)
 
     )
     val homeGraphRoutes = listOf(RootGraph.WorldwideRecipes.name,RootGraph.KenyanRecipes.name)
