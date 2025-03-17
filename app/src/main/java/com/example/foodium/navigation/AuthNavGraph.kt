@@ -13,11 +13,7 @@ import com.example.foodium.ui.alternativeScreens.LoginScreen
 import com.example.foodium.ui.alternativeScreens.OauthUsernameScreen
 import com.example.foodium.ui.alternativeScreens.SignupScreen
 import com.example.foodium.ui.alternativeScreens.StartScreen
-import com.example.foodium.ui.screens.AddHealthAttributes
-import com.example.foodium.ui.screens.AddOauthUsername
 import com.example.foodium.ui.screens.AuthViewModel
-import com.example.foodium.ui.screens.LandingScreen
-import com.example.foodium.ui.screens.Login
 
 
 fun NavGraphBuilder.AuthNav(
@@ -47,28 +43,35 @@ fun NavGraphBuilder.AuthNav(
                 },
                 snackbarHostState = snackbarHostState
 
-                )
+            )
         }
-        composable(route=ScreenRoutes.SignUpScreen.route){
-            SignupScreen(authViewModel = authViewModel, onSuccessAuthentication = {
-                navController.navigate(ScreenRoutes.AddHealthAttributesScreen.route)
-            }, navigateToLogin = {
-                navController.navigate(ScreenRoutes.LoginScreen.route)
-            })
+        composable(route = ScreenRoutes.SignUpScreen.route) {
+            SignupScreen(
+                authViewModel = authViewModel,
+                onSuccessAuthentication = {
+                    navController.navigate(ScreenRoutes.AddHealthAttributesScreen.route)
+                },
+                navigateToLogin = {
+                    navController.navigate(ScreenRoutes.LoginScreen.route)
+                },
+                snackbarHostState = snackbarHostState
+            )
         }
         composable(route = ScreenRoutes.OauthUsernameScreen.route) {
             OauthUsernameScreen(
                 authViewModel = authViewModel,
                 onSuccessAddUsername = {
                     navController.navigate(ScreenRoutes.AddHealthAttributesScreen.route)
-                })
+                },
+                snackbarHostState = snackbarHostState)
         }
         composable(route = RootGraph.UserPreferences.name) {
             HealthAttributesScreen(
                 authViewModel = authViewModel,
                 onSuccessAddHealthAttributes = {
                     navController.navigate(ScreenRoutes.HomeNav.route)
-                })
+                },
+                snackbarHostState = snackbarHostState)
         }
         composable(
             route = "addUsername?accessToken={accessToken}&refreshToken={refreshToken}",
@@ -86,7 +89,8 @@ fun NavGraphBuilder.AuthNav(
             authViewModel.updatePreferencesDataStore(accessToken, refreshToken)
             OauthUsernameScreen(
                 authViewModel = authViewModel,
-                onSuccessAddUsername = { navController.navigate(ScreenRoutes.AddHealthAttributesScreen.route) })
+                onSuccessAddUsername = { navController.navigate(ScreenRoutes.AddHealthAttributesScreen.route) },
+                snackbarHostState = snackbarHostState)
         }
     }
 }

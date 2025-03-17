@@ -6,12 +6,11 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.foodium.ui.screens.AddHealthAttributes
 import com.example.foodium.ui.screens.AuthViewModel
 import com.example.foodium.ui.screens.Login
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier, authViewModel: AuthViewModel, onSuccessAuthentication:()->Unit,navigateToSignUp:()->Unit,
+fun LoginScreen(authViewModel: AuthViewModel, onSuccessAuthentication:()->Unit,navigateToSignUp:()->Unit,
                 snackbarHostState: SnackbarHostState) {
     Scaffold(
         snackbarHost = {

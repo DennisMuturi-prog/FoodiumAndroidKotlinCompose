@@ -13,10 +13,12 @@ import com.example.foodium.ui.screens.BarCodeScannerScreen
 import com.example.foodium.ui.screens.FoodClassifierScreen
 import com.example.foodium.ui.screens.KenyanRecipesScreen
 import com.example.foodium.ui.screens.RecipeInfo
+import com.example.foodium.ui.screens.RecipeIntakeScreen
 import com.example.foodium.ui.screens.RecipesViewModel
 import com.example.foodium.ui.screens.SearchScreen
 import com.example.foodium.ui.screens.WorldwideRecipesScreen
 import com.example.foodium.ui.viewmodels.OpenFoodFactsViewModel
+import com.example.foodium.ui.viewmodels.RecipeIntakeViewModel
 
 @Composable
 fun HomeNavGraph(
@@ -26,7 +28,8 @@ fun HomeNavGraph(
     openFoodFactsViewModel: OpenFoodFactsViewModel,
     controller: LifecycleCameraController,
     classifications:List<Classification>,
-    newReviewsViewModel: NewReviewsViewModel
+    newReviewsViewModel: NewReviewsViewModel,
+    recipeIntakeViewModel: RecipeIntakeViewModel
 
 ) {
     NavHost(
@@ -53,13 +56,16 @@ fun HomeNavGraph(
             BarCodeScannerScreen(openFoodFactsViewModel = openFoodFactsViewModel, modifier = modifier)
         }
         composable(route = ScreenRoutes.CNNScreen.route){
-            FoodClassifierScreen(controller=controller, classifications = classifications)
+            FoodClassifierScreen(controller=controller, classifications = classifications, modifier = modifier)
         }
         composable(route = ScreenRoutes.RecipeInfoScreen.route){
             RecipeInfo(recipesViewModel = recipesViewModel, modifier = modifier, newReviewsViewModel =newReviewsViewModel )
         }
         composable(route = ScreenRoutes.KenyanRecipeInfoScreen.route){
             KenyanRecipeInfo(recipesViewModel = recipesViewModel, modifier = modifier, newReviewsViewModel =newReviewsViewModel)
+        }
+        composable(route= ScreenRoutes.WorldwideRecipeIntakeScreen.route) {
+            RecipeIntakeScreen(modifier=modifier, recipeIntakeViewModel =recipeIntakeViewModel )
         }
 
     }

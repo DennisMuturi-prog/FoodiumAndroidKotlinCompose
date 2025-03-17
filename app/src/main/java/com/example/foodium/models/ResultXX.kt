@@ -13,7 +13,7 @@ data class UserKenyanIntake(
     @SerialName("created_at")
     val createdAt:String,
     @SerialName("energy(kcal)")
-    val energykcal: Int,
+    val energykcal: Double,
     @SerialName("F_factor_est")
     val fFactorEst: Double,
     @SerialName("fat(g)")

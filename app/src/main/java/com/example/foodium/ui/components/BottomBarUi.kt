@@ -1,17 +1,13 @@
 package com.example.foodium.ui.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -26,14 +22,16 @@ data class TopLevelRoute(val name: String, val route: String, val icon: ImageVec
     val painterIconId:Int?=null)
 
 @Composable
-fun BottomBarUi(modifier: Modifier = Modifier, navController: NavHostController) {
+fun BottomBarUi(navController: NavHostController) {
+
     val topLevelRoutes = listOf(
         TopLevelRoute(name="Home", route=ScreenRoutes.KenyanRecipesScreen.route, icon=Icons.Default.Home),
+        TopLevelRoute(name="Tracking", route=ScreenRoutes.KenyanRecipeIntakeScreen.route,painterIconId = R.drawable.monitoring_24dp_e8eaed_fill0_wght400_grad0_opsz24),
         TopLevelRoute(name="CNN", route=ScreenRoutes.CNNScreen.route, painterIconId = R.drawable.image_search_24dp_e8eaed_fill0_wght400_grad0_opsz24),
-        TopLevelRoute(name="Scanner", route=ScreenRoutes.BarcodeScannerScreen.route, painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24)
+        TopLevelRoute(name="Scanner", route=ScreenRoutes.BarcodeScannerScreen.route, painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24),
 
     )
-    val homeGraphRoutes = listOf(RootGraph.WorldwideRecipes.name,RootGraph.KenyanRecipes.name)
+    val homeGraphRoutes = listOf(ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

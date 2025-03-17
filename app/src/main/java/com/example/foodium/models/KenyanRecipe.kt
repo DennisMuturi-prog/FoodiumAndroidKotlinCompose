@@ -11,7 +11,7 @@ data class KenyanRecipe(
     @SerialName("carbohydrates(g)")
     val carbohydratesg: Double,
     @SerialName("energy(kcal)")
-    val energykcal: Int,
+    val energykcal: Double,
     @SerialName("F_factor_est")
     val fFactorEst: Double,
     @SerialName("fat(g)")

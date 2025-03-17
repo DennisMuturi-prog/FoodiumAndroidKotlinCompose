@@ -18,7 +18,6 @@ import com.example.foodium.ui.screens.AddOauthUsername
 import com.example.foodium.ui.screens.AuthViewModel
 import com.example.foodium.ui.screens.BarCodeScannerScreen
 import com.example.foodium.ui.screens.FoodClassifierScreen
-import com.example.foodium.ui.screens.Home
 import com.example.foodium.ui.screens.KenyanRecipesScreen
 import com.example.foodium.ui.screens.LandingScreen
 import com.example.foodium.ui.screens.Login

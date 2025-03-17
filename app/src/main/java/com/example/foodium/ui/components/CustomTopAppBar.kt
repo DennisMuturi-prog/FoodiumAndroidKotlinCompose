@@ -13,36 +13,19 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.foodium.navigation.RootGraph
 import com.example.foodium.navigation.ScreenRoutes
-import com.example.foodium.ui.screens.AuthState
 import com.example.foodium.ui.screens.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar(modifier: Modifier = Modifier,navController:NavHostController,authViewModel: AuthViewModel,scrollBehavior: TopAppBarScrollBehavior,logout:()->Unit) {
+fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel,scrollBehavior: TopAppBarScrollBehavior,logout:()->Unit) {
     val topLevelRoutes= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route)
     val navBackStackEntry by  navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val bottomBarDestination = topLevelRoutes.any { it == currentDestination?.route }
-    val authState = authViewModel.authState.observeAsState()
-//    LaunchedEffect(authState.value) {
-//        when (authState.value) {
-//            is AuthState.NotAuthenticated -> navController.navigate(RootGraph.Login.name) {
-//                            popUpTo(route = RootGraph.HomeGraph.name) {
-//                                inclusive = true
-//                            }
-//                        }
-//            else -> Unit
-//        }
-//    }
     if(bottomBarDestination){
 //        if(currentDestination?.route==RootGraph.RecipeInfo.name){
 //            TopAppBar(

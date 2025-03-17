@@ -12,10 +12,10 @@ import com.example.foodium.ui.viewmodels.RecipeIntakeViewModel
 @Composable
 fun RecipeIntakeScreen(modifier: Modifier = Modifier,recipeIntakeViewModel: RecipeIntakeViewModel) {
     val userRecipeIntake=recipeIntakeViewModel.recipeIntake.collectAsLazyPagingItems()
-    LaunchedEffect(Unit) {
-        recipeIntakeViewModel.attachDataSource()
-
-    }
+//    LaunchedEffect(Unit) {
+//        recipeIntakeViewModel.attachDataSource()
+//
+//    }
     LazyColumn(
         modifier=modifier.fillMaxSize()
     ) {
