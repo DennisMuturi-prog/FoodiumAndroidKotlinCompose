@@ -11,6 +11,7 @@ import com.example.foodium.serverSentEvents.NewReviewsViewModel
 import com.example.foodium.ui.components.KenyanRecipeInfo
 import com.example.foodium.ui.screens.BarCodeScannerScreen
 import com.example.foodium.ui.screens.FoodClassifierScreen
+import com.example.foodium.ui.screens.KenyanRecipeIntakeScreen
 import com.example.foodium.ui.screens.KenyanRecipesScreen
 import com.example.foodium.ui.screens.RecipeInfo
 import com.example.foodium.ui.screens.RecipeIntakeScreen
@@ -65,7 +66,16 @@ fun HomeNavGraph(
             KenyanRecipeInfo(recipesViewModel = recipesViewModel, modifier = modifier, newReviewsViewModel =newReviewsViewModel)
         }
         composable(route= ScreenRoutes.WorldwideRecipeIntakeScreen.route) {
-            RecipeIntakeScreen(modifier=modifier, recipeIntakeViewModel =recipeIntakeViewModel )
+            RecipeIntakeScreen(modifier=modifier, recipeIntakeViewModel =recipeIntakeViewModel, moveToRecipeInfoScreen = {
+                recipesViewModel.changeCurrentRecipe(it)
+                navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
+            } )
+        }
+        composable(route= ScreenRoutes.KenyanRecipeIntakeScreen.route) {
+            KenyanRecipeIntakeScreen(modifier=modifier, recipeIntakeViewModel =recipeIntakeViewModel, moveToKenyanRecipeInfoScreen = {
+                recipesViewModel.changeCurrentKenyanRecipe(it)
+                navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
+            } )
         }
 
     }

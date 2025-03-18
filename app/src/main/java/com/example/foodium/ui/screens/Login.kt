@@ -78,7 +78,7 @@ fun Login(modifier: Modifier = Modifier,
         when(val result=authState.value){
             is AuthState.Error->Text(text=result.message)
             is AuthState.Loading-> LoadingCircle()
-            is AuthState.Success->{Text("Successful login")}
+            is AuthState.Success->{}
             is AuthState.NotAuthenticated->{}
             null->{}
         }

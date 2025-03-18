@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.foodium.R
 import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.network.OnAddIntakeDetails
 import com.example.foodium.serverSentEvents.NewReviewsViewModel
 import com.example.foodium.serverSentEvents.SSEEventData
 import com.example.foodium.ui.components.AddReview
@@ -71,7 +73,10 @@ fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel
                         recipeId = result.currentWorldwideRecipe.uuid
                     )
                 },
-                newReviewsViewModel=newReviewsViewModel
+                newReviewsViewModel=newReviewsViewModel,
+                onAddIntake = {
+                    recipesViewModel.addRecipeIntake(recipeId = it.recipeId, region = it.region)
+                }
             )
 
             null -> {}
@@ -87,10 +92,14 @@ fun RecipeDetails(
     recipe: WorldwideRecipe,
     onSendReview: (String) -> Unit,
     onSendRating: (Int) -> Unit,
-    newReviewsViewModel: NewReviewsViewModel
+    newReviewsViewModel: NewReviewsViewModel,
+    onAddIntake: (OnAddIntakeDetails) -> Unit
 ) {
 
     Text(text = recipe.recipeName, fontSize = 32.sp)
+    Button(onClick = { onAddIntake(OnAddIntakeDetails(recipeId = recipe.uuid, region = "worldwide")) }) {
+        Text("add to my intake")
+    }
     AsyncImage(
         model = recipe.imageUrl,
         contentDescription = recipe.recipeName

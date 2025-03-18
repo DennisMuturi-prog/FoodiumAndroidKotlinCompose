@@ -20,16 +20,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.example.foodium.models.KenyanRecipe
 import com.example.foodium.models.UserIntake
+import com.example.foodium.models.UserKenyanIntake
+import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.models.toKenyanRecipe
+import com.example.foodium.models.toWorldwideRecipe
 
 @Composable
-fun UserIntakeItem(userIntake: UserIntake, modifier: Modifier = Modifier) {
+fun UserIntakeItem(userIntake: UserIntake, modifier: Modifier = Modifier,moveToRecipeInfoScreen:(WorldwideRecipe)->Unit) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(8.dp),
+        onClick = {moveToRecipeInfoScreen(userIntake.toWorldwideRecipe())}
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
@@ -58,6 +64,50 @@ fun UserIntakeItem(userIntake: UserIntake, modifier: Modifier = Modifier) {
                 // Created At
                 Text(
                     text = "Created: ${userIntake.createdAt}",
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
+            }
+        }
+    }
+}
+@Composable
+fun UserKenyanRecipeIntakeItem(userIntake: UserKenyanIntake, modifier: Modifier = Modifier,moveToKenyanRecipeInfoScreen:(KenyanRecipe)->Unit) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        onClick = {moveToKenyanRecipeInfoScreen(userIntake.toKenyanRecipe())}
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Image (small thumbnail)
+            AsyncImage(
+                model = userIntake.imageUrl,
+                contentDescription = "Recipe Image",
+                modifier = Modifier
+                    .size(64.dp)
+                    .background(Color.Gray, RoundedCornerShape(50.dp))
+            )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column {
+                // Recipe Name
+                Text(
+                    text = userIntake.recipeName,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+
+                // Created At
+                Text(
+                    text = convertDateToAFormat(userIntake.createdAt),
                     fontSize = 14.sp,
                     color = Color.Gray
                 )

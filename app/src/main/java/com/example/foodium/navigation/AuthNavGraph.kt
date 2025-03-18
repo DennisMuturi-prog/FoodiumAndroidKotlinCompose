@@ -65,7 +65,7 @@ fun NavGraphBuilder.AuthNav(
                 },
                 snackbarHostState = snackbarHostState)
         }
-        composable(route = RootGraph.UserPreferences.name) {
+        composable(route = ScreenRoutes.AddHealthAttributesScreen.route) {
             HealthAttributesScreen(
                 authViewModel = authViewModel,
                 onSuccessAddHealthAttributes = {

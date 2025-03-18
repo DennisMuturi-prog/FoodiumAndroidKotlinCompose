@@ -18,24 +18,24 @@ import com.example.foodium.R
 import com.example.foodium.navigation.RootGraph
 import com.example.foodium.navigation.ScreenRoutes
 
-data class TopLevelRoute(val name: String, val route: String, val icon: ImageVector?=null,
+data class TopLevelRoute(val name: String, val route: List<String>, val icon: ImageVector?=null,
     val painterIconId:Int?=null)
 
 @Composable
 fun BottomBarUi(navController: NavHostController) {
 
     val topLevelRoutes = listOf(
-        TopLevelRoute(name="Home", route=ScreenRoutes.KenyanRecipesScreen.route, icon=Icons.Default.Home),
-        TopLevelRoute(name="Tracking", route=ScreenRoutes.KenyanRecipeIntakeScreen.route,painterIconId = R.drawable.monitoring_24dp_e8eaed_fill0_wght400_grad0_opsz24),
-        TopLevelRoute(name="CNN", route=ScreenRoutes.CNNScreen.route, painterIconId = R.drawable.image_search_24dp_e8eaed_fill0_wght400_grad0_opsz24),
-        TopLevelRoute(name="Scanner", route=ScreenRoutes.BarcodeScannerScreen.route, painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24),
+        TopLevelRoute(name="Home", route= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route), icon=Icons.Default.Home),
+        TopLevelRoute(name="Tracking", route= listOf(ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route),painterIconId = R.drawable.monitoring_24dp_e8eaed_fill0_wght400_grad0_opsz24),
+        TopLevelRoute(name="CNN", route= listOf(ScreenRoutes.CNNScreen.route), painterIconId = R.drawable.image_search_24dp_e8eaed_fill0_wght400_grad0_opsz24),
+        TopLevelRoute(name="Scanner", route= listOf(ScreenRoutes.BarcodeScannerScreen.route), painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24),
 
     )
-    val homeGraphRoutes = listOf(ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route)
+    val homeGraphRoutes = listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.CNNScreen.route,ScreenRoutes.BarcodeScannerScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val bottomBarDestination = topLevelRoutes.any { it.route == currentDestination?.route } || homeGraphRoutes.contains(currentDestination?.route)
+    val bottomBarDestination = homeGraphRoutes.contains(currentDestination?.route)
     if (bottomBarDestination) {
         NavigationBar {
 
@@ -53,10 +53,10 @@ fun BottomBarUi(navController: NavHostController) {
                     },
                     label = { Text(topLevelRoute.name) },
                     selected = currentDestination?.hierarchy?.any {
-                        it.route == topLevelRoute.route
+                        topLevelRoute.route.contains(it.route)
                     } == true,
                     onClick = {
-                        navController.navigate(topLevelRoute.route) {
+                        navController.navigate(topLevelRoute.route[0]) {
                             // Pop up to the start destination of the graph to
                             // avoid building up a large stack of destinations
                             // on the back stack as users select items
