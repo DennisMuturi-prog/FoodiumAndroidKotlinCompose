@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.foodium.navigation.ScreenRoutes
@@ -24,8 +25,8 @@ import com.example.foodium.ui.screens.AuthViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel,scrollBehavior: TopAppBarScrollBehavior,logout:()->Unit) {
-    val topLevelRoutes= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route)
-    val intakeRoutes= listOf(ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route)
+    val topLevelRoutes= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route)
+    val intakeRoutes= listOf(ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route)
     val navBackStackEntry by  navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val bottomBarDestination = topLevelRoutes.any { it == currentDestination?.route }
@@ -70,6 +71,26 @@ fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel
                 if(intakeRoutes.contains(currentDestination?.route)){
                     Row {
                         TextButton(onClick = {
+                            navController.navigate(ScreenRoutes.IntakeVisualizationsScreen.route){
+                                navController.graph.startDestinationRoute?.let { route->
+                                    popUpTo(route) {
+                                        saveState =true
+                                    }
+                                    launchSingleTop=true
+                                    restoreState=true
+
+                                }
+                            }
+                        }) {
+                            Text(text="visualize",
+                                fontWeight = if(currentDestination?.route==ScreenRoutes.IntakeVisualizationsScreen.route) FontWeight.Bold else FontWeight.Normal,
+                                textDecoration = if(currentDestination?.route==ScreenRoutes.IntakeVisualizationsScreen.route)  TextDecoration.Underline else  TextDecoration.None,
+                                fontSize = if(currentDestination?.route==ScreenRoutes.IntakeVisualizationsScreen.route) 18.sp else 15.sp)
+
+
+
+                        }
+                        TextButton(onClick = {
                             navController.navigate(ScreenRoutes.KenyanRecipeIntakeScreen.route){
                                 navController.graph.startDestinationRoute?.let { route->
                                     popUpTo(route) {
@@ -83,7 +104,8 @@ fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel
                         }) {
                             Text(text="kenyan recipes intake",
                                 fontWeight = if(currentDestination?.route==ScreenRoutes.KenyanRecipeIntakeScreen.route) FontWeight.Bold else FontWeight.Normal,
-                                textDecoration = if(currentDestination?.route==ScreenRoutes.KenyanRecipeIntakeScreen.route)  TextDecoration.Underline else  TextDecoration.None)
+                                textDecoration = if(currentDestination?.route==ScreenRoutes.KenyanRecipeIntakeScreen.route)  TextDecoration.Underline else  TextDecoration.None,
+                                fontSize = if(currentDestination?.route==ScreenRoutes.KenyanRecipeIntakeScreen.route) 18.sp else 15.sp)
                         }
                         TextButton(onClick = {
                             navController.navigate(ScreenRoutes.WorldwideRecipeIntakeScreen.route){
@@ -99,7 +121,8 @@ fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel
                         }) {
                             Text("world recipes intake",
                                 fontWeight = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route) FontWeight.Bold else FontWeight.Normal,
-                                textDecoration = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route)  TextDecoration.Underline else  TextDecoration.None)
+                                textDecoration = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route)  TextDecoration.Underline else  TextDecoration.None,
+                                fontSize = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route) 18.sp else 15.sp)
                         }
                         TextButton(onClick = {}) {
                             Text("foods")

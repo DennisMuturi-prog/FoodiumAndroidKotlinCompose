@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -15,7 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,14 +44,24 @@ fun UserIntakeItem(userIntake: UserIntake, modifier: Modifier = Modifier,moveToR
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Image (small thumbnail)
+//             Image (small thumbnail)
+//            AsyncImage(
+//                model = userIntake.imageUrl,
+//                contentDescription = "Recipe Image",
+//                modifier = Modifier
+//                    .size(64.dp)
+//                    .background(Color.Gray, RoundedCornerShape(50.dp))
+//            )
             AsyncImage(
                 model = userIntake.imageUrl,
                 contentDescription = "Recipe Image",
                 modifier = Modifier
                     .size(64.dp)
-                    .background(Color.Gray, RoundedCornerShape(50.dp))
+                    .clip(CircleShape) // Ensures the image is clipped to a circular shape
+                    .background(Color.Gray, CircleShape), // Applies background properly
+                contentScale = ContentScale.Crop
             )
+
 
             Spacer(modifier = Modifier.width(12.dp))
 
@@ -58,7 +71,6 @@ fun UserIntakeItem(userIntake: UserIntake, modifier: Modifier = Modifier,moveToR
                     text = userIntake.recipeName,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
                 )
 
                 // Created At
@@ -91,7 +103,9 @@ fun UserKenyanRecipeIntakeItem(userIntake: UserKenyanIntake, modifier: Modifier 
                 contentDescription = "Recipe Image",
                 modifier = Modifier
                     .size(64.dp)
-                    .background(Color.Gray, RoundedCornerShape(50.dp))
+                    .clip(CircleShape) // Ensures the image is clipped to a circular shape
+                    .background(Color.Gray, CircleShape), // Applies background properly
+                contentScale = ContentScale.Crop
             )
 
             Spacer(modifier = Modifier.width(12.dp))
@@ -102,7 +116,6 @@ fun UserKenyanRecipeIntakeItem(userIntake: UserKenyanIntake, modifier: Modifier 
                     text = userIntake.recipeName,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
                 )
 
                 // Created At

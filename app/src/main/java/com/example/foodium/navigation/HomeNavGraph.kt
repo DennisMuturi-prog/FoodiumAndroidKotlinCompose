@@ -11,6 +11,7 @@ import com.example.foodium.serverSentEvents.NewReviewsViewModel
 import com.example.foodium.ui.components.KenyanRecipeInfo
 import com.example.foodium.ui.screens.BarCodeScannerScreen
 import com.example.foodium.ui.screens.FoodClassifierScreen
+import com.example.foodium.ui.screens.IntakeVisualizations
 import com.example.foodium.ui.screens.KenyanRecipeIntakeScreen
 import com.example.foodium.ui.screens.KenyanRecipesScreen
 import com.example.foodium.ui.screens.RecipeInfo
@@ -76,6 +77,9 @@ fun HomeNavGraph(
                 recipesViewModel.changeCurrentKenyanRecipe(it)
                 navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
             } )
+        }
+        composable(route=ScreenRoutes.IntakeVisualizationsScreen.route) {
+            IntakeVisualizations(modifier=modifier)
         }
 
     }
