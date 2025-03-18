@@ -39,7 +39,6 @@ import com.example.foodium.viewModelFactory
 fun HomeScreen(
     logout: () -> Unit,
     authViewModel: AuthViewModel,
-    recipesViewModel: RecipesViewModel,
     snackbarHostState: SnackbarHostState
 ) {
 
@@ -67,6 +66,11 @@ fun HomeScreen(
             )
         }
     }
+    val recipesViewModel=viewModel<RecipesViewModel>(
+        factory = viewModelFactory {
+            RecipesViewModel(MyApplication.appContainer.repository)
+        }
+    )
 
     val openFoodFactsViewModel = viewModel<OpenFoodFactsViewModel>(
         factory = viewModelFactory {

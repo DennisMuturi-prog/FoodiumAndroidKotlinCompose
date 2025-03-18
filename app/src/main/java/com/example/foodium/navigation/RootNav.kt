@@ -12,7 +12,6 @@ import com.example.foodium.ui.viewmodels.OpenFoodFactsViewModel
 
 @Composable
 fun RootNav(authViewModel: AuthViewModel,
-            recipesViewModel: RecipesViewModel,
             snackbarHostState: SnackbarHostState
             ) {
     val navController = rememberNavController()
@@ -29,7 +28,6 @@ fun RootNav(authViewModel: AuthViewModel,
                     }
                 },
                 authViewModel = authViewModel,
-                recipesViewModel = recipesViewModel,
                 snackbarHostState = snackbarHostState
             )
         }

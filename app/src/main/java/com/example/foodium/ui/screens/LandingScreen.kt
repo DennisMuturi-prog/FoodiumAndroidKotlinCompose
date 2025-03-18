@@ -1,10 +1,13 @@
 package com.example.foodium.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.foodium.ui.components.LoadingCircle
 
@@ -22,8 +25,10 @@ fun LandingScreen(modifier: Modifier = Modifier,
             else -> Unit
         }
     }
-    Column(modifier=modifier) {
-        Text(text="landing screen")
+    Column(modifier=modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text="Foodium")
         when(val result=authState.value){
             is AuthState.Error->Text(text=result.message)
             is AuthState.Loading-> LoadingCircle()

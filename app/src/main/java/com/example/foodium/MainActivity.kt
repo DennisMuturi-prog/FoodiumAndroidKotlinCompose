@@ -41,11 +41,6 @@ class MainActivity : ComponentActivity() {
                     AuthViewModel(MyApplication.appContainer.repository)
                 }
             )
-            val recipesViewModel=viewModel<RecipesViewModel>(
-                factory = viewModelFactory {
-                    RecipesViewModel(MyApplication.appContainer.repository)
-                }
-            )
 
             FoodiumTheme {
                 val snackbarHostState = remember {
@@ -70,7 +65,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-                RootNav(authViewModel=authViewModel,recipesViewModel=recipesViewModel,snackbarHostState=snackbarHostState)
+                RootNav(authViewModel=authViewModel,snackbarHostState=snackbarHostState)
 //                val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 //                Scaffold(
 //                    topBar = {

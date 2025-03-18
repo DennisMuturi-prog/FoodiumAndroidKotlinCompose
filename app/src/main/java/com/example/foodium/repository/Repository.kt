@@ -30,8 +30,11 @@ import com.example.foodium.pagination.KenyanRecipesIntakePagination
 import com.example.foodium.pagination.ReviewsPagination
 import com.example.foodium.pagination.WorldwideRecipesIntakePagination
 import com.example.foodium.pagination.WorldwideRecipesPagination
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 class Repository(
     private val backendApi: BackendApi,
@@ -39,6 +42,7 @@ class Repository(
     private val openFoodFactsApi: OpenFoodFactsApi
 
 ) {
+    private val repositoryScope = CoroutineScope(Dispatchers.IO)
     private var authTokens = AuthTokens("", "")
     suspend fun registerUser(userData: RegisterData) {
         val result = backendApi.retrofitService.registerUser(userData)
@@ -46,7 +50,16 @@ class Repository(
         preferencesDataStore.saveString("accessToken", result.accessToken)
         preferencesDataStore.saveString("refreshToken", result.refreshToken)
     }
+    init {
+        repositoryScope.launch {
+            val accessToken = preferencesDataStore.getString("accessToken")
+            val refreshToken = preferencesDataStore.getString("refreshToken")
+            if(accessToken!=null && refreshToken!=null){
+                authTokens=AuthTokens(accessToken=accessToken,refreshToken=refreshToken)
+            }
 
+        }
+    }
     suspend fun loginUser(userData: LoginData) {
         val result = backendApi.retrofitService.loginUser(userData)
         authTokens = result

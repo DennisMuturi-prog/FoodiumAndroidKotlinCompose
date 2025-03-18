@@ -63,7 +63,7 @@ fun UserIntakeItem(userIntake: UserIntake, modifier: Modifier = Modifier,moveToR
 
                 // Created At
                 Text(
-                    text = "Created: ${userIntake.createdAt}",
+                    text = convertDateToAFormat(userIntake.createdAt),
                     fontSize = 14.sp,
                     color = Color.Gray
                 )

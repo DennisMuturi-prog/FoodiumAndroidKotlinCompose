@@ -92,9 +92,9 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
     private val _addRecipeIntakeState = MutableLiveData<AddRecipeIntakeState>()
     val addRecipeIntakeState: LiveData<AddRecipeIntakeState> = _addRecipeIntakeState
 
-    init {
-        getTokens()
-    }
+//    init {
+//        getTokens()
+//    }
 
     fun onSearchQueryChange(newQuery: String) {
         searchQuery = newQuery
