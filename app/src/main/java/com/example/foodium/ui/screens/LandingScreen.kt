@@ -17,6 +17,9 @@ fun LandingScreen(modifier: Modifier = Modifier,
                   onSuccessAuthentication:()->Unit,
                   onFailedAuthentication:()->Unit) {
     val authState=authViewModel.landingAuthState.observeAsState()
+    LaunchedEffect(Unit) {
+        authViewModel.getAuthTokensFromServer()
+    }
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.NotAuthenticated ->onFailedAuthentication()

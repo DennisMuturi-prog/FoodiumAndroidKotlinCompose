@@ -38,9 +38,9 @@ class AuthViewModel(
     private val _updateUserHealthAttrState = MutableLiveData<AuthState>()
     val updateUserHealthAttrState: LiveData<AuthState> = _updateUserHealthAttrState
 
-    init {
-        getAuthTokensFromServer()
-    }
+//    init {
+//        getAuthTokensFromServer()
+//    }
     fun registerUser(userData: RegisterData) {
         _authState.value = AuthState.Loading
         viewModelScope.launch {
@@ -108,7 +108,7 @@ class AuthViewModel(
         }
     }
 
-    private fun getAuthTokensFromServer() {
+    fun getAuthTokensFromServer() {
         _landingAuthState.value = AuthState.Loading
         viewModelScope.launch{
             _landingAuthState.value = try {
