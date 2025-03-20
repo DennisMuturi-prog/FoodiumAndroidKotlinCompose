@@ -25,19 +25,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DateRangeSelector(modifier: Modifier = Modifier) {
+fun DateRangeSelector(modifier: Modifier = Modifier,onDateRangeSelected: (Pair<Long?, Long?>) -> Unit) {
     var showDatePicker by remember { mutableStateOf(false) }
     Row (
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ){
-        Text("pick date range")
+        Text("custom date range")
         IconButton(onClick = {showDatePicker=!showDatePicker}) {
-            Icon(imageVector = Icons.Default.DateRange, contentDescription = "date picker")
+            Icon(imageVector = Icons.Default.DateRange, contentDescription = "custom date range")
         }
         if(showDatePicker){
             DateRangePickerModal(onDateRangeSelected = {
                 showDatePicker=false
+                onDateRangeSelected(it)
             }, onDismiss = {
                 showDatePicker=false
             })

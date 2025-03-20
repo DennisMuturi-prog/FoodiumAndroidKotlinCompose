@@ -79,7 +79,13 @@ fun HomeNavGraph(
             } )
         }
         composable(route=ScreenRoutes.IntakeVisualizationsScreen.route) {
-            IntakeVisualizations(modifier=modifier)
+            IntakeVisualizations(modifier=modifier, recipeIntakeViewModel = recipeIntakeViewModel, moveToRecipeInfoScreen = {
+                recipesViewModel.changeCurrentRecipe(it)
+                navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
+            }, moveToKenyanRecipeInfoScreen = {
+                recipesViewModel.changeCurrentKenyanRecipe(it)
+                navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
+            })
         }
 
     }
