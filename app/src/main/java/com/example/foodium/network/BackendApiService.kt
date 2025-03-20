@@ -6,7 +6,9 @@ import com.example.foodium.models.KenyanRecipes
 import com.example.foodium.models.OpenFoodFactsData
 import com.example.foodium.models.Reviews
 import com.example.foodium.models.UserKenyanRecipeIntake
+import com.example.foodium.models.UserKenyanRecipeIntakeByDate
 import com.example.foodium.models.UserRecipeIntake
+import com.example.foodium.models.UserRecipeIntakeByDate
 import com.example.foodium.models.WorldwideRecipeSearchResults
 import com.example.foodium.models.WorldwideRecipes
 import retrofit2.Retrofit
@@ -64,6 +66,11 @@ interface BackendApiService {
     @POST("getUserRecipeIntake")
     suspend fun fetchUserKenyanRecipeIntake(@Body userRecipeIntake:UserRecipeIntakeRequest):UserKenyanRecipeIntake
 
+    @POST("getUserRecipeIntakeByDate")
+    suspend fun fetchUserRecipeIntakeByDate(@Body userRecipeIntakeByDate:UserRecipeIntakeRequestByDate):UserRecipeIntakeByDate
+
+    @POST("getUserRecipeIntakeByDate")
+    suspend fun fetchUserKenyanRecipeIntakeByDate(@Body userRecipeIntakeByDate:UserRecipeIntakeRequestByDate):UserKenyanRecipeIntakeByDate
 
 }
 interface OpenFoodFactsService {

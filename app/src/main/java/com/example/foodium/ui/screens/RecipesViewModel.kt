@@ -19,6 +19,7 @@ import com.example.foodium.repository.Repository
 import com.example.foodium.ui.components.snackbarconfig.SnackbarController
 import com.example.foodium.ui.components.snackbarconfig.SnackbarEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -61,6 +62,7 @@ sealed interface AddRecipeIntakeState {
 class RecipesViewModel(private val repository: Repository) : ViewModel() {
     var searchQuery by mutableStateOf("")
         private set
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val searchResults: StateFlow<List<KenyanRecipe>> =
         snapshotFlow { searchQuery }.filter { searchPrefix ->
             (searchPrefix.length > 1)

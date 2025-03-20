@@ -19,6 +19,7 @@ import com.example.foodium.models.RecipeReview
 import com.example.foodium.models.UserIntake
 import com.example.foodium.models.UserKenyanIntake
 import com.example.foodium.models.UserRecipeIntake
+import com.example.foodium.models.UserRecipeIntakeByDate
 import com.example.foodium.models.WorldwideRecipe
 import com.example.foodium.network.AddRating
 import com.example.foodium.network.AddReview
@@ -26,6 +27,7 @@ import com.example.foodium.network.AddReviewResponse
 import com.example.foodium.network.OpenFoodFactsApi
 import com.example.foodium.network.RecipeIntakeAdd
 import com.example.foodium.network.Search
+import com.example.foodium.network.UserRecipeIntakeRequestByDate
 import com.example.foodium.pagination.KenyanRecipesIntakePagination
 import com.example.foodium.pagination.ReviewsPagination
 import com.example.foodium.pagination.WorldwideRecipesIntakePagination
@@ -50,16 +52,18 @@ class Repository(
         preferencesDataStore.saveString("accessToken", result.accessToken)
         preferencesDataStore.saveString("refreshToken", result.refreshToken)
     }
+
     init {
         repositoryScope.launch {
             val accessToken = preferencesDataStore.getString("accessToken")
             val refreshToken = preferencesDataStore.getString("refreshToken")
-            if(accessToken!=null && refreshToken!=null){
-                authTokens=AuthTokens(accessToken=accessToken,refreshToken=refreshToken)
+            if (accessToken != null && refreshToken != null) {
+                authTokens = AuthTokens(accessToken = accessToken, refreshToken = refreshToken)
             }
 
         }
     }
+
     suspend fun loginUser(userData: LoginData) {
         val result = backendApi.retrofitService.loginUser(userData)
         authTokens = result
@@ -124,7 +128,8 @@ class Repository(
         }
 
     }
-    suspend fun getAuthTokens(){
+
+    suspend fun getAuthTokens() {
         val accessToken = preferencesDataStore.getString("accessToken")
         val refreshToken = preferencesDataStore.getString("refreshToken")
         if (accessToken == null || refreshToken == null) {
@@ -136,9 +141,9 @@ class Repository(
             if (result.newTokens != null) {
                 preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
                 preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
-                authTokens=result.newTokens
+                authTokens = result.newTokens
             } else {
-                authTokens=AuthTokens(accessToken,refreshToken)
+                authTokens = AuthTokens(accessToken, refreshToken)
             }
         }
 
@@ -155,86 +160,184 @@ class Repository(
         preferencesDataStore.saveString("refreshToken", refreshToken)
         authTokens = AuthTokens(accessToken, refreshToken)
     }
-    fun getKenyanRecipes():Flow<PagingData<KenyanRecipe>>{
+
+    fun getKenyanRecipes(): Flow<PagingData<KenyanRecipe>> {
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = { RecipesPagination(backendApi,authTokens, updateAuthTokens = {
-                authTokens=it
-            }) }
+            pagingSourceFactory = {
+                RecipesPagination(backendApi, authTokens, updateAuthTokens = {
+                    authTokens = it
+                })
+            }
         ).flow
     }
-    fun getWorldwideRecipes():Flow<PagingData<WorldwideRecipe>>{
+
+    fun getWorldwideRecipes(): Flow<PagingData<WorldwideRecipe>> {
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = { WorldwideRecipesPagination(backendApi,authTokens, updateAuthTokens = {
-                authTokens=it
-            }) }
+            pagingSourceFactory = {
+                WorldwideRecipesPagination(backendApi, authTokens, updateAuthTokens = {
+                    authTokens = it
+                })
+            }
         ).flow
     }
-    fun getRecipeReviews(recipeId: String,region: String):Flow<PagingData<RecipeReview>>{
+
+    fun getRecipeReviews(recipeId: String, region: String): Flow<PagingData<RecipeReview>> {
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = { ReviewsPagination(api = backendApi,authTokens=authTokens,recipeId= recipeId,region=region,
-                updateAuthTokens = {
-                    authTokens=it
-                }) }
+            pagingSourceFactory = {
+                ReviewsPagination(api = backendApi,
+                    authTokens = authTokens,
+                    recipeId = recipeId,
+                    region = region,
+                    updateAuthTokens = {
+                        authTokens = it
+                    })
+            }
         ).flow
     }
-    fun getRecipeIntake():Flow<PagingData<UserIntake>>{
+
+    fun getRecipeIntake(): Flow<PagingData<UserIntake>> {
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = { WorldwideRecipesIntakePagination(api = backendApi,authTokens=authTokens, updateAuthTokens = {
-                authTokens=it
-            }) }
+            pagingSourceFactory = {
+                WorldwideRecipesIntakePagination(
+                    api = backendApi,
+                    authTokens = authTokens,
+                    updateAuthTokens = {
+                        authTokens = it
+                    })
+            }
         ).flow
     }
-    fun getKenyanRecipeIntake():Flow<PagingData<UserKenyanIntake>>{
+
+    fun getKenyanRecipeIntake(): Flow<PagingData<UserKenyanIntake>> {
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = { KenyanRecipesIntakePagination(api = backendApi,authTokens=authTokens, updateAuthTokens = {
-                authTokens=it
-            }) }
+            pagingSourceFactory = {
+                KenyanRecipesIntakePagination(
+                    api = backendApi,
+                    authTokens = authTokens,
+                    updateAuthTokens = {
+                        authTokens = it
+                    })
+            }
         ).flow
     }
-    suspend fun getFoodInfo(barcode:String):OpenFoodFactsData{
+
+    suspend fun getFoodInfo(barcode: String): OpenFoodFactsData {
         return openFoodFactsApi.openFoodFactsService.getFoodInfo(barCodeString = barcode)
     }
-    suspend fun  addReview(reviewText:String,region:String,recipeId:String):AddReviewResponse{
-        val result=backendApi.retrofitService.addReview(AddReview(reviewText=reviewText,region=region, recipeId = recipeId, accessToken = authTokens.accessToken, refreshToken = authTokens.refreshToken))
-        if(result.newTokens!=null){
-            authTokens=result.newTokens
-            preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
-            preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+
+    suspend fun addReview(reviewText: String, region: String, recipeId: String): AddReviewResponse {
+        val result = backendApi.retrofitService.addReview(
+            AddReview(
+                reviewText = reviewText,
+                region = region,
+                recipeId = recipeId,
+                accessToken = authTokens.accessToken,
+                refreshToken = authTokens.refreshToken
+            )
+        )
+        if (result.newTokens != null) {
+            authTokens = result.newTokens
+            preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
         }
         return result
     }
-    suspend fun  addRating(ratingNumber:Int,region:String,recipeId:String):AddReviewResponse{
-        val result=backendApi.retrofitService.addRating(AddRating(ratingNumber=ratingNumber,region=region, recipeId = recipeId, accessToken = authTokens.accessToken, refreshToken = authTokens.refreshToken))
-        if(result.newTokens!=null){
-            authTokens=result.newTokens
-            preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
-            preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+
+    suspend fun addRating(ratingNumber: Int, region: String, recipeId: String): AddReviewResponse {
+        val result = backendApi.retrofitService.addRating(
+            AddRating(
+                ratingNumber = ratingNumber,
+                region = region,
+                recipeId = recipeId,
+                accessToken = authTokens.accessToken,
+                refreshToken = authTokens.refreshToken
+            )
+        )
+        if (result.newTokens != null) {
+            authTokens = result.newTokens
+            preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
         }
         return result
     }
-    suspend fun  searchKenyanRecipes(searchTerm:String,region:String):Flow<List<KenyanRecipe>>{
-        val result=backendApi.retrofitService.searchKenyanRecipes(Search(searchTerm=searchTerm,region=region, accessToken = authTokens.accessToken, refreshToken = authTokens.refreshToken))
-        if(result.newTokens!=null){
-            authTokens=result.newTokens
-            preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
-            preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+
+    suspend fun searchKenyanRecipes(searchTerm: String, region: String): Flow<List<KenyanRecipe>> {
+        val result = backendApi.retrofitService.searchKenyanRecipes(
+            Search(
+                searchTerm = searchTerm,
+                region = region,
+                accessToken = authTokens.accessToken,
+                refreshToken = authTokens.refreshToken
+            )
+        )
+        if (result.newTokens != null) {
+            authTokens = result.newTokens
+            preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
         }
         return flowOf(result.results)
 
     }
-    suspend fun addRecipeIntake(recipeId:String,region: String){
-        val result=backendApi.retrofitService.addRecipeIntake(RecipeIntakeAdd(recipeId  = recipeId, region = region, accessToken = authTokens.accessToken, refreshToken = authTokens.refreshToken))
-        if(result.newTokens!=null){
-            authTokens=result.newTokens
-            preferencesDataStore.saveString("accessToken",result.newTokens.accessToken)
-            preferencesDataStore.saveString("refreshToken",result.newTokens.refreshToken)
+
+    suspend fun addRecipeIntake(recipeId: String, region: String) {
+        val result = backendApi.retrofitService.addRecipeIntake(
+            RecipeIntakeAdd(
+                recipeId = recipeId,
+                region = region,
+                accessToken = authTokens.accessToken,
+                refreshToken = authTokens.refreshToken
+            )
+        )
+        if (result.newTokens != null) {
+            authTokens = result.newTokens
+            preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
 
         }
+    }
+
+    suspend fun getUserRecipeIntakeByDate(date1: String, date2: String): List<UserIntake> {
+        val result = backendApi.retrofitService.fetchUserRecipeIntakeByDate(
+            UserRecipeIntakeRequestByDate(
+                region = "worldwide",
+                date1 = date1,
+                date2 = date2,
+                accessToken = authTokens.accessToken,
+                refreshToken = authTokens.refreshToken
+            )
+        )
+        if(result.newTokens!=null){
+            authTokens = result.newTokens
+            preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
+
+        }
+        return result.results
+
+    }
+    suspend fun getUserKenyanRecipeIntakeByDate(date1: String, date2: String): List<UserKenyanIntake> {
+        val result = backendApi.retrofitService.fetchUserKenyanRecipeIntakeByDate(
+            UserRecipeIntakeRequestByDate(
+                region = "kenyan",
+                date1 = date1,
+                date2 = date2,
+                accessToken = authTokens.accessToken,
+                refreshToken = authTokens.refreshToken
+            )
+        )
+        if(result.newTokens!=null){
+            authTokens = result.newTokens
+            preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+            preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
+
+        }
+        return result.results
+
     }
 
 

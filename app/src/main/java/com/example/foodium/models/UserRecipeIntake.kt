@@ -16,3 +16,11 @@ data class UserRecipeIntake(
     @SerialName("results")
     val results: List<UserIntake>
 )
+
+@Serializable
+data class UserRecipeIntakeByDate(
+    @SerialName("newTokens")
+    val newTokens: AuthTokens?=null,
+    @SerialName("results")
+    val results: List<UserIntake>
+)
