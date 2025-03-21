@@ -39,7 +39,7 @@ fun KenyanRecipeIntakeScreen(modifier: Modifier = Modifier, recipeIntakeViewMode
         when (val state = userKenyanRecipeIntake.loadState.refresh) { //FIRST LOAD
             is LoadState.Error -> {
                 item{
-                    state.error.message?.let { Text(text= it, color = Color.Red) }
+                    Text("no intake found,add a bite")
                 }
                 //TODO Error Item
                 //state.error to get error message

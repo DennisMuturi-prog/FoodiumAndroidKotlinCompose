@@ -38,6 +38,9 @@ fun RecipeIntakeScreen(modifier: Modifier = Modifier,recipeIntakeViewModel: Reci
         }
         when (val state = userRecipeIntake.loadState.refresh) { //FIRST LOAD
             is LoadState.Error -> {
+                item {
+                    Text("no intake ,add a bite")
+                }
                 //TODO Error Item
                 //state.error to get error message
             }

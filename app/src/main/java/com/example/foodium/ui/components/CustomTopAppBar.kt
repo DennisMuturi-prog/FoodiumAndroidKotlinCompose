@@ -71,23 +71,6 @@ fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel
                 if(intakeRoutes.contains(currentDestination?.route)){
                     Row {
                         TextButton(onClick = {
-                            navController.navigate(ScreenRoutes.ChartsVisualization.route){
-                                navController.graph.startDestinationRoute?.let { route->
-                                    popUpTo(route) {
-                                        saveState =true
-                                    }
-                                    launchSingleTop=true
-                                    restoreState=true
-
-                                }
-                            }
-                        }) {
-                            Text(text="charts",
-                                fontWeight = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route) FontWeight.Bold else FontWeight.Normal,
-                                textDecoration = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route)  TextDecoration.Underline else  TextDecoration.None,
-                                fontSize = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route) 18.sp else 15.sp)
-                        }
-                        TextButton(onClick = {
                             navController.navigate(ScreenRoutes.IntakeVisualizationsScreen.route){
                                 navController.graph.startDestinationRoute?.let { route->
                                     popUpTo(route) {
@@ -140,6 +123,23 @@ fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel
                                 fontWeight = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route) FontWeight.Bold else FontWeight.Normal,
                                 textDecoration = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route)  TextDecoration.Underline else  TextDecoration.None,
                                 fontSize = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route) 18.sp else 15.sp)
+                        }
+                        TextButton(onClick = {
+                            navController.navigate(ScreenRoutes.ChartsVisualization.route){
+                                navController.graph.startDestinationRoute?.let { route->
+                                    popUpTo(route) {
+                                        saveState =true
+                                    }
+                                    launchSingleTop=true
+                                    restoreState=true
+
+                                }
+                            }
+                        }) {
+                            Text(text="charts",
+                                fontWeight = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route) FontWeight.Bold else FontWeight.Normal,
+                                textDecoration = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route)  TextDecoration.Underline else  TextDecoration.None,
+                                fontSize = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route) 18.sp else 15.sp)
                         }
                         TextButton(onClick = {}) {
                             Text("foods")

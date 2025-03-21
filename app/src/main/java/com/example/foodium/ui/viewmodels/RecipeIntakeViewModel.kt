@@ -1,5 +1,7 @@
 package com.example.foodium.ui.viewmodels
 
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +17,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class RecipeIntakeViewModel(private val repository: Repository):ViewModel() {
+    private var errorRate= mutableIntStateOf(0)
     var recipeIntake: Flow<PagingData<UserIntake>> =repository.getRecipeIntake().cachedIn(viewModelScope)
     var kenyanRecipeIntake:Flow<PagingData<UserKenyanIntake>> = repository.getKenyanRecipeIntake().cachedIn(viewModelScope)
     fun attachDataSource(){
@@ -30,10 +33,42 @@ class RecipeIntakeViewModel(private val repository: Repository):ViewModel() {
             _recipeIntakeByDateState.value=try {
                 val result=repository.getUserRecipeIntakeByDate(date1,date2)
                 val kenyanResult=repository.getUserKenyanRecipeIntakeByDate(date1,date2)
-                RecipeIntakeByDateState.Success(results = result, kenyanResults = kenyanResult)
+                RecipeIntakeByDateState.Success(results = result, kenyanResults = emptyList())
 
             }catch (e:HttpException){
                 val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                RecipeIntakeByDateState.Error(errorMessage)
+            }catch (e:IOException){
+                RecipeIntakeByDateState.Error(e.toString())
+            }
+            _recipeIntakeByDateState.value=try {
+                val kenyanResult=repository.getUserKenyanRecipeIntakeByDate(date1,date2)
+                when(val result=_recipeIntakeByDateState.value){
+                    is RecipeIntakeByDateState.Success->{
+                        RecipeIntakeByDateState.Success(results = result.results, kenyanResults = kenyanResult)
+                    }
+                    is RecipeIntakeByDateState.Error->{
+                        RecipeIntakeByDateState.Success(results = emptyList(), kenyanResults = kenyanResult)
+                    }
+                    is RecipeIntakeByDateState.Loading->{RecipeIntakeByDateState.Success(results = emptyList(), kenyanResults = kenyanResult)}
+                    null->{RecipeIntakeByDateState.Success(results = emptyList(), kenyanResults = kenyanResult)
+                    }
+                }
+
+            }catch (e:HttpException){
+                val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                when(val result=_recipeIntakeByDateState.value){
+                    is RecipeIntakeByDateState.Success->{
+                        RecipeIntakeByDateState.Success(results = result.results, kenyanResults = emptyList())
+                    }
+                    is RecipeIntakeByDateState.Error->{
+                        RecipeIntakeByDateState.Error(errorMessage)
+                    }
+                    is RecipeIntakeByDateState.Loading->{RecipeIntakeByDateState.Error(errorMessage)}
+                    null->{RecipeIntakeByDateState.Error(errorMessage)
+                    }
+                }
+
                 RecipeIntakeByDateState.Error(errorMessage)
             }catch (e:IOException){
                 RecipeIntakeByDateState.Error(e.toString())
