@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,10 +24,10 @@ import com.example.foodium.utils.getErrorMessage
 @Composable
 fun RecipeIntakeScreen(modifier: Modifier = Modifier,recipeIntakeViewModel: RecipeIntakeViewModel,moveToRecipeInfoScreen:(WorldwideRecipe)->Unit) {
     val userRecipeIntake=recipeIntakeViewModel.recipeIntake.collectAsLazyPagingItems()
-//    LaunchedEffect(Unit) {
-//        recipeIntakeViewModel.attachDataSource()
-//
-//    }
+    LaunchedEffect(Unit) {
+        recipeIntakeViewModel.attachDataSource()
+
+    }
     LazyColumn(
         modifier=modifier.fillMaxSize()
     ) {

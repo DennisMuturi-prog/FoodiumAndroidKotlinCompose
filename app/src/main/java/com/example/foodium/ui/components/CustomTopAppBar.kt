@@ -25,8 +25,8 @@ import com.example.foodium.ui.screens.AuthViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel,scrollBehavior: TopAppBarScrollBehavior,logout:()->Unit) {
-    val topLevelRoutes= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route)
-    val intakeRoutes= listOf(ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route)
+    val topLevelRoutes= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.ChartsVisualization.route)
+    val intakeRoutes= listOf(ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.ChartsVisualization.route)
     val navBackStackEntry by  navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val bottomBarDestination = topLevelRoutes.any { it == currentDestination?.route }
@@ -70,6 +70,23 @@ fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel
             title = {
                 if(intakeRoutes.contains(currentDestination?.route)){
                     Row {
+                        TextButton(onClick = {
+                            navController.navigate(ScreenRoutes.ChartsVisualization.route){
+                                navController.graph.startDestinationRoute?.let { route->
+                                    popUpTo(route) {
+                                        saveState =true
+                                    }
+                                    launchSingleTop=true
+                                    restoreState=true
+
+                                }
+                            }
+                        }) {
+                            Text(text="charts",
+                                fontWeight = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route) FontWeight.Bold else FontWeight.Normal,
+                                textDecoration = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route)  TextDecoration.Underline else  TextDecoration.None,
+                                fontSize = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route) 18.sp else 15.sp)
+                        }
                         TextButton(onClick = {
                             navController.navigate(ScreenRoutes.IntakeVisualizationsScreen.route){
                                 navController.graph.startDestinationRoute?.let { route->

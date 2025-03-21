@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.foodium.domain.Classification
 import com.example.foodium.serverSentEvents.NewReviewsViewModel
+import com.example.foodium.ui.components.ChartsVisualization
 import com.example.foodium.ui.components.KenyanRecipeInfo
 import com.example.foodium.ui.screens.BarCodeScannerScreen
 import com.example.foodium.ui.screens.FoodClassifierScreen
@@ -86,6 +87,10 @@ fun HomeNavGraph(
                 recipesViewModel.changeCurrentKenyanRecipe(it)
                 navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
             })
+        }
+        composable(route=ScreenRoutes.ChartsVisualization.route) {
+            ChartsVisualization(modifier=modifier)
+
         }
 
     }

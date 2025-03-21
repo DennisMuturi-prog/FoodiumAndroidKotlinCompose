@@ -27,6 +27,7 @@ runtimeLivedata = "1.7.8"
 tensorflowLiteGpuDelegatePlugin = "0.4.0"
 tensorflowLiteGpuVersion = "2.9.0"
 tensorflowLiteTaskVision = "0.4.0"
+ycharts = "2.1.0"
 
 [libraries]
 
@@ -71,6 +72,7 @@ retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit
 tensorflow-lite-gpu-delegate-plugin = { module = "org.tensorflow:tensorflow-lite-gpu-delegate-plugin", version.ref = "tensorflowLiteGpuDelegatePlugin" }
 tensorflow-lite-gpu-v290 = { module = "org.tensorflow:tensorflow-lite-gpu", version.ref = "tensorflowLiteGpuVersion" }
 tensorflow-lite-task-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowLiteTaskVision" }
+ycharts = { module = "co.yml:ycharts", version.ref = "ycharts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

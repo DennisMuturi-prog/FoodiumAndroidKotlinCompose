@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.foodium"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -95,6 +95,9 @@ dependencies {
 
     // Gson
     implementation (libs.converter.gson)
+
+    //charts
+    implementation (libs.ycharts)
 
 
     implementation(libs.androidx.navigation.compose)

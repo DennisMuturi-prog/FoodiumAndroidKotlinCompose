@@ -1,6 +1,7 @@
 package com.example.foodium.models
 
 
+import co.yml.charts.common.model.Point
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -54,4 +55,14 @@ data class KenyanRecipe(
     val vitaminAmcg: Int,
     @SerialName("zinc(mg)")
     val zincmg: Double
+)
+
+data class NutrientPoints(
+    val carbs:List<Point>,
+    val proteins:List<Point>,
+    val energy:List<Point>,
+    val fibre: List<Point>,
+    val fat:List<Point>,
+    val vitaminA:List<Point>,
+    val iron:List<Point>
 )
