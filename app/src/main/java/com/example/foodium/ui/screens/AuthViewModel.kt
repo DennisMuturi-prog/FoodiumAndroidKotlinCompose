@@ -144,6 +144,9 @@ class AuthViewModel(
     fun logout() {
         _authState.value = AuthState.NotAuthenticated
         _landingAuthState.value =AuthState.NotAuthenticated
+        _updateUsernameState.value=AuthState.NotAuthenticated
+        _updateUserHealthAttrState.value=AuthState.NotAuthenticated
+
         viewModelScope.launch {
             repository.logout()
             SnackbarController.sendEvent(
