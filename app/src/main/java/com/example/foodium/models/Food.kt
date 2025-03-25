@@ -5,33 +5,21 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class WorldwideRecipe(
+data class Food(
     @SerialName("Carbohydrate_by_difference")
     val carbohydrateByDifference: Double,
     @SerialName("Carbohydrate_by_summation")
     val carbohydrateBySummation: Double,
-    @SerialName("directions")
-    val directions: List<String>,
     @SerialName("Energy")
     val energy: Double,
     @SerialName("Fiber_total_dietary")
     val fiberTotalDietary: Double,
-    @SerialName("image_url")
-    val imageUrl: String,
-    @SerialName("ingredients")
-    val ingredients: List<String>,
+    @SerialName("food_name")
+    val foodName: String,
     @SerialName("Iron_Fe")
     val ironFe: Double,
-    @SerialName("NER")
-    val nER: List<String>,
-    @SerialName("no_of_ratings")
-    val noOfRatings: Int,
     @SerialName("Protein")
     val protein: Double,
-    @SerialName("recipe_name")
-    val recipeName: String,
-    @SerialName("recipe_rating")
-    val recipeRating: Float,
     @SerialName("Retinol")
     val retinol: Double,
     @SerialName("Riboflavin")
@@ -55,4 +43,31 @@ data class WorldwideRecipe(
     @SerialName("Vitamin_D_D2_and_D3")
     val vitaminDD2AndD3: Double
 )
-
+fun Food.toWorldwideRecipe(): WorldwideRecipe {
+    return WorldwideRecipe(
+        carbohydrateByDifference = this.carbohydrateByDifference,
+        carbohydrateBySummation = this.carbohydrateBySummation,
+        directions = emptyList(),
+        energy = this.energy,
+        fiberTotalDietary = this.fiberTotalDietary,
+        imageUrl = "",
+        ingredients = emptyList(),
+        ironFe = this.ironFe,
+        nER = emptyList(),
+        noOfRatings = 0,
+        protein = this.protein,
+        recipeName = this.foodName,
+        recipeRating = 0f, // Convert Double to Float
+        retinol = this.retinol,
+        riboflavin = this.riboflavin,
+        starch = this.starch,
+        sugarsTotal = this.sugarsTotal,
+        totalFatNLEA = this.totalFatNLEA,
+        uuid = this.uuid, // Use `recipeUuid` from `UserIntake` for `uuid`
+        vitaminARAE = this.vitaminARAE,
+        vitaminB12 = this.vitaminB12,
+        vitaminCTotalAscorbicAcid = this.vitaminCTotalAscorbicAcid,
+        vitaminD4 = this.vitaminD4,
+        vitaminDD2AndD3 = this.vitaminDD2AndD3
+    )
+}

@@ -117,6 +117,13 @@ data class Search(
 )
 
 @Serializable
+data class SearchFood(
+    val searchTerm:String,
+    val accessToken: String,
+    val refreshToken: String
+)
+
+@Serializable
 data class RecipeReviewsFetch(
     val region:String,
     val next:String,
@@ -130,6 +137,13 @@ data class RecipeReviewsFetch(
 data class RecipeIntakeAdd(
     val region:String,
     val recipeId:String,
+    val accessToken: String,
+    val refreshToken: String
+)
+
+@Serializable
+data class FoodIntakeAdd(
+    val foodId:String,
     val accessToken: String,
     val refreshToken: String
 )

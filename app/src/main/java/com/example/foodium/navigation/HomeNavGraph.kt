@@ -1,4 +1,5 @@
 package com.example.foodium.navigation
+
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,12 +26,12 @@ import com.example.foodium.ui.viewmodels.RecipeIntakeViewModel
 
 @Composable
 fun HomeNavGraph(
-    navController:NavHostController,
-    modifier:Modifier=Modifier,
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
     recipesViewModel: RecipesViewModel,
     openFoodFactsViewModel: OpenFoodFactsViewModel,
     controller: LifecycleCameraController,
-    classifications:List<Classification>,
+    classifications: List<Classification>,
     newReviewsViewModel: NewReviewsViewModel,
     recipeIntakeViewModel: RecipeIntakeViewModel
 
@@ -40,67 +41,133 @@ fun HomeNavGraph(
         route = ScreenRoutes.HomeNav.route,
         startDestination = ScreenRoutes.ForYouDietKenyanRecipesScreen.route
     ) {
-        composable(route = ScreenRoutes.ForYouDietKenyanRecipesScreen.route){
-            KenyanRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, kenyanRecipesFlow = recipesViewModel.kenyanRecipesByDiet, onKenyanRecipeInfoClick ={
-                navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
-            } )
+        composable(route = ScreenRoutes.ForYouDietKenyanRecipesScreen.route) {
+            KenyanRecipesScreen(
+                recipesViewModel = recipesViewModel,
+                modifier = modifier,
+                kenyanRecipesFlow = recipesViewModel.kenyanRecipesByDiet,
+                onKenyanRecipeInfoClick = {
+                    navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
+                })
         }
 
-        composable(route = ScreenRoutes.ForYouDietWorldwideRecipesScreen.route){
-            WorldwideRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, recipesFlow = recipesViewModel.recipesByDiet, onRecipeInfoClick = {
-                navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
-            })
+        composable(route = ScreenRoutes.ForYouDietWorldwideRecipesScreen.route) {
+            WorldwideRecipesScreen(
+                recipesViewModel = recipesViewModel,
+                modifier = modifier,
+                recipesFlow = recipesViewModel.recipesByDiet,
+                onRecipeInfoClick = {
+                    navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
+                })
         }
-        composable(route = ScreenRoutes.KenyanRecipesScreen.route){
-            KenyanRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, kenyanRecipesFlow = recipesViewModel.kenyanRecipes, onKenyanRecipeInfoClick ={
-                navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
-            } )
+        composable(route = ScreenRoutes.KenyanRecipesScreen.route) {
+            KenyanRecipesScreen(
+                recipesViewModel = recipesViewModel,
+                modifier = modifier,
+                kenyanRecipesFlow = recipesViewModel.kenyanRecipes,
+                onKenyanRecipeInfoClick = {
+                    navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
+                })
         }
 
-        composable(route = ScreenRoutes.WorldRecipesScreen.route){
-            WorldwideRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, recipesFlow = recipesViewModel.recipes, onRecipeInfoClick = {
-                navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
-            })
+        composable(route = ScreenRoutes.WorldRecipesScreen.route) {
+            WorldwideRecipesScreen(
+                recipesViewModel = recipesViewModel,
+                modifier = modifier,
+                recipesFlow = recipesViewModel.recipes,
+                onRecipeInfoClick = {
+                    navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
+                })
         }
 
-        composable(route = ScreenRoutes.SearchScreen.route){
-            SearchScreen(recipesViewModel = recipesViewModel, modifier = modifier)
+        composable(route = ScreenRoutes.SearchScreen.route) {
+            SearchScreen(
+                recipesViewModel = recipesViewModel,
+                modifier = modifier,
+                onKenyanRecipeInfoClick = {
+                    navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
+                },
+                onRecipeInfoClick = {
+                    navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
+                },
+                onFoodInfoClick = {
+                    navController.navigate(ScreenRoutes.FoodInfoScreen.route)
+
+                })
         }
-        composable(route = ScreenRoutes.BarcodeScannerScreen.route){
-            BarCodeScannerScreen(openFoodFactsViewModel = openFoodFactsViewModel, modifier = modifier)
+        composable(route = ScreenRoutes.BarcodeScannerScreen.route) {
+            BarCodeScannerScreen(
+                openFoodFactsViewModel = openFoodFactsViewModel,
+                modifier = modifier
+            )
         }
-        composable(route = ScreenRoutes.CNNScreen.route){
-            FoodClassifierScreen(controller=controller, classifications = classifications, modifier = modifier)
+        composable(route = ScreenRoutes.CNNScreen.route) {
+            FoodClassifierScreen(
+                controller = controller,
+                classifications = classifications,
+                modifier = modifier,
+                navigateToSearch = {
+                    recipesViewModel.onSearchQueryChange(it)
+                    navController.navigate(ScreenRoutes.SearchScreen.route)
+                }
+            )
         }
-        composable(route = ScreenRoutes.RecipeInfoScreen.route){
-            RecipeInfo(recipesViewModel = recipesViewModel, modifier = modifier, newReviewsViewModel =newReviewsViewModel )
+        composable(route = ScreenRoutes.RecipeInfoScreen.route) {
+            RecipeInfo(
+                recipesViewModel = recipesViewModel,
+                modifier = modifier,
+                newReviewsViewModel = newReviewsViewModel,
+                isRecipe = true
+            )
         }
-        composable(route = ScreenRoutes.KenyanRecipeInfoScreen.route){
-            KenyanRecipeInfo(recipesViewModel = recipesViewModel, modifier = modifier, newReviewsViewModel =newReviewsViewModel)
+        composable(route = ScreenRoutes.RecipeInfoScreen.route) {
+            RecipeInfo(
+                recipesViewModel = recipesViewModel,
+                modifier = modifier,
+                newReviewsViewModel = newReviewsViewModel,
+                isRecipe = false
+            )
         }
-        composable(route= ScreenRoutes.WorldwideRecipeIntakeScreen.route) {
-            RecipeIntakeScreen(modifier=modifier, recipeIntakeViewModel =recipeIntakeViewModel, moveToRecipeInfoScreen = {
-                recipesViewModel.changeCurrentRecipe(it)
-                navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
-            } )
+        composable(route = ScreenRoutes.KenyanRecipeInfoScreen.route) {
+            KenyanRecipeInfo(
+                recipesViewModel = recipesViewModel,
+                modifier = modifier,
+                newReviewsViewModel = newReviewsViewModel
+            )
         }
-        composable(route= ScreenRoutes.KenyanRecipeIntakeScreen.route) {
-            KenyanRecipeIntakeScreen(modifier=modifier, recipeIntakeViewModel =recipeIntakeViewModel, moveToKenyanRecipeInfoScreen = {
-                recipesViewModel.changeCurrentKenyanRecipe(it)
-                navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
-            } )
+        composable(route = ScreenRoutes.WorldwideRecipeIntakeScreen.route) {
+            RecipeIntakeScreen(
+                modifier = modifier,
+                recipeIntakeViewModel = recipeIntakeViewModel,
+                moveToRecipeInfoScreen = {
+                    recipesViewModel.changeCurrentRecipe(it)
+                    navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
+                })
         }
-        composable(route=ScreenRoutes.IntakeVisualizationsScreen.route) {
-            IntakeVisualizations(modifier=modifier, recipeIntakeViewModel = recipeIntakeViewModel, moveToRecipeInfoScreen = {
-                recipesViewModel.changeCurrentRecipe(it)
-                navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
-            }, moveToKenyanRecipeInfoScreen = {
-                recipesViewModel.changeCurrentKenyanRecipe(it)
-                navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
-            })
+        composable(route = ScreenRoutes.KenyanRecipeIntakeScreen.route) {
+            KenyanRecipeIntakeScreen(
+                modifier = modifier,
+                recipeIntakeViewModel = recipeIntakeViewModel,
+                moveToKenyanRecipeInfoScreen = {
+                    recipesViewModel.changeCurrentKenyanRecipe(it)
+                    navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
+                })
         }
-        composable(route=ScreenRoutes.ChartsVisualizationScreen.route) {
-            ChartsVisualization(modifier=modifier)
+        composable(route = ScreenRoutes.IntakeVisualizationsScreen.route) {
+            IntakeVisualizations(
+                modifier = modifier,
+                recipeIntakeViewModel = recipeIntakeViewModel,
+                moveToRecipeInfoScreen = {
+                    recipesViewModel.changeCurrentRecipe(it)
+                    navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
+                },
+                moveToKenyanRecipeInfoScreen = {
+                    recipesViewModel.changeCurrentKenyanRecipe(it)
+                    navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
+                })
+        }
+        composable(route = ScreenRoutes.ChartsVisualizationScreen.route) {
+            ChartsVisualization(modifier = modifier)
 
         }
 

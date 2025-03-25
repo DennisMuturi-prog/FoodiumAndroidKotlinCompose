@@ -8,6 +8,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +26,7 @@ import com.example.foodium.presentation.CameraPreview
 
 
 @Composable
-fun FoodClassifierScreen(modifier: Modifier = Modifier,controller: LifecycleCameraController,classifications:List<Classification>) {
+fun FoodClassifierScreen(modifier: Modifier = Modifier,controller: LifecycleCameraController,classifications:List<Classification>,navigateToSearch:(String)->Unit) {
 
     Box(
         modifier = modifier
@@ -54,6 +59,12 @@ fun FoodClassifierScreen(modifier: Modifier = Modifier,controller: LifecycleCame
                         fontSize = 20.sp,
                         color = MaterialTheme.colorScheme.primary
                     )
+                    IconButton(onClick = {
+                        navigateToSearch(it.name)
+
+                    }) {
+                        Icon(imageVector = Icons.Default.Add, contentDescription = "add intake")
+                    }
 
                 }
 

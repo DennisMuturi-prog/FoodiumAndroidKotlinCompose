@@ -31,7 +31,12 @@ import com.example.foodium.ui.components.NewReviews
 import com.example.foodium.ui.components.RatingStar
 
 @Composable
-fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel,newReviewsViewModel: NewReviewsViewModel) {
+fun RecipeInfo(
+    modifier: Modifier = Modifier,
+    recipesViewModel: RecipesViewModel,
+    newReviewsViewModel: NewReviewsViewModel,
+    isRecipe: Boolean
+) {
     val currentRecipeState = recipesViewModel.currentWorldwideRecipeState.observeAsState()
     val addReviewState = recipesViewModel.addReviewState.observeAsState()
     val addRatingState = recipesViewModel.addRatingState.observeAsState()
@@ -43,7 +48,7 @@ fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel
     ) {
         when (val result = addReviewState.value) {
             is AddReviewState.Success -> {}
-            is AddReviewState.Error -> Text(result.message,color= Color.Red)
+            is AddReviewState.Error -> Text(result.message, color = Color.Red)
             is AddReviewState.Loading -> LoadingCircle()
             null -> {}
         }
@@ -73,9 +78,13 @@ fun RecipeInfo(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel
                         recipeId = result.currentWorldwideRecipe.uuid
                     )
                 },
-                newReviewsViewModel=newReviewsViewModel,
+                newReviewsViewModel = newReviewsViewModel,
                 onAddIntake = {
                     recipesViewModel.addRecipeIntake(recipeId = it.recipeId, region = it.region)
+                },
+                isRecipe = isRecipe,
+                onAddFoodIntake = {
+                    recipesViewModel.addFoodIntake(it)
                 }
             )
 
@@ -93,32 +102,44 @@ fun RecipeDetails(
     onSendReview: (String) -> Unit,
     onSendRating: (Int) -> Unit,
     newReviewsViewModel: NewReviewsViewModel,
-    onAddIntake: (OnAddIntakeDetails) -> Unit
+    onAddIntake: (OnAddIntakeDetails) -> Unit,
+    onAddFoodIntake: (String) -> Unit,
+    isRecipe: Boolean
 ) {
 
     Text(text = recipe.recipeName, fontSize = 32.sp)
-    Button(onClick = { onAddIntake(OnAddIntakeDetails(recipeId = recipe.uuid, region = "worldwide")) }) {
+    Button(onClick = {
+        if (isRecipe) {
+            onAddIntake(OnAddIntakeDetails(recipeId = recipe.uuid, region = "worldwide"))
+        }else{
+            onAddFoodIntake(recipe.uuid)
+        }
+    }) {
         Text("add to my intake")
     }
-    AsyncImage(
-        model = recipe.imageUrl,
-        contentDescription = recipe.recipeName
-    )
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text("rating", fontSize = 25.sp)
-        RatingStar(rating = recipe.recipeRating, isIndicator = true)
+    if(isRecipe){
+        AsyncImage(
+            model = recipe.imageUrl,
+            contentDescription = recipe.recipeName
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text("rating", fontSize = 25.sp)
+            RatingStar(rating = recipe.recipeRating, isIndicator = true)
+        }
+        Text(text = "Ingredients", fontSize = 25.sp)
+        recipe.ingredients.forEach { ingredient ->
+            Text(text = ingredient)
+        }
+        Text(text = "instructions", fontSize = 25.sp)
+        recipe.directions.forEach { direction ->
+            Text(text = "•$direction")
+        }
+
     }
-    Text(text = "Ingredients", fontSize = 25.sp)
-    recipe.ingredients.forEach { ingredient ->
-        Text(text = ingredient)
-    }
-    Text(text = "instructions", fontSize = 25.sp)
-    recipe.directions.forEach { direction ->
-        Text(text = "•$direction")
-    }
+
     Text(text = "nutrients", fontSize = 25.sp)
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -252,13 +273,21 @@ fun RecipeDetails(
         )
         Text("iron:${recipe.ironFe}")
     }
-    RatingStar(onStarClick = {
-        onSendRating(it)
-    })
-    AddReview(onSend = {
-        onSendReview(it)
-    })
-    NewReviews(newReviewsViewModel = newReviewsViewModel, recipeId = recipe.uuid, region = "worldwide")
+    if(isRecipe){
+        RatingStar(onStarClick = {
+            onSendRating(it)
+        })
+        AddReview(onSend = {
+            onSendReview(it)
+        })
+        NewReviews(
+            newReviewsViewModel = newReviewsViewModel,
+            recipeId = recipe.uuid,
+            region = "worldwide"
+        )
+
+    }
+
 
 
 }

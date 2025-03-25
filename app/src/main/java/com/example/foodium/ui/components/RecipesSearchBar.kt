@@ -1,5 +1,6 @@
 package com.example.foodium.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +21,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.foodium.models.Food
 import com.example.foodium.models.KenyanRecipe
+import com.example.foodium.models.WorldwideRecipe
+import com.example.foodium.models.toWorldwideRecipe
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +32,12 @@ fun RecipesSearchBar(
     modifier: Modifier = Modifier,
     searchQuery: String,
     searchResults: List<KenyanRecipe>,
-    onSearchQueryChange: (String) -> Unit
+    worldwideSearchResults: List<WorldwideRecipe>,
+    foodSearchResults: List<Food>,
+    onSearchQueryChange: (String) -> Unit,
+    onRecipeInfoClick:(WorldwideRecipe)->Unit,
+    onKenyanRecipeInfoClick:(KenyanRecipe) ->Unit,
+    onFoodInfoClick:(WorldwideRecipe)->Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     SearchBar(
@@ -58,7 +67,32 @@ fun RecipesSearchBar(
                 key = { index -> searchResults[index].uuid },
                 itemContent = { index ->
                     val recipe = searchResults[index]
-                    Text(recipe.recipeName)
+                    Text(recipe.recipeName,modifier = Modifier.clickable {
+                        onKenyanRecipeInfoClick(recipe)
+
+                    })
+                }
+            )
+            items(
+                count = worldwideSearchResults.size,
+                key = { index -> worldwideSearchResults[index].uuid },
+                itemContent = { index ->
+                    val recipe = worldwideSearchResults[index]
+                    Text(recipe.recipeName,modifier = Modifier.clickable {
+                        onRecipeInfoClick(recipe)
+
+
+                    })
+                }
+            )
+            items(
+                count = foodSearchResults.size,
+                key = { index -> foodSearchResults[index].uuid },
+                itemContent = { index ->
+                    val food = foodSearchResults[index]
+                    Text(food.foodName, modifier = Modifier.clickable {
+                        onFoodInfoClick(food.toWorldwideRecipe())
+                    })
                 }
             )
         }

@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.foodium.models.AddRecipeIntakeResponse
+import com.example.foodium.models.Food
 import com.example.foodium.models.KenyanRecipe
 import com.example.foodium.models.RecipeReview
 import com.example.foodium.models.WorldwideRecipe
@@ -41,6 +42,9 @@ sealed interface CurrentWorldwideRecipeState {
 sealed interface CurrentKenyanRecipeState {
     data class Success(val currentKenyanRecipe: KenyanRecipe) : CurrentKenyanRecipeState
 }
+sealed interface CurrentFoodState {
+    data class Success(val currentFood: Food) : CurrentFoodState
+}
 
 sealed interface AddRatingState {
     data object Success : AddRatingState
@@ -57,6 +61,11 @@ sealed interface AddRecipeIntakeState {
     data object Success : AddRecipeIntakeState
     data class Error(val message: String) : AddRecipeIntakeState
     data object Loading : AddRecipeIntakeState
+}
+sealed interface AddFoodIntakeState {
+    data object Success : AddFoodIntakeState
+    data class Error(val message: String) : AddFoodIntakeState
+    data object Loading : AddFoodIntakeState
 }
 
 class RecipesViewModel(private val repository: Repository) : ViewModel() {
@@ -77,6 +86,36 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
                 started = SharingStarted.Lazily
             )
 
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    val worldwideSearchResults: StateFlow<List<WorldwideRecipe>> =
+        snapshotFlow { searchQuery }.filter { searchPrefix ->
+            (searchPrefix.length > 1)
+
+        }
+            .debounce(300).distinctUntilChanged()
+            .flatMapLatest { searchTerm ->
+                repository.searchWorldwideRecipes(region = "worldwide", searchTerm = searchTerm)
+            }.stateIn(
+                scope = viewModelScope,
+                initialValue = emptyList(),
+                started = SharingStarted.Lazily
+            )
+
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    val searchFoodResults: StateFlow<List<Food>> =
+        snapshotFlow { searchQuery }.filter { searchPrefix ->
+            (searchPrefix.length > 1)
+
+        }
+            .debounce(300).distinctUntilChanged()
+            .flatMapLatest { searchTerm ->
+                repository.searchFoods( searchTerm = searchTerm)
+            }.stateIn(
+                scope = viewModelScope,
+                initialValue = emptyList(),
+                started = SharingStarted.Lazily
+            )
+
 
     var recipes: Flow<PagingData<WorldwideRecipe>> =
         repository.getWorldwideRecipes().cachedIn(viewModelScope)
@@ -91,12 +130,17 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
         _currentWorldwideRecipeState
     private val _currentKenyanRecipeState = MutableLiveData<CurrentKenyanRecipeState>()
     val currentKenyanRecipeState: LiveData<CurrentKenyanRecipeState> = _currentKenyanRecipeState
+    private val _currentFoodState = MutableLiveData<CurrentFoodState>()
+    val currentFoodState: LiveData<CurrentFoodState> =
+        _currentFoodState
     private val _addRatingState = MutableLiveData<AddRatingState>()
     val addRatingState: LiveData<AddRatingState> = _addRatingState
     private val _addReviewState = MutableLiveData<AddReviewState>()
     val addReviewState: LiveData<AddReviewState> = _addReviewState
     private val _addRecipeIntakeState = MutableLiveData<AddRecipeIntakeState>()
     val addRecipeIntakeState: LiveData<AddRecipeIntakeState> = _addRecipeIntakeState
+    private val _addFoodIntakeState = MutableLiveData<AddFoodIntakeState>()
+    val addFoodIntakeState: LiveData<AddFoodIntakeState> = _addFoodIntakeState
 
 //    init {
 //        getTokens()
@@ -112,6 +156,10 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
 
     fun changeCurrentKenyanRecipe(recipe: KenyanRecipe) {
         _currentKenyanRecipeState.value = CurrentKenyanRecipeState.Success(recipe)
+    }
+
+    fun changeCurrentFood(food:Food) {
+        _currentFoodState.value = CurrentFoodState.Success(food)
     }
 
     private fun attachDataSource() {
@@ -214,6 +262,35 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
                     event = SnackbarEvent(message = "connection error")
                 )
                 AddRecipeIntakeState.Error(e.toString())
+
+            }
+        }
+
+
+    }
+    fun addFoodIntake(foodId: String){
+        _addFoodIntakeState.value=AddFoodIntakeState.Loading
+        viewModelScope.launch {
+            _addFoodIntakeState.value=try {
+                repository.addFoodIntake(foodId = foodId)
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = "added to your intake successful")
+                )
+                AddFoodIntakeState.Success
+
+            }catch (e:HttpException){
+                val errorMessage = e.response()?.errorBody()?.string() ?: "Unknown error"
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = errorMessage)
+                )
+
+                AddFoodIntakeState.Error(errorMessage)
+
+            }catch (e:IOException){
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(message = "connection error")
+                )
+                AddFoodIntakeState.Error(e.toString())
 
             }
         }
