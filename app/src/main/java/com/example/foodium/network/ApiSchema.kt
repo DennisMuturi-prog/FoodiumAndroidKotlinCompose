@@ -75,6 +75,19 @@ data class RecipesRequest(
 )
 
 @Serializable
+data class ForYouRecipesRequest(
+    val numberOfResults:Int,
+    val region:String,
+    val next:String,
+    val noOfMeals:Int,
+    val userWeight: Int,
+    val dietType:String,
+    val accessToken: String,
+    val refreshToken: String
+)
+
+
+@Serializable
 data class AddReview(
     val reviewText:String,
     val recipeId:String,

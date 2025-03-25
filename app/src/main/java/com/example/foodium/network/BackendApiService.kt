@@ -39,8 +39,14 @@ interface BackendApiService {
     @POST("getRecipes")
     suspend fun getKenyanRecipes(@Body recipesRequest: RecipesRequest):KenyanRecipes
 
+    @POST("getRecipesByDietType")
+    suspend fun getForYouKenyanRecipesByDiet(@Body recipesRequest: ForYouRecipesRequest):KenyanRecipes
+
     @POST("getRecipes")
     suspend fun getWorldwideRecipes(@Body recipesRequest: RecipesRequest):WorldwideRecipes
+
+    @POST("getRecipesByDietType")
+    suspend fun getForYouWorldwideRecipesByDiet(@Body recipesRequest: ForYouRecipesRequest):WorldwideRecipes
 
     @POST("addReview")
     suspend fun addReview(@Body review:AddReview):AddReviewResponse

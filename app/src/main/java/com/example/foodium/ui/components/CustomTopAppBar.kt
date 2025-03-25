@@ -1,6 +1,7 @@
 package com.example.foodium.ui.components
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,8 +26,9 @@ import com.example.foodium.ui.screens.AuthViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel,scrollBehavior: TopAppBarScrollBehavior,logout:()->Unit) {
-    val topLevelRoutes= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.ChartsVisualization.route)
-    val intakeRoutes= listOf(ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.ChartsVisualization.route)
+    val topLevelRoutes= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.ChartsVisualizationScreen.route,ScreenRoutes.ForYouDietWorldwideRecipesScreen.route,ScreenRoutes.ForYouDietKenyanRecipesScreen.route)
+    val intakeRoutes= listOf(ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.ChartsVisualizationScreen.route)
+    val dietRoutes= listOf(ScreenRoutes.ForYouDietWorldwideRecipesScreen.route,ScreenRoutes.ForYouDietKenyanRecipesScreen.route)
     val navBackStackEntry by  navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val bottomBarDestination = topLevelRoutes.any { it == currentDestination?.route }
@@ -125,7 +127,7 @@ fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel
                                 fontSize = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route) 18.sp else 15.sp)
                         }
                         TextButton(onClick = {
-                            navController.navigate(ScreenRoutes.ChartsVisualization.route){
+                            navController.navigate(ScreenRoutes.ChartsVisualizationScreen.route){
                                 navController.graph.startDestinationRoute?.let { route->
                                     popUpTo(route) {
                                         saveState =true
@@ -137,16 +139,83 @@ fun CustomTopAppBar(navController:NavHostController,authViewModel: AuthViewModel
                             }
                         }) {
                             Text(text="charts",
-                                fontWeight = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route) FontWeight.Bold else FontWeight.Normal,
-                                textDecoration = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route)  TextDecoration.Underline else  TextDecoration.None,
-                                fontSize = if(currentDestination?.route==ScreenRoutes.ChartsVisualization.route) 18.sp else 15.sp)
+                                fontWeight = if(currentDestination?.route==ScreenRoutes.ChartsVisualizationScreen.route) FontWeight.Bold else FontWeight.Normal,
+                                textDecoration = if(currentDestination?.route==ScreenRoutes.ChartsVisualizationScreen.route)  TextDecoration.Underline else  TextDecoration.None,
+                                fontSize = if(currentDestination?.route==ScreenRoutes.ChartsVisualizationScreen.route) 18.sp else 15.sp)
                         }
                         TextButton(onClick = {}) {
                             Text("foods")
                         }
                     }
 
-                }else{
+                }else if(dietRoutes.contains(currentDestination?.route)){
+                    LazyRow {
+                        item {
+                            TextButton(onClick = {
+                                navController.navigate(ScreenRoutes.ForYouDietKenyanRecipesScreen.route){
+                                    navController.graph.startDestinationRoute?.let { route->
+                                        popUpTo(route) {
+                                            saveState =true
+                                        }
+                                        launchSingleTop=true
+                                        restoreState=true
+
+                                    }
+                                }
+                            }) {
+                                Text(text="diet kenyan",
+                                    fontWeight = if(currentDestination?.route==ScreenRoutes.ForYouDietKenyanRecipesScreen.route) FontWeight.Bold else FontWeight.Normal,
+                                    textDecoration = if(currentDestination?.route==ScreenRoutes.ForYouDietKenyanRecipesScreen.route)  TextDecoration.Underline else  TextDecoration.None,
+                                    fontSize = if(currentDestination?.route==ScreenRoutes.ForYouDietKenyanRecipesScreen.route) 18.sp else 15.sp)
+
+
+
+                            }
+                        }
+                        item {
+                            TextButton(onClick = {
+                                navController.navigate(ScreenRoutes.ForYouDietWorldwideRecipesScreen.route){
+                                    navController.graph.startDestinationRoute?.let { route->
+                                        popUpTo(route) {
+                                            saveState =true
+                                        }
+                                        launchSingleTop=true
+                                        restoreState=true
+
+                                    }
+                                }
+                            }) {
+                                Text(text="diet worldwide",
+                                    fontWeight = if(currentDestination?.route==ScreenRoutes.ForYouDietWorldwideRecipesScreen.route) FontWeight.Bold else FontWeight.Normal,
+                                    textDecoration = if(currentDestination?.route==ScreenRoutes.ForYouDietWorldwideRecipesScreen.route)  TextDecoration.Underline else  TextDecoration.None,
+                                    fontSize = if(currentDestination?.route==ScreenRoutes.ForYouDietWorldwideRecipesScreen.route) 18.sp else 15.sp)
+                            }
+                        }
+
+
+                        item {
+                            TextButton(onClick = {
+                                navController.navigate(ScreenRoutes.WorldwideRecipeIntakeScreen.route){
+                                    navController.graph.startDestinationRoute?.let { route->
+                                        popUpTo(route) {
+                                            saveState =true
+                                        }
+                                        launchSingleTop=true
+                                        restoreState=true
+
+                                    }
+                                }
+                            }) {
+                                Text("diet foods",
+                                    fontWeight = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route) FontWeight.Bold else FontWeight.Normal,
+                                    textDecoration = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route)  TextDecoration.Underline else  TextDecoration.None,
+                                    fontSize = if(currentDestination?.route==ScreenRoutes.WorldwideRecipeIntakeScreen.route) 18.sp else 15.sp)
+                            }
+                        }
+                    }
+
+
+                } else{
                     Row {
                         TextButton(onClick = {
                             navController.navigate(ScreenRoutes.KenyanRecipesScreen.route){

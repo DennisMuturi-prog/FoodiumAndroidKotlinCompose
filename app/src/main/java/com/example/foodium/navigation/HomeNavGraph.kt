@@ -38,16 +38,27 @@ fun HomeNavGraph(
     NavHost(
         navController = navController,
         route = ScreenRoutes.HomeNav.route,
-        startDestination = ScreenRoutes.KenyanRecipesScreen.route
+        startDestination = ScreenRoutes.ForYouDietKenyanRecipesScreen.route
     ) {
+        composable(route = ScreenRoutes.ForYouDietKenyanRecipesScreen.route){
+            KenyanRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, kenyanRecipesFlow = recipesViewModel.kenyanRecipesByDiet, onKenyanRecipeInfoClick ={
+                navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
+            } )
+        }
+
+        composable(route = ScreenRoutes.ForYouDietWorldwideRecipesScreen.route){
+            WorldwideRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, recipesFlow = recipesViewModel.recipesByDiet, onRecipeInfoClick = {
+                navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
+            })
+        }
         composable(route = ScreenRoutes.KenyanRecipesScreen.route){
-            KenyanRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, onKenyanRecipeInfoClick ={
+            KenyanRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, kenyanRecipesFlow = recipesViewModel.kenyanRecipes, onKenyanRecipeInfoClick ={
                 navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
             } )
         }
 
         composable(route = ScreenRoutes.WorldRecipesScreen.route){
-            WorldwideRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, onRecipeInfoClick = {
+            WorldwideRecipesScreen(recipesViewModel = recipesViewModel, modifier = modifier, recipesFlow = recipesViewModel.recipes, onRecipeInfoClick = {
                 navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
             })
         }
@@ -88,7 +99,7 @@ fun HomeNavGraph(
                 navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
             })
         }
-        composable(route=ScreenRoutes.ChartsVisualization.route) {
+        composable(route=ScreenRoutes.ChartsVisualizationScreen.route) {
             ChartsVisualization(modifier=modifier)
 
         }

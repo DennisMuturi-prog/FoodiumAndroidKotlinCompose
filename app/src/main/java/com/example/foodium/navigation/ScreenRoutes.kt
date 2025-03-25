@@ -25,7 +25,12 @@ sealed class ScreenRoutes(val route : String) {
 
     data object IntakeVisualizationsScreen : ScreenRoutes("intakeVisualizations_screen")
 
-    data object ChartsVisualization:ScreenRoutes("chartsVisualizations_screen")
+    data object ChartsVisualizationScreen:ScreenRoutes("chartsVisualizations_screen")
+
+    data object ForYouDietKenyanRecipesScreen:ScreenRoutes("forYouKenyaRecipesScreen")
+
+    data object ForYouDietWorldwideRecipesScreen:ScreenRoutes("forYouWorldwideRecipesScreen")
+
     data object HomeScreen : ScreenRoutes("home_screen")
 
     data object ScreenA : ScreenRoutes("screen_a")

@@ -82,6 +82,10 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
         repository.getWorldwideRecipes().cachedIn(viewModelScope)
     var kenyanRecipes: Flow<PagingData<KenyanRecipe>> =
         repository.getKenyanRecipes().cachedIn(viewModelScope)
+    var recipesByDiet: Flow<PagingData<WorldwideRecipe>> =
+        repository.getWorldwideRecipesByDiet().cachedIn(viewModelScope)
+    var kenyanRecipesByDiet: Flow<PagingData<KenyanRecipe>> =
+        repository.getKenyanRecipesByDiet().cachedIn(viewModelScope)
     private val _currentWorldwideRecipeState = MutableLiveData<CurrentWorldwideRecipeState>()
     val currentWorldwideRecipeState: LiveData<CurrentWorldwideRecipeState> =
         _currentWorldwideRecipeState

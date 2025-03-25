@@ -28,6 +28,8 @@ import com.example.foodium.network.OpenFoodFactsApi
 import com.example.foodium.network.RecipeIntakeAdd
 import com.example.foodium.network.Search
 import com.example.foodium.network.UserRecipeIntakeRequestByDate
+import com.example.foodium.pagination.FOrYouWorldwideRecipesPagination
+import com.example.foodium.pagination.ForYouRecipesPagination
 import com.example.foodium.pagination.KenyanRecipesIntakePagination
 import com.example.foodium.pagination.ReviewsPagination
 import com.example.foodium.pagination.WorldwideRecipesIntakePagination
@@ -46,6 +48,7 @@ class Repository(
 ) {
     private val repositoryScope = CoroutineScope(Dispatchers.IO)
     private var authTokens = AuthTokens("", "")
+    private var healthAttributes = HealthAttributesData(userWeight = 70, userNumberOfMealsADay = 3, userDietType = "none")
     suspend fun registerUser(userData: RegisterData) {
         val result = backendApi.retrofitService.registerUser(userData)
         authTokens = result
@@ -106,11 +109,18 @@ class Repository(
             healthData.userNumberOfMealsADay.toString()
         )
         preferencesDataStore.saveString("userDietType", healthData.userDietType)
+        healthAttributes=healthData
     }
 
     suspend fun getAuthTokensFromServer(): String {
         val accessToken = preferencesDataStore.getString("accessToken")
         val refreshToken = preferencesDataStore.getString("refreshToken")
+        val userWeight =preferencesDataStore.getString("userWeight")
+        val userNoOfMeals=preferencesDataStore.getString("userNoOfMeals")
+        val userDietType=preferencesDataStore.getString("userDietType")
+        if(userWeight!=null && userNoOfMeals!=null && userDietType!=null){
+            healthAttributes= HealthAttributesData(userDietType = userDietType, userWeight = userWeight.toInt(), userNumberOfMealsADay = userNoOfMeals.toInt())
+        }
         if (accessToken == null || refreshToken == null) {
             return "no stored tokens found"
         } else {
@@ -182,6 +192,27 @@ class Repository(
             }
         ).flow
     }
+    fun getKenyanRecipesByDiet() :Flow<PagingData<KenyanRecipe>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = {
+                ForYouRecipesPagination(backendApi,authTokens, updateAuthTokens = {
+                    authTokens=it
+                },healthAttributes.userWeight,healthAttributes.userNumberOfMealsADay,healthAttributes.userDietType)
+            }
+        ).flow
+    }
+    fun getWorldwideRecipesByDiet() :Flow<PagingData<WorldwideRecipe>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = {
+                FOrYouWorldwideRecipesPagination(backendApi,authTokens, updateAuthTokens = {
+                    authTokens=it
+                },healthAttributes.userWeight,healthAttributes.userNumberOfMealsADay,healthAttributes.userDietType)
+            }
+        ).flow
+    }
+
 
     fun getRecipeReviews(recipeId: String, region: String): Flow<PagingData<RecipeReview>> {
         return Pager(

@@ -14,12 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.foodium.models.WorldwideRecipe
 import com.example.foodium.ui.components.ChatgptRecipeCard
+import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun WorldwideRecipesScreen(modifier: Modifier = Modifier,recipesViewModel: RecipesViewModel,onRecipeInfoClick:()->Unit) {
-    val recipes = recipesViewModel.recipes.collectAsLazyPagingItems()
+fun WorldwideRecipesScreen(modifier: Modifier = Modifier,recipesViewModel: RecipesViewModel,recipesFlow:Flow<PagingData<WorldwideRecipe>>,onRecipeInfoClick:()->Unit) {
+    val recipes = recipesFlow.collectAsLazyPagingItems()
 //    val lazyListState= rememberLazyListState()
     LazyColumn(modifier=modifier.fillMaxSize()) {
         items(recipes.itemCount) { index ->

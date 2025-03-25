@@ -23,13 +23,15 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-
+import androidx.paging.PagingData
+import com.example.foodium.models.KenyanRecipe
+import kotlinx.coroutines.flow.Flow
 
 
 @Composable
-fun KenyanRecipesScreen(modifier: Modifier = Modifier,recipesViewModel: RecipesViewModel,onKenyanRecipeInfoClick:()->Unit) {
+fun KenyanRecipesScreen(modifier: Modifier = Modifier,recipesViewModel: RecipesViewModel,kenyanRecipesFlow:Flow<PagingData<KenyanRecipe>>,onKenyanRecipeInfoClick:()->Unit) {
 //    val lazyListState= rememberLazyListState()
-    val kenyanRecipes = recipesViewModel.kenyanRecipes.collectAsLazyPagingItems()
+    val kenyanRecipes = kenyanRecipesFlow.collectAsLazyPagingItems()
     LazyColumn(modifier=modifier.fillMaxSize()) {
         items(kenyanRecipes.itemCount) { index ->
             kenyanRecipes[index]?.let {recipe->
