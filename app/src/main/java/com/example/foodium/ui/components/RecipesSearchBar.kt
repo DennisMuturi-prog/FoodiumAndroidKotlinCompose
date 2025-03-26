@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
@@ -14,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,20 +59,23 @@ fun RecipesSearchBar(
         onExpandedChange = { expanded = it },
     ) {
 
+
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(32.dp),
-            contentPadding = PaddingValues(16.dp),
-            modifier = Modifier.fillMaxSize()
+            contentPadding = PaddingValues(16.dp)
         ) {
             items(
                 count = searchResults.size,
                 key = { index -> searchResults[index].uuid },
                 itemContent = { index ->
                     val recipe = searchResults[index]
-                    Text(recipe.recipeName,modifier = Modifier.clickable {
+                    TextButton(onClick = {
                         onKenyanRecipeInfoClick(recipe)
 
-                    })
+
+                    }) {
+                        Text(recipe.recipeName)
+                    }
                 }
             )
             items(
@@ -78,11 +83,14 @@ fun RecipesSearchBar(
                 key = { index -> worldwideSearchResults[index].uuid },
                 itemContent = { index ->
                     val recipe = worldwideSearchResults[index]
-                    Text(recipe.recipeName,modifier = Modifier.clickable {
+                    TextButton(onClick = {
                         onRecipeInfoClick(recipe)
 
 
-                    })
+                    }) {
+                        Text(recipe.recipeName)
+
+                    }
                 }
             )
             items(
@@ -90,9 +98,11 @@ fun RecipesSearchBar(
                 key = { index -> foodSearchResults[index].uuid },
                 itemContent = { index ->
                     val food = foodSearchResults[index]
-                    Text(food.foodName, modifier = Modifier.clickable {
+                    TextButton(onClick = {
                         onFoodInfoClick(food.toWorldwideRecipe())
-                    })
+                    } ){
+                        Text(food.foodName)
+                    }
                 }
             )
         }

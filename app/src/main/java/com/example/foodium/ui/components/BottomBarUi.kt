@@ -15,7 +15,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.foodium.R
-import com.example.foodium.navigation.RootGraph
 import com.example.foodium.navigation.ScreenRoutes
 
 data class TopLevelRoute(val name: String, val route: List<String>, val icon: ImageVector?=null,

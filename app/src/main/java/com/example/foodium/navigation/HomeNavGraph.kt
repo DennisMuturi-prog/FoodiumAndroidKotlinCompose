@@ -120,7 +120,7 @@ fun HomeNavGraph(
                 isRecipe = true
             )
         }
-        composable(route = ScreenRoutes.RecipeInfoScreen.route) {
+        composable(route = ScreenRoutes.FoodInfoScreen.route) {
             RecipeInfo(
                 recipesViewModel = recipesViewModel,
                 modifier = modifier,
