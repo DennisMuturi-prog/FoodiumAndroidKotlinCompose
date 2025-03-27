@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,46 +21,69 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.foodium.ui.components.LoadingCircle
+import com.example.foodium.utils.validateUsername
 
 
 @Composable
-fun AddOauthUsername(modifier: Modifier = Modifier,
-                     authViewModel: AuthViewModel,
-                     onSuccessAddUsername:()->Unit) {
+fun AddOauthUsername(
+    modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel,
+    onSuccessAddUsername: () -> Unit
+) {
     var username by remember {
         mutableStateOf("")
     }
-    val updateUsernameState=authViewModel.updateUsernameState.observeAsState()
+    var usernameValidationError by remember {
+        mutableStateOf("")
+    }
+    var submitWasClicked by remember {
+        mutableStateOf(false)
+    }
+    val updateUsernameState = authViewModel.updateUsernameState.observeAsState()
     LaunchedEffect(updateUsernameState.value) {
-        when(updateUsernameState.value){
-            is AuthState.Success ->onSuccessAddUsername()
+        when (updateUsernameState.value) {
+            is AuthState.Success -> onSuccessAddUsername()
             else -> Unit
         }
     }
     Column(
-        modifier=modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        ) {
-        Text(text="Add username", fontSize = 32.sp)
+    ) {
+        Text(text = "Add username", fontSize = 32.sp)
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
-            value=username,
-            onValueChange = {username=it},
+            value = username,
+            onValueChange = {
+                username = it
+                if(submitWasClicked){
+                    usernameValidationError= validateUsername(username)
+                }
+            },
             label = {
                 Text("username")
-            })
-        when(val result=updateUsernameState.value){
-            is AuthState.Error-> Text(text=result.message)
-            is AuthState.Loading-> LoadingCircle()
-            is AuthState.Success->{}
-            is AuthState.NotAuthenticated->{}
-            null->{}
+            },
+            isError = usernameValidationError.isNotEmpty()
+        )
+        if(usernameValidationError.isNotEmpty()){
+            Text(usernameValidationError, color = MaterialTheme.colorScheme.error)
+        }
+        when (val result = updateUsernameState.value) {
+            is AuthState.Error -> Text(text = result.message)
+            is AuthState.Loading -> LoadingCircle()
+            is AuthState.Success -> {}
+            is AuthState.NotAuthenticated -> {}
+            null -> {}
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-            authViewModel.addUsername(username)
+                submitWasClicked = true
+                usernameValidationError = validateUsername(username)
+                if (usernameValidationError.isEmpty()) {
+                    authViewModel.addUsername(username)
+                }
             },
             enabled = updateUsernameState.value !is AuthState.Loading
 

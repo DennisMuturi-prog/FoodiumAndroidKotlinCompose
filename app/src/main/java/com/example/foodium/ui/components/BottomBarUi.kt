@@ -30,7 +30,7 @@ fun BottomBarUi(navController: NavHostController) {
         TopLevelRoute(name="CNN", route= listOf(ScreenRoutes.CNNScreen.route), painterIconId = R.drawable.image_search_24dp_e8eaed_fill0_wght400_grad0_opsz24),
         TopLevelRoute(name="Scanner", route= listOf(ScreenRoutes.BarcodeScannerScreen.route), painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24),
     )
-    val homeGraphRoutes = listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.CNNScreen.route,ScreenRoutes.BarcodeScannerScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route)
+    val homeGraphRoutes = listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.CNNScreen.route,ScreenRoutes.BarcodeScannerScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.ForYouDietKenyanRecipesScreen.route,ScreenRoutes.ForYouDietWorldwideRecipesScreen.route)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

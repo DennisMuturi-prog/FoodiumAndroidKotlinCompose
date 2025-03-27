@@ -1,6 +1,8 @@
 package com.example.foodium.navigation
 
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
@@ -59,6 +61,11 @@ fun HomeNavGraph(
                 onRecipeInfoClick = {
                     navController.navigate(ScreenRoutes.RecipeInfoScreen.route)
                 })
+        }
+        composable(route=ScreenRoutes.FoodsScreen.route) {
+            Column(modifier=modifier) {
+                Text("coming soon?")
+            }
         }
         composable(route = ScreenRoutes.KenyanRecipesScreen.route) {
             KenyanRecipesScreen(

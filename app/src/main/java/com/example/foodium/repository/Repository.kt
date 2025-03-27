@@ -40,6 +40,7 @@ import com.example.foodium.pagination.WorldwideRecipesPagination
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
@@ -301,54 +302,73 @@ class Repository(
     }
 
     suspend fun searchKenyanRecipes(searchTerm: String, region: String): Flow<List<KenyanRecipe>> {
-        val result = backendApi.retrofitService.searchKenyanRecipes(
-            Search(
-                searchTerm = searchTerm,
-                region = region,
-                accessToken = authTokens.accessToken,
-                refreshToken = authTokens.refreshToken
+        try {
+            val result = backendApi.retrofitService.searchKenyanRecipes(
+                Search(
+                    searchTerm = searchTerm,
+                    region = region,
+                    accessToken = authTokens.accessToken,
+                    refreshToken = authTokens.refreshToken
+                )
             )
-        )
-        if (result.newTokens != null) {
-            authTokens = result.newTokens
-            preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
-            preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
+            if (result.newTokens != null) {
+                authTokens = result.newTokens
+                preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+                preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
+            }
+            return flowOf(result.results)
+
+
+        }catch (e:Exception){
+            return emptyFlow()
+
         }
-        return flowOf(result.results)
+
 
     }
     suspend fun searchWorldwideRecipes(searchTerm: String, region: String): Flow<List<WorldwideRecipe>> {
-        val result = backendApi.retrofitService.searchWorldwideRecipes(
-            Search(
-                searchTerm = searchTerm,
-                region = region,
-                accessToken = authTokens.accessToken,
-                refreshToken = authTokens.refreshToken
+        try {
+            val result = backendApi.retrofitService.searchWorldwideRecipes(
+                Search(
+                    searchTerm = searchTerm,
+                    region = region,
+                    accessToken = authTokens.accessToken,
+                    refreshToken = authTokens.refreshToken
+                )
             )
-        )
-        if (result.newTokens != null) {
-            authTokens = result.newTokens
-            preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
-            preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
+            if (result.newTokens != null) {
+                authTokens = result.newTokens
+                preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+                preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
+            }
+            return flowOf(result.results)
+
+        }catch (e:Exception){
+            return  emptyFlow()
+
         }
-        return flowOf(result.results)
+
 
     }
     suspend fun searchFoods(searchTerm: String): Flow<List<Food>> {
-        val result = backendApi.retrofitService.searchFoods(
-            SearchFood(
-                searchTerm = searchTerm,
-                accessToken = authTokens.accessToken,
-                refreshToken = authTokens.refreshToken
+        try {
+            val result = backendApi.retrofitService.searchFoods(
+                SearchFood(
+                    searchTerm = searchTerm,
+                    accessToken = authTokens.accessToken,
+                    refreshToken = authTokens.refreshToken
+                )
             )
-        )
-        if (result.newTokens != null) {
-            authTokens = result.newTokens
-            preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
-            preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
-        }
-        return flowOf(result.results)
+            if (result.newTokens != null) {
+                authTokens = result.newTokens
+                preferencesDataStore.saveString("accessToken", result.newTokens.accessToken)
+                preferencesDataStore.saveString("refreshToken", result.newTokens.refreshToken)
+            }
+            return flowOf(result.results)
 
+        }catch (e:Exception){
+            return  emptyFlow()
+        }
     }
 
     suspend fun addRecipeIntake(recipeId: String, region: String) {
