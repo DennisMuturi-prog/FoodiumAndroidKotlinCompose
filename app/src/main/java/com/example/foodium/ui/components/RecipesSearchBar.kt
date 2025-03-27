@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
@@ -37,9 +39,9 @@ fun RecipesSearchBar(
     worldwideSearchResults: List<WorldwideRecipe>,
     foodSearchResults: List<Food>,
     onSearchQueryChange: (String) -> Unit,
-    onRecipeInfoClick:(WorldwideRecipe)->Unit,
-    onKenyanRecipeInfoClick:(KenyanRecipe) ->Unit,
-    onFoodInfoClick:(WorldwideRecipe)->Unit
+    onRecipeInfoClick: (WorldwideRecipe) -> Unit,
+    onKenyanRecipeInfoClick: (KenyanRecipe) -> Unit,
+    onFoodInfoClick: (WorldwideRecipe) -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     SearchBar(
@@ -51,6 +53,17 @@ fun RecipesSearchBar(
                 onExpandedChange = { expanded = it },
                 placeholder = { Text("search recipe") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = {
+                            onSearchQueryChange("")
+
+                        }) {
+                            Icon(imageVector = Icons.Default.Close, contentDescription = "clear")
+                        }
+
+                    }
+                },
                 query = searchQuery,
                 onQueryChange = onSearchQueryChange
             )
@@ -100,7 +113,7 @@ fun RecipesSearchBar(
                     val food = foodSearchResults[index]
                     TextButton(onClick = {
                         onFoodInfoClick(food.toWorldwideRecipe())
-                    } ){
+                    }) {
                         Text(food.foodName)
                     }
                 }

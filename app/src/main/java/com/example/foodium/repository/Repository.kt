@@ -15,6 +15,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.foodium.models.Food
+import com.example.foodium.models.FoodIntake
 import com.example.foodium.models.OpenFoodFactsData
 import com.example.foodium.models.RecipeReview
 import com.example.foodium.models.UserIntake
@@ -35,6 +36,7 @@ import com.example.foodium.pagination.FOrYouWorldwideRecipesPagination
 import com.example.foodium.pagination.ForYouRecipesPagination
 import com.example.foodium.pagination.KenyanRecipesIntakePagination
 import com.example.foodium.pagination.ReviewsPagination
+import com.example.foodium.pagination.UserFoodIntakeIntakePagination
 import com.example.foodium.pagination.WorldwideRecipesIntakePagination
 import com.example.foodium.pagination.WorldwideRecipesPagination
 import kotlinx.coroutines.CoroutineScope
@@ -197,6 +199,7 @@ class Repository(
         ).flow
     }
     fun getKenyanRecipesByDiet() :Flow<PagingData<KenyanRecipe>> {
+        Log.d("user health",healthAttributes.userDietType)
         return Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
             pagingSourceFactory = {
@@ -252,6 +255,19 @@ class Repository(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
             pagingSourceFactory = {
                 KenyanRecipesIntakePagination(
+                    api = backendApi,
+                    authTokens = authTokens,
+                    updateAuthTokens = {
+                        authTokens = it
+                    })
+            }
+        ).flow
+    }
+    fun getFoodIntake(): Flow<PagingData<FoodIntake>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = {
+                UserFoodIntakeIntakePagination(
                     api = backendApi,
                     authTokens = authTokens,
                     updateAuthTokens = {

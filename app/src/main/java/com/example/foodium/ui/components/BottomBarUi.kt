@@ -24,13 +24,13 @@ data class TopLevelRoute(val name: String, val route: List<String>, val icon: Im
 fun BottomBarUi(navController: NavHostController) {
 
     val topLevelRoutes = listOf(
-        TopLevelRoute(name="For you", route= listOf(ScreenRoutes.ForYouDietKenyanRecipesScreen.route,ScreenRoutes.ForYouDietWorldwideRecipesScreen.route), icon=Icons.Default.Home),
+        TopLevelRoute(name="For you", route= listOf(ScreenRoutes.ForYouDietKenyanRecipesScreen.route,ScreenRoutes.ForYouDietWorldwideRecipesScreen.route,ScreenRoutes.FoodsScreen.route), icon=Icons.Default.Home),
         TopLevelRoute(name="Recipes", route= listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route), painterIconId = R.drawable.cooking_24dp_e8eaed_fill0_wght400_grad0_opsz24),
-        TopLevelRoute(name="Tracking", route= listOf(ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route),painterIconId = R.drawable.monitoring_24dp_e8eaed_fill0_wght400_grad0_opsz24),
+        TopLevelRoute(name="Tracking", route= listOf(ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.FoodsIntakeScreen.route),painterIconId = R.drawable.monitoring_24dp_e8eaed_fill0_wght400_grad0_opsz24),
         TopLevelRoute(name="CNN", route= listOf(ScreenRoutes.CNNScreen.route), painterIconId = R.drawable.image_search_24dp_e8eaed_fill0_wght400_grad0_opsz24),
         TopLevelRoute(name="Scanner", route= listOf(ScreenRoutes.BarcodeScannerScreen.route), painterIconId = R.drawable.barcode_reader_24dp_e8eaed_fill0_wght400_grad0_opsz24),
     )
-    val homeGraphRoutes = listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.CNNScreen.route,ScreenRoutes.BarcodeScannerScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.ForYouDietKenyanRecipesScreen.route,ScreenRoutes.ForYouDietWorldwideRecipesScreen.route)
+    val homeGraphRoutes = listOf(ScreenRoutes.KenyanRecipesScreen.route,ScreenRoutes.WorldRecipesScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.CNNScreen.route,ScreenRoutes.BarcodeScannerScreen.route,ScreenRoutes.WorldwideRecipeIntakeScreen.route,ScreenRoutes.KenyanRecipeIntakeScreen.route,ScreenRoutes.IntakeVisualizationsScreen.route,ScreenRoutes.ForYouDietKenyanRecipesScreen.route,ScreenRoutes.ForYouDietWorldwideRecipesScreen.route,ScreenRoutes.FoodsScreen.route,ScreenRoutes.FoodsIntakeScreen.route)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

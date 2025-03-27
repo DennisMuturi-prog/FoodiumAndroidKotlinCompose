@@ -1,9 +1,11 @@
 package com.example.foodium.navigation
 
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -15,6 +17,7 @@ import com.example.foodium.ui.components.ChartsVisualization
 import com.example.foodium.ui.components.KenyanRecipeInfo
 import com.example.foodium.ui.screens.BarCodeScannerScreen
 import com.example.foodium.ui.screens.FoodClassifierScreen
+import com.example.foodium.ui.screens.FoodIntakeScreen
 import com.example.foodium.ui.screens.IntakeVisualizations
 import com.example.foodium.ui.screens.KenyanRecipeIntakeScreen
 import com.example.foodium.ui.screens.KenyanRecipesScreen
@@ -63,7 +66,7 @@ fun HomeNavGraph(
                 })
         }
         composable(route=ScreenRoutes.FoodsScreen.route) {
-            Column(modifier=modifier) {
+            Column(modifier=modifier, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("coming soon?")
             }
         }
@@ -100,6 +103,9 @@ fun HomeNavGraph(
                 onFoodInfoClick = {
                     navController.navigate(ScreenRoutes.FoodInfoScreen.route)
 
+                },
+                navigateBack = {
+                    navController.popBackStack()
                 })
         }
         composable(route = ScreenRoutes.BarcodeScannerScreen.route) {
@@ -159,6 +165,13 @@ fun HomeNavGraph(
                     recipesViewModel.changeCurrentKenyanRecipe(it)
                     navController.navigate(ScreenRoutes.KenyanRecipeInfoScreen.route)
                 })
+        }
+        composable(route =ScreenRoutes.FoodsIntakeScreen.route) {
+            FoodIntakeScreen(modifier=modifier,recipeIntakeViewModel=recipeIntakeViewModel,moveToRecipeInfoScreen={
+                recipesViewModel.changeCurrentRecipe(it)
+                navController.navigate(ScreenRoutes.FoodInfoScreen.route)
+
+            })
         }
         composable(route = ScreenRoutes.IntakeVisualizationsScreen.route) {
             IntakeVisualizations(

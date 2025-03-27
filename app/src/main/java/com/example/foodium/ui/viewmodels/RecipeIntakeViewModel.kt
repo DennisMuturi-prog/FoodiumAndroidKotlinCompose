@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.foodium.models.FoodIntake
 import com.example.foodium.models.UserIntake
 import com.example.foodium.models.UserKenyanIntake
 import com.example.foodium.repository.Repository
@@ -20,9 +21,11 @@ class RecipeIntakeViewModel(private val repository: Repository):ViewModel() {
     private var errorRate= mutableIntStateOf(0)
     var recipeIntake: Flow<PagingData<UserIntake>> =repository.getRecipeIntake().cachedIn(viewModelScope)
     var kenyanRecipeIntake:Flow<PagingData<UserKenyanIntake>> = repository.getKenyanRecipeIntake().cachedIn(viewModelScope)
+    var foodIntake:Flow<PagingData<FoodIntake>> = repository.getFoodIntake().cachedIn(viewModelScope)
     fun attachDataSource(){
         recipeIntake=repository.getRecipeIntake().cachedIn(viewModelScope)
         kenyanRecipeIntake=repository.getKenyanRecipeIntake().cachedIn(viewModelScope)
+        foodIntake=repository.getFoodIntake().cachedIn(viewModelScope)
     }
     private val _recipeIntakeByDateState= MutableLiveData<RecipeIntakeByDateState>()
     val recipeIntakeByDate:LiveData<RecipeIntakeByDateState> = _recipeIntakeByDateState

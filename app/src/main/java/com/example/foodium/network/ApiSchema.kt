@@ -169,4 +169,10 @@ data class UserRecipeIntakeRequestByDate(
     val accessToken: String,
     val refreshToken: String
 )
+@Serializable
+data class  FoodIntakeRequest(
+    val next:String,
+    val accessToken: String,
+    val refreshToken: String
+)
 
