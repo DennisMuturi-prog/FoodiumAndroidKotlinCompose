@@ -151,10 +151,14 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun changeCurrentRecipe(recipe: WorldwideRecipe) {
+        _addRatingState.value=AddRatingState.Success
+        _addReviewState.value=AddReviewState.Success
         _currentWorldwideRecipeState.value = CurrentWorldwideRecipeState.Success(recipe)
     }
 
     fun changeCurrentKenyanRecipe(recipe: KenyanRecipe) {
+        _addRatingState.value=AddRatingState.Success
+        _addReviewState.value=AddReviewState.Success
         _currentKenyanRecipeState.value = CurrentKenyanRecipeState.Success(recipe)
     }
 
@@ -190,7 +194,7 @@ class RecipesViewModel(private val repository: Repository) : ViewModel() {
                 )
                 SnackbarController.sendEvent(
                     event = SnackbarEvent(
-                        message = "login successful",
+                        message = "rating added successful",
                     )
                 )
                 AddRatingState.Success

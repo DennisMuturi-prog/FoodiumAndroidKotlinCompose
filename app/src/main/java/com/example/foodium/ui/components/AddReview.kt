@@ -26,6 +26,7 @@ fun AddReview(modifier: Modifier = Modifier,onSend:(String)->Unit) {
     Button(
         onClick = {
             onSend(review)
+            review=""
         }
     ) {
        Icon(imageVector = Icons.AutoMirrored.Filled.Send,

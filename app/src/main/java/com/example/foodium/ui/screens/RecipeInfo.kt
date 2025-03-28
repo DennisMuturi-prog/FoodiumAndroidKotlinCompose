@@ -150,7 +150,7 @@ fun RecipeDetails(
             contentDescription = "energy",
             modifier = Modifier.size(48.dp)
         )
-        Text("Energy:${recipe.energy}")
+        Text("Energy:${recipe.energy}kcal")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -161,7 +161,7 @@ fun RecipeDetails(
             contentDescription = "carbohydrates",
             modifier = Modifier.size(48.dp)
         )
-        Text("carbohydrates by summation:${recipe.carbohydrateBySummation}")
+        Text("carbohydrates by summation:${recipe.carbohydrateBySummation}g")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -172,7 +172,7 @@ fun RecipeDetails(
             contentDescription = "fiber",
             modifier = Modifier.size(48.dp)
         )
-        Text("fiber:${recipe.fiberTotalDietary}")
+        Text("fiber:${recipe.fiberTotalDietary}g")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -183,7 +183,7 @@ fun RecipeDetails(
             contentDescription = "starch",
             modifier = Modifier.size(48.dp)
         )
-        Text("starch:${recipe.starch}")
+        Text("starch:${recipe.starch}g")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -194,7 +194,7 @@ fun RecipeDetails(
             contentDescription = "protein",
             modifier = Modifier.size(48.dp)
         )
-        Text("proteins:${recipe.protein}")
+        Text("proteins:${recipe.protein}g")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -205,7 +205,7 @@ fun RecipeDetails(
             contentDescription = "fats",
             modifier = Modifier.size(48.dp)
         )
-        Text("fats:${recipe.protein}")
+        Text("fats:${recipe.protein}g")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -227,7 +227,7 @@ fun RecipeDetails(
             contentDescription = "vitamin A",
             modifier = Modifier.size(48.dp)
         )
-        Text("VitaminA:${recipe.vitaminARAE}")
+        Text("VitaminA:${recipe.vitaminARAE}mcg")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -238,7 +238,7 @@ fun RecipeDetails(
             contentDescription = "vitamin B12",
             modifier = Modifier.size(48.dp)
         )
-        Text("vitamin B12:${recipe.vitaminB12}")
+        Text("vitamin B12:${recipe.vitaminB12}mcg")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -249,7 +249,7 @@ fun RecipeDetails(
             contentDescription = "vitamin C",
             modifier = Modifier.size(48.dp)
         )
-        Text("vitamin C:${recipe.vitaminCTotalAscorbicAcid}")
+        Text("vitamin C:${recipe.vitaminCTotalAscorbicAcid}mcg")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -260,7 +260,7 @@ fun RecipeDetails(
             contentDescription = "vitamin D",
             modifier = Modifier.size(48.dp)
         )
-        Text("vitamin D:${recipe.vitaminD4}")
+        Text("vitamin D:${recipe.vitaminD4}mcg")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -271,7 +271,7 @@ fun RecipeDetails(
             contentDescription = "iron",
             modifier = Modifier.size(48.dp)
         )
-        Text("iron:${recipe.ironFe}")
+        Text("iron:${recipe.ironFe}mcg")
     }
     if(isRecipe){
         RatingStar(onStarClick = {

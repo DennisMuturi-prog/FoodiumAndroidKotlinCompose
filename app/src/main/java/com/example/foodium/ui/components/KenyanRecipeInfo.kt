@@ -142,7 +142,7 @@ fun KenyanRecipeDetails(
             contentDescription = "energy",
             modifier = Modifier.size(48.dp)
         )
-        Text("Energy:${recipe.energykcal}")
+        Text("Energy:${recipe.energykcal} kcal")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -153,7 +153,7 @@ fun KenyanRecipeDetails(
             contentDescription = "carbohydrates",
             modifier = Modifier.size(48.dp)
         )
-        Text("carbohydrates by summation:${recipe.carbohydratesg}")
+        Text("carbohydrates by summation:${recipe.carbohydratesg} g")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -164,7 +164,7 @@ fun KenyanRecipeDetails(
             contentDescription = "fiber",
             modifier = Modifier.size(48.dp)
         )
-        Text("fiber:${recipe.fibreg}")
+        Text("fiber:${recipe.fibreg} g")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -175,7 +175,7 @@ fun KenyanRecipeDetails(
             contentDescription = "protein",
             modifier = Modifier.size(48.dp)
         )
-        Text("proteins:${recipe.proteinsg}")
+        Text("proteins:${recipe.proteinsg} g")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -186,7 +186,7 @@ fun KenyanRecipeDetails(
             contentDescription = "fats",
             modifier = Modifier.size(48.dp)
         )
-        Text("fats:${recipe.fatg}")
+        Text("fats:${recipe.fatg} g")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -197,7 +197,7 @@ fun KenyanRecipeDetails(
             contentDescription = "vitamin A",
             modifier = Modifier.size(48.dp)
         )
-        Text("Vitamin A:${recipe.vitaminAmcg}")
+        Text("Vitamin A:${recipe.vitaminAmcg} mcg")
     }
 
 
@@ -210,7 +210,7 @@ fun KenyanRecipeDetails(
             contentDescription = "zinc(mg)",
             modifier = Modifier.size(48.dp)
         )
-        Text("zinc(mg):${recipe.zincmg}")
+        Text("zinc(mg):${recipe.zincmg} mg")
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -221,7 +221,7 @@ fun KenyanRecipeDetails(
             contentDescription = "iron",
             modifier = Modifier.size(48.dp)
         )
-        Text("iron:${recipe.ironmg}")
+        Text("iron:${recipe.ironmg} mg")
     }
     RatingStar(onStarClick = {
         onSendRating(it)
