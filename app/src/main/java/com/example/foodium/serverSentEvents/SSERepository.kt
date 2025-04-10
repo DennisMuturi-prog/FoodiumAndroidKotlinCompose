@@ -1,6 +1,8 @@
 package com.example.foodium.serverSentEvents
 
 import android.util.Log
+import androidx.compose.ui.res.stringResource
+import com.example.foodium.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
@@ -80,7 +82,7 @@ class SSERepository() {
 
     companion object {
         private const val TAG = "SSERepository"
-        private const val EVENTS_URL = "https://3050-102-219-210-254.ngrok-free.app/reviewsEvent"
+        private  const val EVENTS_URL = "https://3050-102-219-210-254.ngrok-free.app/reviewsEvent"
     }
 
 }
